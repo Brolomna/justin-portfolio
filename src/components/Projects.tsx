@@ -39,7 +39,7 @@ function CodeEditor({ project }: { project: Project }) {
       : 'raids.py';
 
   return (
-    <div className="relative h-32 overflow-hidden bg-porcelain px-4 pt-3 font-mono text-[9px] leading-[1.45] sm:text-[10px] border-b border-coolgray">
+    <div className="relative h-40 overflow-hidden bg-porcelain px-4 pt-3.5 font-mono text-[10px] leading-[1.55] sm:h-44 sm:text-[11px] border-b border-coolgray">
       <div className="flex items-center gap-1.5 mb-2">
         <span className="w-1.5 h-1.5 rounded-full bg-ink/20" />
         <span className="w-1.5 h-1.5 rounded-full bg-ink/20" />
@@ -61,17 +61,17 @@ function CodeEditor({ project }: { project: Project }) {
 
 function MoonfallThumbnail() {
   return (
-    <div className="group/thumb relative h-32 overflow-hidden bg-mist border-b border-coolgray">
+    <div className="group/thumb relative h-52 overflow-hidden bg-mist border-b border-coolgray sm:h-64">
       <img
         src="moonfall-splash.webp"
         alt="Moonfall game artwork"
-        className="absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-500 group-hover/thumb:opacity-0"
+        className="absolute inset-0 h-full w-full object-cover object-[center_42%] transition-opacity duration-500 group-hover/thumb:opacity-0"
         loading="lazy"
       />
       <img
         src="moonfall-end-wolves.webp"
         alt="Moonfall wolves artwork"
-        className="absolute inset-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-500 group-hover/thumb:opacity-100"
+        className="absolute inset-0 h-full w-full object-cover object-[center_45%] opacity-0 transition-opacity duration-500 group-hover/thumb:opacity-100"
         loading="lazy"
       />
       <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-ink/90 text-porcelain text-xs font-semibold">

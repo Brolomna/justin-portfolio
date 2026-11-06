@@ -16,9 +16,9 @@ const codeHues = [
 function CodeThumb({ title, seed }: { title: string; seed: number }) {
   const hues = codeHues[seed % codeHues.length];
   return (
-    <div className="h-14 w-full border-b border-coolgray bg-porcelain px-2.5 pt-2 font-mono sm:h-16">
-      <p className="text-[7px] text-ink-faint">{fileNames[title]}</p>
-      <div className="mt-1.5 space-y-1">
+    <div className="h-20 w-full border-b border-coolgray bg-porcelain px-2.5 pt-2.5 font-mono sm:h-24">
+      <p className="text-[8px] text-ink-faint">{fileNames[title]}</p>
+      <div className="mt-2 space-y-1.5">
         <div className={`h-1 w-4/5 rounded ${hues[0]}`} />
         <div className={`ml-2 h-1 w-3/5 rounded ${hues[1]}`} />
         <div className={`ml-2 h-1 w-2/3 rounded ${hues[2]}`} />
@@ -41,11 +41,11 @@ export default function ProjectsVisual() {
           style={{ animationDelay: `${i * 3.5}s` }}
         >
           {p.title === 'Moonfall' ? (
-            <div className="relative h-14 w-full overflow-hidden border-b border-coolgray sm:h-16">
+            <div className="relative h-20 w-full overflow-hidden border-b border-coolgray sm:h-24">
               <img
                 src="moonfall-splash.webp"
                 alt="Moonfall game artwork"
-                className="h-full w-full object-cover object-center"
+                className="h-full w-full object-cover object-[center_42%]"
                 loading="lazy"
               />
               <span className="absolute left-1.5 top-1.5 rounded-full bg-ink/90 px-1.5 py-0.5 font-mono text-[7px] font-semibold uppercase tracking-wide text-porcelain">
