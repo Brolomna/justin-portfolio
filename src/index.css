@@ -44,14 +44,6 @@
   transform: translateY(0);
 }
 
-/* Presentation: pause every scene animation while paused */
-
-.pp-paused .pp-scene *,
-.pp-paused .pp-scene *::before,
-.pp-paused .pp-scene *::after {
-  animation-play-state: paused !important;
-}
-
 /* Scene swap transition */
 @keyframes scene-in {
   from { opacity: 0; transform: translateY(10px) scale(0.99); }
@@ -64,11 +56,6 @@
   to { opacity: 1; transform: translateY(0); }
 }
 .pp-text { animation: scene-text-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
-
-@keyframes pp-progress {
-  from { width: 0%; }
-  to { width: 100%; }
-}
 
 /* ---------- Scene 1: Identity ---------- */
 @keyframes id-ring { to { transform: rotate(360deg); } }
