@@ -4,13 +4,13 @@ import { portfolio } from '@/data/portfolio';
 export default function ClosingVisual() {
   const { contact } = portfolio;
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-white to-mist px-6 text-center">
-      {/* radar rings */}
+    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden px-6 text-center">
+      {/* radar rings spreading through the open space */}
       <div aria-hidden="true" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="sc-cl-radar absolute left-1/2 top-1/2 -ml-32 -mt-32 h-64 w-64 rounded-full border border-ink/15"
+            className="sc-cl-radar absolute left-1/2 top-1/2 -ml-36 -mt-36 h-72 w-72 rounded-full border border-ink/15"
             style={{ animationDelay: `${i * 1.2}s` }}
           />
         ))}

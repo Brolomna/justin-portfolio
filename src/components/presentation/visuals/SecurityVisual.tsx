@@ -1,7 +1,7 @@
 export default function SecurityVisual() {
   return (
-    <div className="flex h-full w-full items-center justify-center bg-white p-3">
-      <svg viewBox="0 0 400 260" className="h-full w-full max-w-lg" role="img" aria-label="Network traffic inspected at a security boundary; a suspicious packet is blocked">
+    <div className="flex h-full w-full items-center justify-center p-1 sm:p-2">
+      <svg viewBox="0 0 400 260" className="h-full w-full max-w-xl" role="img" aria-label="Network traffic inspected at a security boundary; a suspicious packet is blocked">
         {/* boundary */}
         <line x1="176" y1="24" x2="176" y2="236" stroke="#8CA0B3" strokeWidth="1" strokeDasharray="4 6" opacity="0.7" />
         <text x="176" y="16" textAnchor="middle" fontSize="8" fill="#8CA0B3" className="font-mono">security boundary</text>

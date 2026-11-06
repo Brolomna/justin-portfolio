@@ -32,7 +32,7 @@ export default function Presentation() {
       <div className="absolute inset-x-0 top-0 -z-10 h-px bg-coolgray" />
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
+        <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.15fr] lg:gap-12">
           {/* Text panel — always synchronized with the active scene */}
           <div className="min-w-0 max-w-xl">
             <div key={`k-${scene.id}`} className="pp-text">
@@ -80,7 +80,7 @@ export default function Presentation() {
 
           {/* Visual panel */}
           <div
-            className="relative h-[19rem] w-full min-w-0 sm:h-[24rem] lg:h-[26rem] overflow-hidden rounded-3xl border border-coolgray bg-white shadow-card"
+            className="relative h-[19rem] w-full min-w-0 sm:h-[25rem] lg:h-[28rem]"
           >
             <div key={scene.id} className="pp-scene h-full w-full">
               <SceneVisual id={scene.id} />

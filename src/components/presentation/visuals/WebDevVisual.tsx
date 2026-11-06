@@ -1,8 +1,8 @@
 export default function WebDevVisual() {
   return (
-    <div className="flex h-full w-full items-center justify-center bg-mist/50 p-4 sm:p-6">
-      <div className="w-full max-w-sm">
-        <div className="sc-wd-viewport mx-auto overflow-hidden rounded-xl border border-ink/15 bg-white shadow-card">
+    <div className="flex h-full w-full items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-md rotate-1">
+        <div className="sc-wd-viewport mx-auto overflow-hidden rounded-xl border border-ink/15 bg-white shadow-card-lg">
           {/* browser chrome */}
           <div className="flex items-center gap-1.5 border-b border-coolgray bg-porcelain px-3 py-2">
             <span className="h-2 w-2 rounded-full bg-ink/15" />
@@ -47,7 +47,7 @@ export default function WebDevVisual() {
             <div className="sc-wd-in h-4 rounded bg-coolgray" style={{ animationDelay: '2.1s' }} />
           </div>
         </div>
-        <p className="mt-3 text-center font-mono text-[9px] text-ink-faint">
+        <p className="mt-4 text-center font-mono text-[9px] text-ink-faint">
           components mount → styles apply → layout responds
         </p>
       </div>

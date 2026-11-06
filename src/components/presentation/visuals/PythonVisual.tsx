@@ -1,7 +1,7 @@
 export default function PythonVisual() {
   return (
-    <div className="flex h-full w-full items-center justify-center bg-white p-3">
-      <svg viewBox="0 0 400 260" className="h-full w-full max-w-lg" role="img" aria-label="Animated automation workflow: input, parse, validate, transform, output">
+    <div className="flex h-full w-full items-center justify-center p-1 sm:p-2">
+      <svg viewBox="0 0 400 260" className="h-full w-full max-w-xl" role="img" aria-label="Animated automation workflow: input, parse, validate, transform, output">
         {/* wires */}
         <path
           d="M 90 52 L 240 52 L 240 122 L 170 122 L 170 192 L 88 192"

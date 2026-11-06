@@ -8,9 +8,9 @@ const steps = [
 
 export default function TeachingVisual() {
   return (
-    <div className="flex h-full w-full items-center justify-center gap-2.5 bg-white p-4 sm:gap-4 sm:p-6">
-      {/* the concept */}
-      <div className="w-[42%] rounded-xl border border-coolgray bg-porcelain p-3">
+    <div className="flex h-full w-full items-center justify-center gap-2.5 p-4 sm:gap-5 sm:p-6">
+      {/* the concept — sits high */}
+      <div className="mt-2 w-[42%] self-start rounded-xl border border-coolgray bg-white p-3 shadow-card sm:mt-6">
         <p className="font-mono text-[8px] uppercase tracking-wider text-ink-faint">the concept</p>
         <pre className="mt-2 overflow-hidden font-mono text-[8.5px] leading-[1.5] text-ink/75 sm:text-[10px]">
 {`def find(v):
@@ -23,7 +23,7 @@ export default function TeachingVisual() {
       </div>
 
       {/* transfer */}
-      <div className="flex shrink-0 flex-col items-center gap-1.5">
+      <div className="flex shrink-0 flex-col items-center gap-1.5 self-center">
         <div className="sc-tc-beam h-0.5 w-4 rounded bg-ink/40 sm:w-6" />
         <div className="relative flex h-11 w-11 items-center justify-center">
           <svg aria-hidden="true" className="sc-tc-ring absolute inset-0 h-full w-full" viewBox="0 0 44 44">
@@ -36,8 +36,8 @@ export default function TeachingVisual() {
         <div className="sc-tc-beam h-0.5 w-4 rounded bg-ink/40 sm:w-6" style={{ animationDelay: '1.2s' }} />
       </div>
 
-      {/* the lesson */}
-      <div className="flex-1 rounded-xl border border-ink/20 bg-white p-3">
+      {/* the lesson — lands low, so the transfer reads as a descent */}
+      <div className="mb-2 flex-1 self-end rounded-xl border border-ink/20 bg-white p-3 shadow-card sm:mb-6">
         <p className="font-mono text-[8px] uppercase tracking-wider text-ink-faint">the lesson</p>
         <ol className="mt-2 space-y-2">
           {steps.map((s, i) => (

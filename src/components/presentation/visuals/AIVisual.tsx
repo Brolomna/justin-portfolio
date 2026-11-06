@@ -2,10 +2,11 @@ const tokens = ['the', 'quick', 'fox', 'runs', 'fast', 'now'];
 
 export default function AIVisual() {
   return (
-    <div className="flex h-full w-full items-center justify-center bg-white p-3 sm:p-4">
-      <div className="flex w-full max-w-md items-stretch gap-1.5 sm:gap-2">
+    <div className="flex h-full w-full items-center justify-center p-2 sm:p-4">
+      {/* staggered staircase: each stage steps down across the open space */}
+      <div className="flex w-full max-w-xl items-start gap-1.5 sm:gap-3">
         {/* input */}
-        <div className="sc-ai-stage min-w-0 flex-1 rounded-xl border border-coolgray bg-porcelain p-2.5" style={{ animationDelay: '0s' }}>
+        <div className="sc-ai-stage min-w-0 flex-1 rounded-xl border border-coolgray bg-white p-2.5 shadow-card" style={{ animationDelay: '0s' }}>
           <p className="font-mono text-[8px] uppercase tracking-wider text-ink-faint">input</p>
           <div className="mt-2 space-y-1.5">
             <div className="h-1.5 w-full rounded bg-ink/15" />
@@ -15,10 +16,10 @@ export default function AIVisual() {
           <p className="mt-2 truncate font-mono text-[8px] text-ink-mute">"summarise these notes"</p>
         </div>
 
-        <span aria-hidden="true" className="self-center text-ink-faint">→</span>
+        <span aria-hidden="true" className="mt-5 self-start text-ink-faint sm:mt-8">→</span>
 
         {/* tokens */}
-        <div className="sc-ai-stage min-w-0 flex-1 rounded-xl border border-coolgray bg-porcelain p-2.5" style={{ animationDelay: '0.9s' }}>
+        <div className="sc-ai-stage mt-5 min-w-0 flex-1 rounded-xl border border-coolgray bg-white p-2.5 shadow-card sm:mt-10" style={{ animationDelay: '0.9s' }}>
           <p className="font-mono text-[8px] uppercase tracking-wider text-ink-faint">tokens</p>
           <div className="mt-2 flex flex-wrap gap-1">
             {tokens.map((t, i) => (
@@ -33,10 +34,10 @@ export default function AIVisual() {
           </div>
         </div>
 
-        <span aria-hidden="true" className="self-center text-ink-faint">→</span>
+        <span aria-hidden="true" className="mt-11 self-start text-ink-faint sm:mt-[4.5rem]">→</span>
 
         {/* model */}
-        <div className="sc-ai-stage relative min-w-0 flex-1 overflow-hidden rounded-xl bg-ink p-2.5" style={{ animationDelay: '1.9s' }}>
+        <div className="sc-ai-stage relative mt-9 min-w-0 flex-1 overflow-hidden rounded-xl bg-ink p-2.5 shadow-card sm:mt-20" style={{ animationDelay: '1.9s' }}>
           <p className="font-mono text-[8px] uppercase tracking-wider text-porcelain/50">model</p>
           <div className="mt-2 space-y-1.5">
             {[0, 1, 2, 3].map((i) => (
@@ -52,10 +53,10 @@ export default function AIVisual() {
           <p className="mt-2 font-mono text-[8px] text-porcelain/50">inference…</p>
         </div>
 
-        <span aria-hidden="true" className="self-center text-ink-faint">→</span>
+        <span aria-hidden="true" className="mt-16 self-start text-ink-faint sm:mt-28">→</span>
 
         {/* structured output */}
-        <div className="sc-ai-stage min-w-0 flex-1 rounded-xl border border-ink/25 bg-white p-2.5" style={{ animationDelay: '4.3s' }}>
+        <div className="sc-ai-stage mt-14 min-w-0 flex-1 rounded-xl border border-ink/25 bg-white p-2.5 shadow-card sm:mt-[6.5rem]" style={{ animationDelay: '4.3s' }}>
           <p className="font-mono text-[8px] uppercase tracking-wider text-ink-faint">output</p>
           <div className="mt-2 space-y-1.5 font-mono text-[8px]">
             <p className="text-ink-mute">{'{'}</p>

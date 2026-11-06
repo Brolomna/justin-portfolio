@@ -292,6 +292,13 @@
 }
 .sc-pulse-dot { animation: pulse-dot 1.8s ease-in-out infinite; }
 
+/* ---------- Free-floating chips (scenes freed from the shared box) ---------- */
+@keyframes float-y {
+  0%, 100% { transform: translateY(-5px); }
+  50% { transform: translateY(7px); }
+}
+.sc-float { animation: float-y 5.5s ease-in-out infinite; }
+
 /* ---------- Reduced motion: static, complete scenes ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
