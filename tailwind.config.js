@@ -5,26 +5,23 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Sora', 'sans-serif'],
+        display: ['Manrope', 'Inter', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
-        violet: {
-          50: '#f5f3ff',
-          100: '#ede9fe',
-          200: '#ddd6fe',
-          300: '#c4b5fd',
-          400: '#a78bfa',
-          500: '#8b5cf6',
-          600: '#7c3aed',
-          700: '#6d28d9',
-          800: '#5b21b6',
-          900: '#4c1d95',
+        porcelain: '#F8FAFC',
+        mist: '#EAF2FB',
+        coolgray: '#E9EDF2',
+        ink: {
+          DEFAULT: '#24364B',
+          soft: '#35506B',
+          mute: '#5A7186',
+          faint: '#8CA0B3',
         },
       },
       boxShadow: {
-        glow: '0 0 40px rgba(124, 58, 237, 0.25)',
-        'glow-lg': '0 0 60px rgba(124, 58, 237, 0.35)',
-        'glow-sm': '0 0 24px rgba(167, 139, 250, 0.30)',
+        card: '0 1px 2px rgba(36,54,75,0.05), 0 10px 28px -14px rgba(36,54,75,0.14)',
+        'card-lg': '0 2px 6px rgba(36,54,75,0.06), 0 28px 56px -20px rgba(36,54,75,0.18)',
       },
     },
   },

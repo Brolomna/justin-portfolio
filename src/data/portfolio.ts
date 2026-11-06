@@ -54,6 +54,7 @@ export const portfolio = {
     { name: 'Python automation', icon: 'FileCode2' },
     { name: 'Linux', icon: 'Terminal' },
     { name: 'Git & GitHub', icon: 'GitBranch' },
+    { name: 'Security fundamentals', icon: 'ShieldCheck' },
   ],
   about: {
     paragraph:

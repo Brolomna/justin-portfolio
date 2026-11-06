@@ -4,6 +4,7 @@ import {
   FileCode2,
   GitBranch,
   Globe,
+  ShieldCheck,
   Sparkles,
   Terminal,
   type LucideIcon,
@@ -19,6 +20,7 @@ const iconMap: Record<string, LucideIcon> = {
   FileCode2,
   Terminal,
   GitBranch,
+  ShieldCheck,
 };
 
 function SkillChip({ name, icon, index }: { name: string; icon: string; index: number }) {
@@ -27,13 +29,13 @@ function SkillChip({ name, icon, index }: { name: string; icon: string; index: n
   return (
     <div
       ref={ref}
-      className={`reveal group inline-flex items-center gap-2.5 rounded-full glass px-5 py-3 hover:border-violet-400/30 transition-all duration-300 ${
+      className={`reveal group inline-flex items-center gap-2.5 rounded-full border border-coolgray bg-white px-5 py-3 hover:border-ink/30 transition-all duration-300 ${
         visible ? 'is-visible' : ''
       }`}
       style={{ transitionDelay: `${index * 50}ms` }}
     >
-      <Icon size={18} className="text-violet-400 group-hover:text-violet-300 transition-colors" />
-      <span className="text-sm font-medium text-stone-200">{name}</span>
+      <Icon size={18} className="text-ink-soft" />
+      <span className="text-sm font-medium text-ink">{name}</span>
     </div>
   );
 }
@@ -41,16 +43,16 @@ function SkillChip({ name, icon, index }: { name: string; icon: string; index: n
 export default function Skills() {
   const { ref, visible } = useReveal<HTMLDivElement>();
   return (
-    <section id="skills" className="relative py-20 sm:py-28 scroll-mt-16">
+    <section id="skills" className="relative py-20 sm:py-28 scroll-mt-16 bg-porcelain">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div ref={ref} className={`reveal max-w-2xl ${visible ? 'is-visible' : ''}`}>
-          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-ink-mute">
             Capabilities
           </p>
-          <h2 className="mt-3 font-display text-3xl sm:text-4xl font-bold tracking-tight text-white">
+          <h2 className="mt-3 font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink">
             Skills & tools
           </h2>
-          <p className="mt-4 text-lg text-stone-400">
+          <p className="mt-4 text-lg text-ink-mute">
             From front-end interfaces to back-end automation, here's what I use
             to bring products to life.
           </p>
