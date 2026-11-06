@@ -50,7 +50,7 @@ export default function Presentation() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
           {/* Text panel — always synchronized with the active scene */}
-          <div className="max-w-xl">
+          <div className="min-w-0 max-w-xl">
             <div key={`k-${scene.id}`} className="pp-text">
               <p className="inline-flex items-center gap-2.5 rounded-full border border-coolgray bg-white px-3.5 py-1.5 font-mono text-[11px] font-medium tracking-wide text-ink-mute">
                 <span className="text-ink">
@@ -95,7 +95,7 @@ export default function Presentation() {
 
             {/* Controls */}
             <div className="mt-9">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
                 <button
                   type="button"
                   onClick={p.prev}
@@ -122,7 +122,7 @@ export default function Presentation() {
                   <ChevronRight size={16} />
                 </button>
 
-                <div className="ml-2 flex items-center gap-1.5" role="tablist" aria-label="Scenes">
+                <div className="ml-2 flex min-w-0 flex-wrap items-center gap-1" role="tablist" aria-label="Scenes">
                   {scenes.map((s, i) => (
                     <button
                       key={s.id}
@@ -131,11 +131,11 @@ export default function Presentation() {
                       aria-selected={i === index}
                       aria-label={`Scene ${i + 1}: ${s.kicker}`}
                       onClick={() => p.goTo(i)}
-                      className="group relative flex h-6 items-center px-0.5"
+                      className="group relative flex h-6 items-center px-[3px]"
                     >
                       <span
                         className={`relative block h-1.5 overflow-hidden rounded-full transition-all duration-300 ${
-                          i === index ? 'w-10 bg-coolgray' : 'w-3.5 bg-coolgray group-hover:bg-ink-faint'
+                          i === index ? 'w-8 sm:w-10 bg-coolgray' : 'w-3 sm:w-3.5 bg-coolgray group-hover:bg-ink-faint'
                         }`}
                       >
                         {i === index && p.autoActive && (
@@ -165,7 +165,7 @@ export default function Presentation() {
 
           {/* Visual panel */}
           <div
-            className="relative h-[19rem] sm:h-[24rem] lg:h-[26rem] overflow-hidden rounded-3xl border border-coolgray bg-white shadow-card"
+            className="relative h-[19rem] w-full min-w-0 sm:h-[24rem] lg:h-[26rem] overflow-hidden rounded-3xl border border-coolgray bg-white shadow-card"
           >
             <div key={scene.id} className="pp-scene h-full w-full">
               <SceneVisual id={scene.id} />
