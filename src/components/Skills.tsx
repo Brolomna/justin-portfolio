@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { portfolio } from '@/data/portfolio';
 import { useReveal } from '@/hooks/useReveal';
+import CredlyBadge from '@/components/CredlyBadge';
 
 const iconMap: Record<string, LucideIcon> = {
   Globe,
@@ -63,7 +64,34 @@ export default function Skills() {
             <SkillChip key={s.name} name={s.name} icon={s.icon} index={i} />
           ))}
         </div>
+
+        <Certifications />
       </div>
     </section>
+  );
+}
+
+function Certifications() {
+  const { ref, visible } = useReveal<HTMLDivElement>();
+  return (
+    <div ref={ref} className={`reveal mt-16 ${visible ? 'is-visible' : ''}`}>
+      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-ink-mute">
+        Certifications
+      </p>
+      <div className="mt-6 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <div className="shrink-0 rounded-2xl border border-coolgray bg-white p-4 shadow-card">
+          <CredlyBadge />
+        </div>
+        <div className="text-center sm:text-left">
+          <h3 className="font-display text-lg font-semibold text-ink">
+            Introduction to Cybersecurity
+          </h3>
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-ink-mute">
+            Cisco Networking Academy course completion badge, verified through
+            Credly. First step in a planned cybersecurity certification track.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
