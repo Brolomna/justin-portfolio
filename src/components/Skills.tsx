@@ -87,8 +87,8 @@ function Certifications() {
             Introduction to Cybersecurity
           </h3>
           <p className="mt-2 max-w-md text-sm leading-relaxed text-ink-mute">
-            Cisco Networking Academy course completion badge, verified through
-            Credly. First step in a planned cybersecurity certification track.
+            Cisco Networking Academy course completion badge, verified
+            through Credly.
           </p>
         </div>
       </div>
