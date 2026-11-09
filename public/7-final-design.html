@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#050a10">
+<meta name="description" content="Justin — Developer building creative 
+digital experiences.">
+<title>Justin — Creative Developer</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link 
+href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=swap" 
+rel="stylesheet">
+
+<style>
+:root {
+  --bg: #050a10;
+  --green: #00f5a0;
+  --cyan: #00cfff;
+  --white: #f1f5ff;
+  --muted: #8999b0;
+  /* tokens for the selected floating-glass nav component */
+  --em: #00f5a0;
+  --text: #F2F7FA;
+  --mut: #9AA9BC;
+  --line: rgba(255,255,255,.09);
+  --display: 'Manrope', 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+a { color: inherit; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: Inter, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* BACKGROUND */
+
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(ellipse at 75% 35%, #092c303d, transparent 40%),
+    radial-gradient(ellipse at 20% 70%, #063b2b20, transparent 45%),
+    #050a10;
+}
+
+.grid {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(#16405a25 1px, transparent 1px),
+    linear-gradient(90deg, #16405a25 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(to bottom, black, transparent 95%);
+  pointer-events: none;
+}
+
+#particles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.cursor-glow {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00f5a010, transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+/* NAVIGATION - selected floating glass nav from preview-moonlit (Justin's pick 2026-11-09) */
+
+.nav {
+  position: fixed; top: 18px; left: 50%; transform: translateX(-50%); z-index: 100;
+  width: min(940px, calc(100% - 32px));
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 10px 9px 18px;
+  background: rgba(16,25,35,.79);
+  border: 1px solid var(--line); border-radius: 999px;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  animation: nav-in .7s cubic-bezier(.2,.7,.3,1) both;
+}
+@keyframes nav-in { from { opacity: 0; transform: translate(-50%,-14px); } to { opacity: 1; transform: translate(-50%,0); } }
+.nav-logo {
+  display: flex; align-items: center; gap: 9px; text-decoration: none;
+  font-family: var(--display); font-weight: 800; font-size: 16.5px; letter-spacing: -.01em;
+  margin-right: auto;
+}
+.nav-logo .mono-badge {
+  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px;
+  font-family: var(--mono); font-size: 16px; font-weight: 500; color: var(--em);
+  border: 1px solid rgba(0,245,160,.45);
+  text-shadow: 0 0 12px rgba(0,245,160,.6);
+  box-shadow: 0 0 14px rgba(0,245,160,.18), inset 0 0 10px rgba(0,245,160,.07);
+}
+.nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+.nav-links a {
+  position: relative; display: block; padding: 8px 13px; border-radius: 999px;
+  font-size: 13.5px; font-weight: 500; color: var(--mut); text-decoration: none;
+  transition: color .25s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-links a::after {
+  content: ""; position: absolute; left: 50%; bottom: 3px; width: 4px; height: 4px;
+  border-radius: 50%; background: var(--em); opacity: 0; transform: translateX(-50%) scale(.4);
+  transition: opacity .25s, transform .25s;
+  box-shadow: 0 0 8px rgba(0,245,160,.9);
+}
+.nav-links a.active::after, .nav-links a:hover::after { opacity: 1; transform: translateX(-50%) scale(1); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 7px; margin-left: 6px;
+  padding: 8.5px 17px; border-radius: 999px; text-decoration: none;
+  font-size: 13.5px; font-weight: 600; color: var(--em);
+  border: 1px solid rgba(0,245,160,.55);
+  box-shadow: 0 0 16px rgba(0,245,160,.14), inset 0 0 12px rgba(0,245,160,.05);
+  transition: box-shadow .3s, background .3s;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: rgba(0,245,160,.08); box-shadow: 0 0 26px rgba(0,245,160,.3), inset 0 0 14px rgba(0,245,160,.09); }
+.nav-cta svg { transition: transform .3s; }
+.nav-cta:hover svg { transform: translate(2px,-2px); }
+.nav-toggle {
+  display: none; background: none; border: 0; color: var(--text); cursor: pointer; padding: 8px;
+}
+.mobile-menu {
+  display: none; position: fixed; top: 74px; left: 16px; right: 16px; z-index: 99;
+  background: rgba(16,25,35,.96); border: 1px solid var(--line); border-radius: 20px;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  padding: 10px;
+}
+.mobile-menu.open { display: block; }
+.mobile-menu a {
+  display: block; padding: 12px 14px; border-radius: 12px; text-decoration: none;
+  font-size: 15px; font-weight: 500; color: var(--mut);
+}
+.mobile-menu a:hover { color: var(--text); background: rgba(0,245,160,.06); }
+
+@media (max-width: 640px) {
+  .nav { padding-left: 14px; }
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: block; margin-left: auto; }
+}
+
+/* HERO */
+
+.hero {
+  width: min(1250px, calc(100% - 60px));
+  min-height: 100vh;
+  margin: auto;
+  padding-top: 125px;
+  padding-bottom: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 35px;
+  position: relative;
+}
+
+/* LEFT CONTENT */
+
+.content {
+  position: relative;
+  z-index: 5;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  border: 1px solid #00f5a055;
+  border-radius: 30px;
+  color: #b6c9d0;
+  font-size: 11px;
+  letter-spacing: 1px;
+  background: #00f5a008;
+  margin-bottom: 27px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--green);
+  animation: pulse 1.7s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: .3;
+    transform: scale(.7);
+  }
+}
+
+h1 {
+  font-size: clamp(42px, 5.5vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -4px;
+  font-weight: 900;
+  max-width: 650px;
+}
+
+h1 span {
+  color: var(--green);
+  text-shadow: 0 0 35px #00f5a033;
+}
+
+.description {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+  max-width: 470px;
+  margin-top: 25px;
+}
+
+.buttons {
+  display: flex;
+  gap: 13px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  transition: .3s;
+}
+
+.primary {
+  background: var(--green);
+  color: #00160e;
+  box-shadow: 0 0 25px #00f5a025;
+}
+
+.primary:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 40px #00f5a077;
+}
+
+.secondary {
+  color: var(--cyan);
+  border: 1px solid #00cfff55;
+}
+
+.secondary:hover {
+  background: #00cfff13;
+  transform: translateY(-5px);
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+  margin-top: 35px;
+}
+
+.socials a {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ffffff20;
+  border-radius: 12px;
+  color: #aab7c9;
+  text-decoration: none;
+  font-size: 13px;
+  transition: .3s;
+}
+
+.socials a:hover {
+  border-color: var(--green);
+  color: var(--green);
+  transform: translateY(-5px);
+}
+
+/* DEVELOPER GRAPHIC SCENE */
+
+.visual {
+  height: 600px;
+  width: 100%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.scene-glow {
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  background: #00f5a0;
+  filter: blur(120px);
+  opacity: .12;
+  animation: glowPulse 5s infinite alternate;
+  z-index: -1;
+}
+
+/* DEVELOPER ARTWORK */
+
+.developer-art {
+  position: absolute;
+  width: 115%;
+  max-width: none;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  left: -7%;
+  z-index: 2;
+  animation: developerFloat 7s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px #00f5a018);
+  pointer-events: none;
+}
+
+/* ORBITAL EFFECTS */
+
+.floating-orb {
+  position: absolute;
+  border: 1px solid #00f5a080;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #00f5a044;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.orb-one {
+  width: 65px;
+  height: 65px;
+  top: 10%;
+  right: 12%;
+  animation: orbitFloat 9s linear infinite;
+}
+
+.orb-two {
+  width: 25px;
+  height: 25px;
+  bottom: 18%;
+  left: 8%;
+  border-color: #00cfff;
+  animation: orbitFloat 6s linear infinite reverse;
+}
+
+/* HOLOGRAPHIC PANELS */
+
+.hud {
+  position: absolute;
+  z-index: 5;
+  padding: 15px;
+  border: 1px solid #00f5a055;
+  border-radius: 12px;
+  background: #07131bdc;
+  backdrop-filter: blur(15px);
+  font: 10px monospace;
+  box-shadow: 0 0 30px #00f5a015;
+  animation: hudFloat 5s ease-in-out infinite;
+}
+
+.hud span {
+  color: var(--green);
+}
+
+.hud p {
+  margin-top: 10px;
+  color: #d6e5ee;
+  line-height: 1.5;
+}
+
+.hud-one {
+  top: 12%;
+  left: 0;
+}
+
+.hud-two {
+  right: 0;
+  bottom: 14%;
+  animation-delay: -2.5s;
+}
+
+.typing {
+  display: block;
+  margin-top: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: typing 4s steps(28) infinite;
+}
+
+.hud-bar {
+  height: 3px;
+  margin-top: 12px;
+  background: linear-gradient(
+    90deg,
+    #00f5a0 70%,
+    #ffffff15 70%
+  );
+  animation: progress 3s infinite alternate;
+}
+
+/* FLOATING PARTICLES */
+
+.floating-particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00f5a0;
+  box-shadow: 0 0 15px #00f5a0;
+  z-index: 4;
+  animation: particleDrift 7s infinite ease-in-out;
+  pointer-events: none;
+}
+
+.particle-one {
+  top: 20%;
+  left: 20%;
+}
+
+.particle-two {
+  top: 65%;
+  right: 20%;
+  animation-delay: -2s;
+}
+
+.particle-three {
+  bottom: 10%;
+  left: 45%;
+  animation-delay: -4s;
+}
+
+.particle-four {
+  top: 40%;
+  right: 8%;
+  animation-delay: -1s;
+}
+
+/* ADDITIONAL FLOATING CODE CARD */
+
+.code-card {
+  position: absolute;
+  top: 3%;
+  right: 4%;
+  width: 155px;
+  padding: 13px;
+  border-radius: 10px;
+  background: #0b1925e8;
+  border: 1px solid #00cfff55;
+  z-index: 6;
+  backdrop-filter: blur(12px);
+  animation: hudFloat 6s ease-in-out infinite;
+}
+
+.code-card-title {
+  font: 10px monospace;
+  color: var(--cyan);
+  margin-bottom: 12px;
+}
+
+.code-line {
+  height: 4px;
+  margin: 9px 0;
+  border-radius: 5px;
+  background: linear-gradient(
+    90deg,
+    #00cfff,
+    #00f5a0,
+    transparent
+  );
+  animation: lineMove 3s infinite alternate;
+}
+
+.code-line:nth-child(3) {
+  width: 65%;
+  animation-delay: -.5s;
+}
+
+.code-line:nth-child(4) {
+  width: 85%;
+  animation-delay: -1s;
+}
+
+.code-line:nth-child(5) {
+  width: 50%;
+  animation-delay: -1.5s;
+}
+
+/* ANIMATIONS */
+
+@keyframes developerFloat {
+  0%, 100% {
+    transform: translate(var(--mouse-x, 0px), var(--mouse-y, 0px)) translateY(0) scale(1);
+  }
+  50% {
+    transform: translate(var(--mouse-x, 0px), var(--mouse-y, 0px)) translateY(-12px) scale(1.015);
+  }
+}
+
+@keyframes hudFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes orbitFloat {
+  to {
+    transform: rotate(360deg) translateX(20px);
+  }
+}
+
+@keyframes glowPulse {
+  to {
+    opacity: .25;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes particleDrift {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: .3;
+  }
+  50% {
+    transform: translate(25px, -40px);
+    opacity: 1;
+  }
+}
+
+@keyframes typing {
+  0%, 100% { width: 0; }
+  50% { width: 220px; }
+}
+
+@keyframes progress {
+  to {
+    background: linear-gradient(
+      90deg,
+      #00f5a0 95%,
+      #ffffff15 95%
+    );
+  }
+}
+
+@keyframes lineMove {
+  to {
+    opacity: 1;
+    width: 95%;
+  }
+}
+
+/* SCANNING LIGHT */
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #00f5a077,
+    transparent
+  );
+  animation: scan 7s linear infinite;
+  opacity: .5;
+  z-index: 5;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  to { top: 100%; }
+}
+
+/* TECHNOLOGY STRIP */
+
+.tech-strip {
+  width: min(1100px, calc(100% - 50px));
+  margin: -40px auto 80px;
+  border-top: 1px solid #ffffff16;
+  border-bottom: 1px solid #ffffff16;
+  padding: 23px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.tech-label {
+  color: #73869d;
+  font: 11px "DM Mono", monospace;
+  white-space: nowrap;
+}
+
+.tech-list {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  color: #c2d0df;
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.tech-list span {
+  transition: .3s;
+}
+
+.tech-list span:hover {
+  color: var(--green);
+  transform: translateY(-4px);
+}
+
+/* RESPONSIVE TABLET */
+
+@media(max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 145px;
+    gap: 20px;
+  }
+
+  .content {
+    text-align: center;
+  }
+
+  h1, .description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .status, .buttons, .socials {
+    justify-content: center;
+  }
+
+  .visual {
+    height: 500px;
+    width: 100%;
+  }
+
+  .developer-art {
+    width: 110%;
+    left: -5%;
+  }
+
+  .tech-strip {
+    margin-top: 0;
+    flex-direction: column;
+  }
+}
+
+/* RESPONSIVE MOBILE */
+
+@media(max-width: 600px) {
+  .hero {
+    width: calc(100% - 35px);
+    padding-top: 125px;
+    padding-bottom: 60px;
+  }
+
+  h1 {
+    font-size: clamp(42px, 12vw, 58px);
+    letter-spacing: -2.8px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .visual {
+    height: 390px;
+    margin-bottom: -15px;
+  }
+
+  .developer-art {
+    width: 130%;
+    left: -15%;
+  }
+
+  .hud {
+    padding: 10px;
+    font-size: 8px;
+  }
+
+  .hud-one {
+    top: 5%;
+    left: -5px;
+  }
+
+  .hud-two {
+    right: -5px;
+    bottom: 5%;
+  }
+
+  .code-card {
+    width: 115px;
+    right: -3%;
+    top: 0;
+    padding: 9px;
+  }
+
+  .orb-one {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tech-strip {
+    width: calc(100% - 35px);
+    margin-bottom: 50px;
+  }
+
+  .tech-list {
+    gap: 23px;
+    font-size: 13px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media(max-width: 380px) {
+  h1 {
+    font-size: 39px;
+  }
+
+  .visual {
+    height: 330px;
+  }
+
+  .developer-art {
+    width: 145%;
+    left: -22%;
+  }
+
+  .hud-one {
+    top: 0;
+  }
+
+  .hud-two {
+    bottom: 0;
+  }
+}
+
+/* REDUCED MOTION ACCESSIBILITY */
+
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="grid"></div>
+
+<canvas id="particles"></canvas>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAVIGATION -->
+
+<nav class="nav" aria-label="Primary">
+  <a class="nav-logo" href="https://brolomna.github.io/justin-portfolio/">
+    <span class="mono-badge">J</span>
+    <span>Justin</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="https://brolomna.github.io/justin-portfolio/" class="active">Home</a></li>
+    <li><a href="https://brolomna.github.io/justin-portfolio/#about">About</a></li>
+    <li><a href="https://brolomna.github.io/justin-portfolio/#skills">Skills</a></li>
+    <li><a href="https://brolomna.github.io/justin-portfolio/#projects">Projects</a></li>
+    <li><a href="https://brolomna.github.io/justin-portfolio/#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="mailto:anmolsiwa30@gmail.com">
+    Let&#8217;s Talk
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+  </a>
+  <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="
+    var m = document.getElementById('mmenu');
+    var open = m.classList.toggle('open');
+    this.setAttribute('aria-expanded', open);
+  ">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+</nav>
+<div class="mobile-menu" id="mmenu">
+  <a href="https://brolomna.github.io/justin-portfolio/">Home</a>
+  <a href="https://brolomna.github.io/justin-portfolio/#about">About</a>
+  <a href="https://brolomna.github.io/justin-portfolio/#skills">Skills</a>
+  <a href="https://brolomna.github.io/justin-portfolio/#projects">Projects</a>
+  <a href="https://brolomna.github.io/justin-portfolio/#contact">Contact</a>
+  <a href="mailto:anmolsiwa30@gmail.com" style="color:var(--em)">Let&#8217;s Talk</a>
+</div>
+
+<!-- HERO SECTION -->
+
+<main class="hero">
+
+  <!-- LEFT SIDE -->
+
+  <section class="content">
+
+    <div class="status">
+      <span class="status-dot"></span>
+      AVAILABLE FOR FREELANCE WORK
+    </div>
+
+    <h1>
+      Justin — <span>Developer</span><br>
+      Building Digital<br>
+      Experiences.
+    </h1>
+
+    <p class="description">
+      I design, build and deploy modern digital experiences
+      with clean code, creative interfaces and a passion
+      for technology. Turning ideas into practical products.
+    </p>
+
+    <div class="buttons">
+      <a href="https://brolomna.github.io/justin-portfolio/#projects" class="btn primary">
+        Explore My Work ↗
+      </a>
+
+      <a href="mailto:anmolsiwa30@gmail.com" class="btn secondary">
+        ✉ Let's Talk
+      </a>
+    </div>
+
+    <div class="socials">
+      <a href="https://github.com/Brolomna" aria-label="GitHub">GH</a>
+      <a href="https://www.linkedin.com/in/just9n55" aria-label="LinkedIn">in</a>
+      <a href="mailto:anmolsiwa30@gmail.com" aria-label="Email">✉</a>
+    </div>
+
+  </section>
+
+  <!-- RIGHT SIDE: ANIMATED GRAPHIC SCENE -->
+
+  <section class="visual">
+
+    <div class="scene-glow"></div>
+
+    <div class="scan-line"></div>
+
+    <!-- Justin's supplied workstation artwork (white background removed, transparent PNG) -->
+
+    <img
+      src="assets/justin-workstation.png"
+      class="developer-art"
+      alt="Developer working at a futuristic multi-monitor workstation"
+      fetchpriority="high"
+    >
+
+    <!-- FLOATING ORBS -->
+
+    <div class="floating-orb orb-one"></div>
+    <div class="floating-orb orb-two"></div>
+
+    <!-- HOLOGRAPHIC SYSTEM PANEL -->
+
+    <div class="hud hud-one">
+      <span>● SYSTEM STATUS</span>
+      <p>All systems operational</p>
+      <div class="hud-bar"></div>
+    </div>
+
+    <!-- LIVE DEVELOPMENT PANEL -->
+
+    <div class="hud hud-two">
+      <span>LIVE DEVELOPMENT</span>
+      <p>Building digital experiences...</p>
+      <span class="typing">const future = "creative";</span>
+    </div>
+
+    <!-- FLOATING CODE WINDOW -->
+
+    <div class="code-card">
+      <div class="code-card-title">
+        ◉ developer.js
+      </div>
+      <div class="code-line" style="width:90%"></div>
+      <div class="code-line"></div>
+      <div class="code-line"></div>
+      <div class="code-line"></div>
+      <div class="code-line"></div>
+    </div>
+
+    <!-- PARTICLES -->
+
+    <div class="floating-particle particle-one"></div>
+    <div class="floating-particle particle-two"></div>
+    <div class="floating-particle particle-three"></div>
+    <div class="floating-particle particle-four"></div>
+
+  </section>
+
+</main>
+
+<!-- TECHNOLOGY SHOWCASE -->
+
+<section class="tech-strip" id="skills">
+
+  <div class="tech-label">
+    TECHNOLOGIES I EXPLORE
+  </div>
+
+  <div class="tech-list">
+    <span>HTML</span>
+    <span>CSS</span>
+    <span>JavaScript</span>
+    <span>React</span>
+    <span>Python</span>
+    <span>Linux</span>
+    <span>AI</span>
+  </div>
+
+</section>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+/* REDUCED MOTION PREFERENCE */
+
+const reducedMotion =
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+/* MOUSE FOLLOWING LIGHT */
+
+const glow = document.getElementById("cursorGlow");
+
+if (!reducedMotion && window.matchMedia("(pointer: fine)").matches) {
+  document.addEventListener("mousemove", e => {
+    glow.style.left = e.clientX + "px";
+    glow.style.top = e.clientY + "px";
+  });
+} else {
+  glow.style.display = "none";
+}
+
+
+/* PARTICLE NETWORK */
+
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+let width, height;
+let animationFrame;
+
+function resizeCanvas() {
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  width = window.innerWidth;
+  height = window.innerHeight;
+
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const count = Math.min(
+    75,
+    Math.max(25, Math.floor(width * height / 15000))
+  );
+
+  particles = Array.from({length: count}, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    vx: (Math.random() - .5) * .35,
+    vy: (Math.random() - .5) * .35,
+    radius: Math.random() * 1.8 + .5
+  }));
+}
+
+
+/* DRAW AND ANIMATE */
+
+function animateParticles() {
+
+  ctx.clearRect(0, 0, width, height);
+
+  particles.forEach((p, i) => {
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > width) p.vx *= -1;
+    if (p.y < 0 || p.y > height) p.vy *= -1;
+
+    /* PARTICLE */
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.fillStyle = "#00f5a0";
+    ctx.fill();
+
+    /* CONNECTED PARTICLES */
+
+    for (let j = i + 1; j < particles.length; j++) {
+
+      const q = particles[j];
+
+      const dx = p.x - q.x;
+      const dy = p.y - q.y;
+
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < 115) {
+
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+
+        ctx.strokeStyle =
+          `rgba(0,245,160,${(1 - distance / 115) * .15})`;
+
+        ctx.lineWidth = .7;
+        ctx.stroke();
+      }
+    }
+
+  });
+
+  animationFrame = requestAnimationFrame(animateParticles);
+}
+
+
+/* INITIALIZE (static canvas under reduced motion) */
+
+resizeCanvas();
+if (!reducedMotion) {
+  animateParticles();
+}
+
+
+/* RESIZE */
+
+window.addEventListener("resize", resizeCanvas);
+
+
+/* PAUSE WHEN TAB IS HIDDEN */
+
+document.addEventListener("visibilitychange", () => {
+
+  if (document.hidden) {
+    cancelAnimationFrame(animationFrame);
+  } else if (!reducedMotion) {
+    animateParticles();
+  }
+
+});
+
+
+/* MOUSE PARALLAX ON HERO IMAGE */
+
+const scene = document.querySelector(".visual");
+const artwork = document.querySelector(".developer-art");
+
+if (artwork && !reducedMotion && window.matchMedia("(pointer: fine)").matches) {
+
+  scene.addEventListener("mousemove", e => {
+
+    const rect = scene.getBoundingClientRect();
+
+    const x = (e.clientX - rect.left) / rect.width - .5;
+    const y = (e.clientY - rect.top) / rect.height - .5;
+
+    artwork.style.setProperty(
+      "--mouse-x",
+      `${x * 10}px`
+    );
+
+    artwork.style.setProperty(
+      "--mouse-y",
+      `${y * 10}px`
+    );
+
+  });
+
+  scene.addEventListener("mouseleave", () => {
+    artwork.style.setProperty("--mouse-x", "0px");
+    artwork.style.setProperty("--mouse-y", "0px");
+  });
+
+}
+
+</script>
+
+</body>
+</html>
