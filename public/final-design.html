@@ -1706,15 +1706,28 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
     { id: 'contact', links: ['.nav-links a[href="#contact"]', '.mobile-menu a[href="#contact"]'] }
   ];
   const allLinks = [...document.querySelectorAll('.nav-links a[href^="#"], .mobile-menu a[href^="#"]')];
+  const desktopIds = new Set([...document.querySelectorAll('.nav-links a[href^="#"]')].map(link => link.getAttribute('href').slice(1)));
+  const existingSections = sections.map(item => ({ ...item, element: document.getElementById(item.id) })).filter(item => item.element);
+  /* The desktop nav has no Contact link, so when the current section has no desktop
+     entry, keep the nearest previous section that has one highlighted there. */
+  const desktopFallback = (id) => {
+    if (desktopIds.has(id)) return id;
+    const idx = existingSections.findIndex(item => item.id === id);
+    for (let i = (idx === -1 ? existingSections.length : idx) - 1; i >= 0; i--) {
+      if (desktopIds.has(existingSections[i].id)) return existingSections[i].id;
+    }
+    return id;
+  };
   const setActive = (id) => {
+    const desktopId = desktopFallback(id);
     allLinks.forEach(link => {
-      const active = link.getAttribute('href') === '#' + id;
+      const target = link.closest('.nav-links') ? desktopId : id;
+      const active = link.getAttribute('href') === '#' + target;
       link.classList.toggle('active', active);
       if (active) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
     });
   };
-  const existingSections = sections.map(item => ({ ...item, element: document.getElementById(item.id) })).filter(item => item.element);
   const updateFromScroll = () => {
     const marker = Math.min(180, Math.max(110, window.innerHeight * 0.28));
     let current = existingSections[0]?.id || 'top';
