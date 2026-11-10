@@ -196,6 +196,32 @@ h1 span {
   text-shadow: 0 0 35px #00f5a033;
 }
 
+/* Hero emphasis: solid green BREAK, holographic outlined BETTER */
+h1 .hero-break {
+  color: var(--green);
+  text-shadow: 0 0 12px rgba(0, 245, 160, .32), 0 0 35px rgba(0, 245, 160, .18);
+}
+
+h1 .hero-third-line {
+  /* Keep "I MAKE IT" white; only BETTER gets the green outline. */
+  color: #F2F7FA;
+  text-shadow: none;
+  display: block;
+  white-space: nowrap;
+  font-size: clamp(26px, 5vw, 64px);
+  letter-spacing: -3px;
+  line-height: 1.08;
+}
+
+h1 .hero-better {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px var(--green);
+  /* Softer holographic edge: keep the outline crisp, with only a restrained glow. */
+  text-shadow: 0 0 4px rgba(0, 245, 160, .32), 0 0 12px rgba(0, 245, 160, .16);
+  filter: drop-shadow(0 0 3px rgba(0, 245, 160, .18));
+}
+
 .description {
   color: var(--muted);
   font-size: 16px;
@@ -1036,13 +1062,14 @@ h1 span {
     </div>
 
     <h1>
-      BUILD SYSTEMS.<br>
-      TEST THEIR <span>LIMITS.</span>
+      I BUILD.<br>
+      <span class="hero-break">I BREAK.</span><br>
+      <span class="hero-third-line">I MAKE IT <span class="hero-better">BETTER.</span></span>
     </h1>
 
-    <p class="description">
-      I'm Justin — a developer and cybersecurity enthusiast exploring the space between building digital experiences and understanding how systems work. From web development to hands-on security labs, I enjoy experimenting with technology and learning how to make systems more secure.
-    </p>
+    <div class="description">
+      <p>I build web stuff, explore cybersecurity, and occasionally find out how things break.</p>
+    </div>
 
     <div class="buttons">
       <a href="#projects" class="btn primary">
