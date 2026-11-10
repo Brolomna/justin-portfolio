@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
 <meta name="theme-color" content="#050a10">
 <meta name="description" content="Justin — developer and cybersecurity enthusiast. I build web projects, explore cybersecurity, and test how systems work.">
 <title>Justin — Developer &amp; Cybersecurity Enthusiast</title>
@@ -878,6 +878,7 @@ h1 .hero-better {
 
 /* Reduced-motion preference is handled by the accessible motion toggle. */
 @media (prefers-reduced-motion: reduce) {
+  .project-slide.is-hovered { transition-duration:0.01ms !important; }
   html { scroll-behavior: auto; }
 }
 
@@ -1217,15 +1218,45 @@ h1 .hero-better {
 <script async src="https://cdn.credly.com/assets/utilities/embed.js"></script>
 </section>
 
-<!-- SELECTED PROJECTS -->
-<section class="projects-section" id="projects">
-  <div class="projects-heading"><div><div class="section-kicker">// SELECTED WORK</div><h2>PROJECTS <span>&amp; BUILDS</span></h2></div><p>A mix of web apps, automation tools, and community software. Each one solved a real problem or taught me something new.</p></div>
-  <div class="projects-grid">
-    <article class="project-card project-featured"><div class="project-visual moonfall-visual"><div class="project-window"><div class="window-dots"><i></i><i></i><i></i><span>MOONFALL / GAME LOBBY</span></div><div class="moonfall-orbit"><span>WEREWOLF</span><b>✦</b><span>VILLAGER</span></div><div class="moonfall-bottom"><span>ROOM CONNECTED</span><span>QR JOIN · MULTIPLAYER</span></div></div><span class="project-index">01 / FLAGSHIP</span></div><div class="project-info"><div class="project-title-row"><div><h3>Moonfall</h3><p>Local-multiplayer werewolf web game</p></div><span class="project-type">WEB APP</span></div><p class="project-description">A real-time werewolf game where everyone in the room joins by scanning a QR code. My biggest build so far, and the one that pushed me into live room interactions and multilingual interfaces.</p><div class="project-tags"><span>TypeScript</span><span>React</span><span>Socket.IO</span><span>Multilingual</span></div><a class="project-link" href="https://github.com/Brolomna/Moonfall" target="_blank" rel="noopener noreferrer">Explore repository ↗</a></div></article>
-    <article class="project-card"><div class="project-visual code-visual"><span class="project-index">02 / AUTOMATION</span><div class="mini-code"><span>tasks.py</span><code><b>def</b> run_task(task, text):</code><code>  summary = process(text)</code><code>  return classify(summary)</code><em>AI WORKFLOW / READY</em></div></div><div class="project-info"><div class="project-title-row"><div><h3>AI Workflow Assistant</h3><p>Notes → useful outputs</p></div><span class="project-type">PYTHON</span></div><p class="project-description">A small CLI that turns plain-text notes into summaries, action items, and classifications. I built it to make my own notes easier to act on, with an offline demo mode and support for OpenAI-compatible APIs.</p><div class="project-tags"><span>Python</span><span>CLI</span><span>OpenAI-compatible APIs</span><span>Automation</span></div><a class="project-link" href="https://github.com/Brolomna/ai-workflow-assistant" target="_blank" rel="noopener noreferrer">Explore repository ↗</a></div></article>
-    <article class="project-card"><div class="project-visual data-visual"><span class="project-index">03 / DATA</span><div class="data-flow"><div>RAW INPUT</div><b>→</b><div>PARSE</div><b>→</b><div>STRUCTURED DATA</div></div><span class="visual-status">EXTRACTION PIPELINE / COMPLETE</span></div><div class="project-info"><div class="project-title-row"><div><h3>Data Extractor</h3><p>Structured data from messy input</p></div><span class="project-type">PYTHON</span></div><p class="project-description">Extracts, parses, and exports structured information from unstructured text. A practice project for turning messy raw input into clean, usable data.</p><div class="project-tags"><span>Python</span><span>Parsing</span><span>Data</span></div><a class="project-link" href="https://github.com/Brolomna/data_extractor" target="_blank" rel="noopener noreferrer">Explore repository ↗</a></div></article>
-    <article class="project-card"><div class="project-visual bot-visual"><span class="project-index">04 / COMMUNITY</span><div class="bot-console"><span>CHILL CORNER / BOT STATUS</span><strong>● ONLINE</strong><code>moderation: active</code><code>community tasks: ready</code><code>members: welcomed</code></div></div><div class="project-info"><div class="project-title-row"><div><h3>Chill Corner Bot</h3><p>Community operations bot</p></div><span class="project-type">BOT</span></div><p class="project-description">A bot I built for the Chill Corner community. It handles moderation and the day-to-day tasks that keep the place running smoothly.</p><div class="project-tags"><span>Bot</span><span>Automation</span><span>Community</span></div><a class="project-link" href="https://github.com/Brolomna/Chill-Corner-Bot" target="_blank" rel="noopener noreferrer">Explore repository ↗</a></div></article>
+<!-- SELECTED PROJECTS / DESIGN PREVIEW -->
+<section class="projects-section projects-carousel-section" id="projects">
+  <div class="projects-heading">
+    <div><div class="section-kicker">// SELECTED WORK</div><h2>PROJECTS <span>&amp; BUILDS</span></h2></div>
+    <p>A rotating preview of the things I've been working on.</p>
   </div>
+  <div class="project-carousel" aria-label="Animated project card preview">
+    <div class="project-carousel-track">
+      <div class="project-carousel-set">
+        <!-- Add as many .project-slide cards here as you like; the loop duplicates this set automatically. -->
+      <article class="project-slide moonfall-slide" aria-label="Moonfall portrait preview">
+        <div class="slide-art moonfall-art">
+          <div class="moonfall-art-top"><span>01 / FEATURED PROJECT</span><span>MOONFALL</span></div>
+          <div class="moonfall-poster">
+            <div class="poster-moon"></div><div class="poster-orbit orbit-one"></div><div class="poster-orbit orbit-two"></div>
+            <div class="poster-crest">✦</div><div class="poster-word">MOON<br><em>FALL</em></div>
+            <div class="poster-subtitle">A GAME OF TRUST &amp; DECEPTION</div>
+            <div class="poster-silhouette silhouette-one"></div><div class="poster-silhouette silhouette-two"></div><div class="poster-silhouette silhouette-three"></div>
+          </div>
+          <div class="slide-art-foot"><span>PORTRAIT PREVIEW</span><span>01 — 04</span></div>
+        </div>
+        <div class="slide-caption"><span>01</span><strong>MOONFALL</strong><small>FEATURED BUILD</small></div>
+      </article>
+      <article class="project-slide">
+        <div class="slide-art workflow-art"><div class="art-grid"></div><span class="art-index">02 / AUTOMATION</span><div class="workflow-orb">AI<span>↗</span></div><div class="workflow-lines"><i></i><i></i><i></i></div><span class="art-bottom">WORKFLOW SYSTEM</span></div>
+        <div class="slide-caption"><span>02</span><strong>PROJECT TWO</strong><small>PREVIEW SLOT</small></div>
+      </article>
+      <article class="project-slide">
+        <div class="slide-art data-art"><span class="art-index">03 / DATA</span><div class="data-rings"><i></i><i></i><i></i><b>01</b></div><div class="data-columns"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="art-bottom">STRUCTURED / SIGNAL</span></div>
+        <div class="slide-caption"><span>03</span><strong>PROJECT THREE</strong><small>PREVIEW SLOT</small></div>
+      </article>
+      <article class="project-slide">
+        <div class="slide-art bot-art"><span class="art-index">04 / COMMUNITY</span><div class="bot-orbit"><div class="bot-core">⌘</div><i></i><i></i><i></i></div><div class="bot-status"><b>●</b> SYSTEM ONLINE</div><span class="art-bottom">COMMUNITY / AUTOMATION</span></div>
+        <div class="slide-caption"><span>04</span><strong>PROJECT FOUR</strong><small>PREVIEW SLOT</small></div>
+      </article>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-footnote"><span><i></i> CONTINUOUS PROJECT ROTATION</span><span>HOVER TO PAUSE</span></div>
 </section>
 
 <!-- SECURITY TOOLKIT -->
@@ -1707,7 +1738,6 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
   ];
   const allLinks = [...document.querySelectorAll('.nav-links a[href^="#"], .mobile-menu a[href^="#"]')];
   const desktopIds = new Set([...document.querySelectorAll('.nav-links a[href^="#"]')].map(link => link.getAttribute('href').slice(1)));
-  const existingSections = sections.map(item => ({ ...item, element: document.getElementById(item.id) })).filter(item => item.element);
   /* The desktop nav has no Contact link, so when the current section has no desktop
      entry, keep the nearest previous section that has one highlighted there. */
   const desktopFallback = (id) => {
@@ -1728,6 +1758,7 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
       else link.removeAttribute('aria-current');
     });
   };
+  const existingSections = sections.map(item => ({ ...item, element: document.getElementById(item.id) })).filter(item => item.element);
   const updateFromScroll = () => {
     const marker = Math.min(180, Math.max(110, window.innerHeight * 0.28));
     let current = existingSections[0]?.id || 'top';
@@ -1764,6 +1795,277 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
 })();
 </script>
 
+
+<style>
+/* PROJECT CAROUSEL — visual prototype; project details will be added after design approval. */
+.projects-carousel-section { overflow:hidden; }
+.projects-carousel-section .projects-heading { margin-bottom:34px; }
+.project-carousel { --slide-w:clamp(220px,24vw,292px); --slide-h:clamp(330px,38vw,410px); position:relative; width:100vw; margin-left:calc(50% - 50vw); overflow:hidden; padding:34px 0 48px; isolation:isolate; }
+.project-carousel::before,.project-carousel::after { content:""; position:absolute; z-index:5; top:0; bottom:0; width:clamp(36px,10vw,170px); pointer-events:none; }
+.project-carousel::before { left:0; background:linear-gradient(90deg,var(--bg,#050a10),transparent); }
+.project-carousel::after { right:0; background:linear-gradient(270deg,var(--bg,#050a10),transparent); }
+.project-carousel-track { display:flex; align-items:center; gap:0; width:max-content; padding:0; will-change:transform; transform:translate3d(0,0,0); }
+.project-carousel-set { display:flex; flex:0 0 auto; align-items:center; gap:clamp(18px,3vw,38px); padding-right:clamp(18px,3vw,38px); }
+@keyframes project-drift-right { from { transform:translateX(var(--loop-distance,-1200px)); } to { transform:translateX(0); } }
+.project-slide {
+  flex:0 0 var(--slide-w); width:var(--slide-w);
+  transform:translate3d(0,0,0) scale(.82);
+  opacity:.62; filter:saturate(.72);
+  transition:
+    transform 460ms cubic-bezier(.12,.78,.18,1),
+    opacity 300ms ease-out,
+    filter 380ms ease-out;
+  transform-origin:center;
+  will-change:transform,opacity,filter;
+}
+.project-slide.is-center {
+  transition:
+    transform 460ms cubic-bezier(.12,.78,.18,1),
+    opacity 300ms ease-out,
+    filter 380ms ease-out;
+}
+.project-slide.is-hovered {
+  transform:translate3d(0,-13px,0) scale(1.065);
+  opacity:1; filter:saturate(1.12);
+  transition:
+    transform 470ms cubic-bezier(.16,1.28,.3,1),
+    opacity 260ms ease-out,
+    filter 320ms ease-out;
+}
+.project-slide.is-hovered .slide-art {
+  box-shadow:0 18px 42px rgba(0,0,0,.42),0 0 0 1px rgba(90,255,185,.18),0 0 26px rgba(70,255,170,.22);
+  transition:box-shadow 360ms ease-out,border-color 360ms ease-out;
+}
+.project-slide .slide-art {
+  transition:box-shadow 360ms ease-out,border-color 360ms ease-out;
+}
+.project-slide.is-center { transform:translate3d(0,-7px,0) scale(1.055); opacity:1; filter:saturate(1); z-index:2; }
+.project-slide.is-hovered { z-index:4; }
+.project-slide.is-center .slide-art { border-color:rgba(0,245,160,.7); box-shadow:0 0 0 1px rgba(0,245,160,.16),0 0 30px rgba(0,245,160,.19),0 22px 55px rgba(0,0,0,.42),inset 0 0 30px rgba(0,245,160,.035); }
+.slide-art { height:var(--slide-h); position:relative; overflow:hidden; border:1px solid rgba(0,245,160,.2); border-radius:20px; background:linear-gradient(155deg,#13242c,#071018 72%); box-shadow:0 16px 42px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.045); transition:box-shadow .35s,border-color .35s; }
+.slide-art::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.045) 48%,transparent 67%); transform:translateX(-120%); animation:slide-sheen 7s ease-in-out infinite; }
+@keyframes slide-sheen { 0%,65% { transform:translateX(-120%); } 100% { transform:translateX(120%); } }
+.moonfall-art { background:radial-gradient(ellipse at 50% 38%,rgba(0,245,160,.16),transparent 38%),linear-gradient(155deg,#172b34,#070e17 72%); padding:14px; display:flex; flex-direction:column; }
+.moonfall-art-top,.slide-art-foot { display:flex; justify-content:space-between; color:rgba(205,231,226,.65); font:8px 'JetBrains Mono',monospace; letter-spacing:1px; }
+.moonfall-poster { position:relative; flex:1; min-height:0; margin:13px 4px 12px; overflow:hidden; border:1px solid rgba(0,245,160,.23); background:radial-gradient(ellipse at 50% 25%,rgba(0,245,160,.2),transparent 32%),linear-gradient(180deg,#132e35 0%,#0a1820 48%,#050a10 100%); box-shadow:inset 0 0 40px rgba(0,0,0,.5); }
+.poster-moon { position:absolute; width:48%; aspect-ratio:1; border-radius:50%; top:12%; left:26%; background:radial-gradient(circle at 38% 35%,#d9f5e9 0 3%,#80cdb2 4% 9%,#316b60 35%,#102e2b 68%,transparent 70%); opacity:.8; box-shadow:0 0 38px rgba(0,245,160,.18); }
+.poster-orbit { position:absolute; width:112%; height:35%; left:-6%; top:23%; border:1px solid rgba(0,245,160,.27); border-radius:50%; transform:rotate(-27deg); }
+.orbit-two { transform:rotate(34deg); border-color:rgba(214,245,231,.16); }
+.poster-crest { position:absolute; top:35%; left:0; right:0; text-align:center; color:#d6f8e8; font-size:34px; text-shadow:0 0 20px rgba(0,245,160,.8); }
+.poster-word { position:absolute; top:48%; left:0; right:0; text-align:center; color:#effff8; font:800 clamp(30px,4vw,43px)/.82 'Manrope',sans-serif; letter-spacing:4px; text-shadow:0 4px 20px #000; }
+.poster-word em { color:#80f4c4; font-style:normal; letter-spacing:8px; }
+.poster-subtitle { position:absolute; top:68%; left:0; right:0; text-align:center; color:rgba(219,248,236,.66); font:6px 'JetBrains Mono',monospace; letter-spacing:1.4px; }
+.poster-silhouette { position:absolute; bottom:-5%; width:31%; height:32%; background:linear-gradient(180deg,#162b2c,#03080c); clip-path:polygon(50% 0,65% 13%,62% 32%,82% 48%,100% 100%,0 100%,18% 48%,38% 32%,35% 13%); filter:drop-shadow(0 0 12px rgba(0,245,160,.12)); }
+.silhouette-one { left:4%; transform:scale(.82); }.silhouette-two { left:35%; height:39%; width:34%; }.silhouette-three { right:1%; transform:scale(.72); }
+.slide-caption { display:flex; align-items:center; gap:10px; padding:16px 3px 0; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+.slide-caption>span { color:var(--green); font-size:10px; }.slide-caption strong { color:var(--white); font:700 11px 'Manrope',sans-serif; letter-spacing:1.1px; }.slide-caption small { margin-left:auto; color:rgba(154,169,188,.62); font-size:8px; letter-spacing:.8px; }
+.art-index,.art-bottom { position:absolute; left:17px; color:rgba(202,226,220,.62); font:8px 'JetBrains Mono',monospace; letter-spacing:1.2px; }.art-index { top:17px; }.art-bottom { bottom:18px; }
+.workflow-art { background:radial-gradient(circle at 50% 45%,rgba(0,245,160,.18),transparent 38%),linear-gradient(145deg,#10242d,#071018); }
+.art-grid { position:absolute; inset:0; opacity:.18; background-image:linear-gradient(rgba(0,245,160,.17) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,160,.17) 1px,transparent 1px); background-size:24px 24px; mask-image:linear-gradient(transparent,#000 25%,#000 75%,transparent); }
+.workflow-orb { position:absolute; top:30%; left:50%; transform:translateX(-50%); display:grid; place-items:center; width:116px; height:116px; border:1px solid rgba(0,245,160,.5); border-radius:50%; color:#e7fff5; font:800 42px 'Manrope'; background:radial-gradient(circle,rgba(0,245,160,.18),rgba(5,15,20,.5) 70%); box-shadow:0 0 36px rgba(0,245,160,.14),inset 0 0 25px rgba(0,245,160,.1); }.workflow-orb span { position:absolute; right:14px; top:13px; color:var(--green); font-size:18px; }
+.workflow-lines { position:absolute; top:68%; left:22%; right:22%; display:grid; gap:9px; }.workflow-lines i { height:4px; border-radius:9px; background:linear-gradient(90deg,rgba(0,245,160,.65),rgba(0,245,160,.08)); }.workflow-lines i:nth-child(2) { width:76%; }.workflow-lines i:nth-child(3) { width:54%; }
+.data-art { background:radial-gradient(ellipse at 50% 45%,rgba(0,245,160,.14),transparent 45%),linear-gradient(160deg,#10202b,#070d14); }
+.data-rings { position:absolute; top:23%; left:50%; width:155px; height:155px; transform:translateX(-50%); border:1px solid rgba(0,245,160,.3); border-radius:50%; display:grid; place-items:center; }.data-rings i { position:absolute; inset:12px; border:1px solid rgba(0,245,160,.25); border-radius:50%; }.data-rings i:nth-child(2) { inset:27px; border-style:dashed; animation:slow-spin 18s linear infinite; }.data-rings i:nth-child(3) { inset:43px; background:rgba(0,245,160,.08); }.data-rings b { color:#d8fff0; font:700 27px 'JetBrains Mono'; text-shadow:0 0 15px rgba(0,245,160,.6); }
+@keyframes slow-spin { to { transform:rotate(360deg); } }
+.data-columns { position:absolute; bottom:22%; left:19%; right:19%; height:45px; display:flex; align-items:end; gap:8px; }.data-columns i { flex:1; height:35%; background:linear-gradient(0deg,rgba(0,245,160,.08),rgba(0,245,160,.7)); border-radius:3px 3px 0 0; }.data-columns i:nth-child(2n) { height:75%; }.data-columns i:nth-child(3n) { height:52%; }
+.bot-art { background:radial-gradient(circle at 50% 42%,rgba(0,245,160,.15),transparent 40%),linear-gradient(145deg,#12232d,#060d14); }
+.bot-orbit { position:absolute; top:28%; left:50%; width:164px; height:164px; transform:translateX(-50%); border:1px solid rgba(0,245,160,.3); border-radius:50%; }.bot-orbit::before,.bot-orbit::after { content:""; position:absolute; inset:16px; border:1px dashed rgba(0,245,160,.2); border-radius:50%; }.bot-orbit::after { inset:35px; border-style:solid; }.bot-core { position:absolute; inset:0; display:grid; place-items:center; color:#e3fff2; font-size:54px; text-shadow:0 0 24px rgba(0,245,160,.7); }.bot-orbit>i { position:absolute; width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 12px rgba(0,245,160,.8); }.bot-orbit>i:nth-of-type(1) { top:18px; left:26px; }.bot-orbit>i:nth-of-type(2) { right:9px; top:75px; }.bot-orbit>i:nth-of-type(3) { bottom:11px; left:60px; }
+.bot-status { position:absolute; top:76%; left:0; right:0; text-align:center; color:rgba(219,248,236,.72); font:8px 'JetBrains Mono'; letter-spacing:1.5px; }.bot-status b { color:var(--green); }
+.carousel-footnote { display:flex; justify-content:space-between; max-width:1100px; margin:5px auto 0; color:rgba(154,169,188,.58); font:8px 'JetBrains Mono',monospace; letter-spacing:1.2px; }.carousel-footnote span:first-child { display:flex; align-items:center; gap:8px; }.carousel-footnote i { width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 10px rgba(0,245,160,.7); }
+@media(max-width:650px) { .project-carousel { --slide-w:230px; --slide-h:330px; padding:24px 0 36px; }.project-carousel-set { gap:18px; padding-right:18px; }.projects-carousel-section .projects-heading { display:block; }.projects-carousel-section .projects-heading>p { margin-top:12px; }.slide-caption small { font-size:7px; }.carousel-footnote { padding:0 8px; font-size:7px; } }
+@media(prefers-reduced-motion:reduce) { .project-carousel-track { animation:none; transform:none; }.project-carousel-set { justify-content:center; flex-wrap:wrap; padding-right:0; }.slide-art::after,.data-rings i:nth-child(2) { animation:none; } }
+/* Moonfall is the flagship: a restrained aurora palette that complements emerald
+   with electric cyan and violet, while keeping the overall portfolio green. */
+.project-slide.moonfall-slide { position:relative; }
+.project-slide.moonfall-slide .slide-art {
+  border-color:rgba(112,151,255,.42);
+  background:radial-gradient(ellipse at 50% 18%,rgba(112,151,255,.16),transparent 42%),linear-gradient(155deg,#171d3b,#080f20 72%);
+  box-shadow:0 16px 42px rgba(0,0,0,.34),0 0 22px rgba(112,151,255,.09),inset 0 1px rgba(255,255,255,.06);
+}
+.project-slide.moonfall-slide .moonfall-art {
+  background:radial-gradient(ellipse at 50% 38%,rgba(91,225,255,.13),transparent 38%),radial-gradient(ellipse at 78% 78%,rgba(151,104,255,.12),transparent 44%),linear-gradient(155deg,#171d3b,#080f20 72%);
+}
+.project-slide.moonfall-slide .moonfall-art-top span:last-child {
+  color:#b9c8ff;
+  text-shadow:0 0 12px rgba(130,157,255,.35);
+}
+.project-slide.moonfall-slide .moonfall-poster {
+  border-color:rgba(120,163,255,.42);
+  background:radial-gradient(ellipse at 50% 25%,rgba(93,225,255,.18),transparent 32%),radial-gradient(ellipse at 50% 75%,rgba(139,91,255,.13),transparent 45%),linear-gradient(180deg,#1a2850 0%,#10182e 48%,#060b17 100%);
+}
+.project-slide.moonfall-slide .poster-moon {
+  background:radial-gradient(circle at 38% 35%,#f1fbff 0 3%,#b5eaff 4% 9%,#6589c9 35%,#293b70 68%,transparent 70%);
+  box-shadow:0 0 42px rgba(91,225,255,.28),0 0 70px rgba(139,91,255,.15);
+}
+.project-slide.moonfall-slide .poster-orbit { border-color:rgba(91,225,255,.42); }
+.project-slide.moonfall-slide .orbit-two { border-color:rgba(169,151,255,.3); }
+.project-slide.moonfall-slide .poster-crest {
+  color:#d9f5ff;
+  text-shadow:0 0 12px rgba(91,225,255,.9),0 0 26px rgba(139,91,255,.5);
+}
+.project-slide.moonfall-slide .slide-caption strong { color:#dce7ff; }
+.project-slide.moonfall-slide .slide-caption small {
+  color:#9cbdff;
+  letter-spacing:.13em;
+}
+.project-slide.moonfall-slide.is-center .slide-art {
+  border-color:rgba(119,190,255,.9);
+  box-shadow:0 0 0 1px rgba(119,190,255,.24),0 0 24px rgba(91,225,255,.25),0 0 48px rgba(139,91,255,.2),0 22px 55px rgba(0,0,0,.48),inset 0 0 34px rgba(91,225,255,.07);
+}
+.project-slide.moonfall-slide.is-center .slide-caption strong {
+  text-shadow:0 0 16px rgba(119,190,255,.28);
+}
+
+</style>
+
+<script>
+/* Infinite project carousel with direct pointer control.
+   Hovering any card smoothly brings that exact card toward center and highlights it.
+   Leaving the card resumes the continuous drift from its current position. */
+(() => {
+  const carousel = document.querySelector(".project-carousel");
+  const track = document.querySelector(".project-carousel-track");
+  const originalSet = track && track.querySelector(".project-carousel-set");
+  if (!carousel || !track || !originalSet) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const SPEED = 31;                 // pixels per second
+  const EASE = 0.16;                // hover recentering smoothness
+  let raf = 0;
+  let resizeFrame = 0;
+  let setWidth = 0;
+  let offset = 0;
+  let targetOffset = 0;
+  let hoveredSlide = null;
+  let lastTime = 0;
+  let activeSlides = [];
+
+  const normalizeOffset = value => {
+    if (!setWidth) return value;
+    // Keep the offset within one seamless cycle; every set is identical.
+    while (value > 0) value -= setWidth;
+    while (value <= -setWidth) value += setWidth;
+    return value;
+  };
+
+  const buildLoop = () => {
+    track.querySelectorAll(".project-carousel-set.is-clone").forEach(node => node.remove());
+    activeSlides = [];
+    setWidth = originalSet.getBoundingClientRect().width;
+    if (!setWidth) return;
+
+    if (!reduceMotion.matches) {
+      const totalSets = Math.max(3, Math.ceil((window.innerWidth + setWidth * 2) / setWidth) + 1);
+      for (let i = 1; i < totalSets; i++) {
+        const clone = originalSet.cloneNode(true);
+        clone.classList.add("is-clone");
+        clone.setAttribute("aria-hidden", "true");
+        clone.querySelectorAll(".project-slide").forEach(slide => slide.setAttribute("aria-hidden", "true"));
+        track.appendChild(clone);
+      }
+    }
+
+    activeSlides = Array.from(track.querySelectorAll(".project-slide"));
+    offset = reduceMotion.matches ? 0 : -setWidth;
+    targetOffset = offset;
+    track.style.transform = `translate3d(${offset}px,0,0)`;
+  };
+
+  const clearHover = () => {
+    if (hoveredSlide) hoveredSlide.classList.remove("is-hovered");
+    hoveredSlide = null;
+    targetOffset = offset;
+    activeSlides.forEach(slide => slide.classList.remove("is-hovered"));
+  };
+
+  const setHoveredSlide = slide => {
+    if (slide === hoveredSlide) return;
+    if (hoveredSlide) hoveredSlide.classList.remove("is-hovered");
+    hoveredSlide = slide || null;
+    if (!hoveredSlide) {
+      targetOffset = offset;
+      return;
+    }
+    hoveredSlide.classList.add("is-hovered");
+    // Freeze the carousel exactly where it is. The hovered card pops up in place;
+    // never translate the track toward the viewport center.
+    targetOffset = offset;
+  };
+
+  const updateCenterState = () => {
+    if (hoveredSlide) {
+      activeSlides.forEach(slide => slide.classList.toggle("is-center", slide === hoveredSlide));
+      return;
+    }
+    const center = window.innerWidth / 2;
+    let closest = null;
+    let minDistance = Infinity;
+    activeSlides.forEach(slide => {
+      const rect = slide.getBoundingClientRect();
+      const d = Math.abs(rect.left + rect.width / 2 - center);
+      if (d < minDistance) { minDistance = d; closest = slide; }
+    });
+    activeSlides.forEach(slide => slide.classList.toggle("is-center", slide === closest));
+  };
+
+  const animate = now => {
+    if (!lastTime) lastTime = now;
+    const dt = Math.min((now - lastTime) / 1000, 0.05);
+    lastTime = now;
+
+    if (!reduceMotion.matches) {
+      if (!hoveredSlide) {
+        // A card under the pointer means a complete stop: no drift and no recentering.
+        offset += SPEED * dt;
+        offset = normalizeOffset(offset);
+      }
+      track.style.transform = `translate3d(${offset}px,0,0)`;
+      updateCenterState();
+    }
+    raf = requestAnimationFrame(animate);
+  };
+
+  const start = () => {
+    if (raf || document.hidden) return;
+    lastTime = 0;
+    raf = requestAnimationFrame(animate);
+  };
+  const stop = () => {
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+    lastTime = 0;
+  };
+
+  // Pointer position chooses the actual card under the cursor, including cloned cards.
+  carousel.addEventListener("pointermove", event => {
+    if (event.pointerType === "touch") return;
+    const element = document.elementFromPoint(event.clientX, event.clientY);
+    const slide = element && element.closest ? element.closest(".project-slide") : null;
+    setHoveredSlide(slide && carousel.contains(slide) ? slide : null);
+  }, { passive: true });
+
+  carousel.addEventListener("pointerleave", clearHover, { passive: true });
+
+  const onResize = () => {
+    if (resizeFrame) cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => {
+      clearHover();
+      buildLoop();
+      stop();
+      start();
+    });
+  };
+
+  buildLoop();
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stop();
+    else start();
+  });
+  window.addEventListener("resize", onResize, { passive: true });
+  if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", onResize);
+  start();
+})();
+</script>
 </body>
 </html>
 
