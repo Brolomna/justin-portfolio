@@ -1221,6 +1221,8 @@ h1 .hero-better {
   </div>
   <div class="project-carousel" aria-label="Animated project card preview">
     <div class="project-carousel-track">
+      <div class="project-carousel-set">
+        <!-- Add as many .project-slide cards here as you like; the loop duplicates this set automatically. -->
       <article class="project-slide moonfall-slide" aria-label="Moonfall portrait preview">
         <div class="slide-art moonfall-art">
           <div class="moonfall-art-top"><span>01 / FEATURED PROJECT</span><span>MOONFALL</span></div>
@@ -1246,14 +1248,7 @@ h1 .hero-better {
         <div class="slide-art bot-art"><span class="art-index">04 / COMMUNITY</span><div class="bot-orbit"><div class="bot-core">⌘</div><i></i><i></i><i></i></div><div class="bot-status"><b>●</b> SYSTEM ONLINE</div><span class="art-bottom">COMMUNITY / AUTOMATION</span></div>
         <div class="slide-caption"><span>04</span><strong>PROJECT FOUR</strong><small>PREVIEW SLOT</small></div>
       </article>
-      <!-- Duplicate set makes the continuous loop seamless. -->
-      <article class="project-slide moonfall-slide" aria-hidden="true">
-        <div class="slide-art moonfall-art"><div class="moonfall-art-top"><span>01 / FEATURED PROJECT</span><span>MOONFALL</span></div><div class="moonfall-poster"><div class="poster-moon"></div><div class="poster-orbit orbit-one"></div><div class="poster-orbit orbit-two"></div><div class="poster-crest">✦</div><div class="poster-word">MOON<br><em>FALL</em></div><div class="poster-subtitle">A GAME OF TRUST &amp; DECEPTION</div><div class="poster-silhouette silhouette-one"></div><div class="poster-silhouette silhouette-two"></div><div class="poster-silhouette silhouette-three"></div></div><div class="slide-art-foot"><span>PORTRAIT PREVIEW</span><span>01 — 04</span></div></div>
-        <div class="slide-caption"><span>01</span><strong>MOONFALL</strong><small>FEATURED BUILD</small></div>
-      </article>
-      <article class="project-slide" aria-hidden="true"><div class="slide-art workflow-art"><div class="art-grid"></div><span class="art-index">02 / AUTOMATION</span><div class="workflow-orb">AI<span>↗</span></div><div class="workflow-lines"><i></i><i></i><i></i></div><span class="art-bottom">WORKFLOW SYSTEM</span></div><div class="slide-caption"><span>02</span><strong>PROJECT TWO</strong><small>PREVIEW SLOT</small></div></article>
-      <article class="project-slide" aria-hidden="true"><div class="slide-art data-art"><span class="art-index">03 / DATA</span><div class="data-rings"><i></i><i></i><i></i><b>01</b></div><div class="data-columns"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="art-bottom">STRUCTURED / SIGNAL</span></div><div class="slide-caption"><span>03</span><strong>PROJECT THREE</strong><small>PREVIEW SLOT</small></div></article>
-      <article class="project-slide" aria-hidden="true"><div class="slide-art bot-art"><span class="art-index">04 / COMMUNITY</span><div class="bot-orbit"><div class="bot-core">⌘</div><i></i><i></i><i></i></div><div class="bot-status"><b>●</b> SYSTEM ONLINE</div><span class="art-bottom">COMMUNITY / AUTOMATION</span></div><div class="slide-caption"><span>04</span><strong>PROJECT FOUR</strong><small>PREVIEW SLOT</small></div></article>
+      </div>
     </div>
   </div>
   <div class="carousel-footnote"><span><i></i> CONTINUOUS PROJECT ROTATION</span><span>HOVER TO PAUSE</span></div>
@@ -1791,8 +1786,9 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
 .project-carousel::before,.project-carousel::after { content:""; position:absolute; z-index:5; top:0; bottom:0; width:clamp(36px,10vw,170px); pointer-events:none; }
 .project-carousel::before { left:0; background:linear-gradient(90deg,var(--bg,#050a10),transparent); }
 .project-carousel::after { right:0; background:linear-gradient(270deg,var(--bg,#050a10),transparent); }
-.project-carousel-track { display:flex; align-items:center; gap:clamp(18px,3vw,38px); width:max-content; padding:0 calc(50vw - var(--slide-w)/2); animation:project-drift-right 42s linear infinite; will-change:transform; }
-@keyframes project-drift-right { from { transform:translateX(-50%); } to { transform:translateX(0); } }
+.project-carousel-track { display:flex; align-items:center; gap:0; width:max-content; padding:0; animation:project-drift-right var(--loop-duration,42s) linear infinite; will-change:transform; }
+.project-carousel-set { display:flex; flex:0 0 auto; align-items:center; gap:clamp(18px,3vw,38px); padding-right:clamp(18px,3vw,38px); }
+@keyframes project-drift-right { from { transform:translateX(var(--loop-distance,-1200px)); } to { transform:translateX(0); } }
 .project-carousel:hover .project-carousel-track { animation-play-state:paused; }
 .project-slide { flex:0 0 var(--slide-w); width:var(--slide-w); transform:scale(.82); opacity:.62; filter:saturate(.72); transition:transform .35s ease,opacity .35s ease,filter .35s ease; transform-origin:center; }
 .project-slide.is-center { transform:scale(1.055) translateY(-7px); opacity:1; filter:saturate(1); z-index:2; }
@@ -1827,34 +1823,78 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
 .bot-orbit { position:absolute; top:28%; left:50%; width:164px; height:164px; transform:translateX(-50%); border:1px solid rgba(0,245,160,.3); border-radius:50%; }.bot-orbit::before,.bot-orbit::after { content:""; position:absolute; inset:16px; border:1px dashed rgba(0,245,160,.2); border-radius:50%; }.bot-orbit::after { inset:35px; border-style:solid; }.bot-core { position:absolute; inset:0; display:grid; place-items:center; color:#e3fff2; font-size:54px; text-shadow:0 0 24px rgba(0,245,160,.7); }.bot-orbit>i { position:absolute; width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 12px rgba(0,245,160,.8); }.bot-orbit>i:nth-of-type(1) { top:18px; left:26px; }.bot-orbit>i:nth-of-type(2) { right:9px; top:75px; }.bot-orbit>i:nth-of-type(3) { bottom:11px; left:60px; }
 .bot-status { position:absolute; top:76%; left:0; right:0; text-align:center; color:rgba(219,248,236,.72); font:8px 'JetBrains Mono'; letter-spacing:1.5px; }.bot-status b { color:var(--green); }
 .carousel-footnote { display:flex; justify-content:space-between; max-width:1100px; margin:5px auto 0; color:rgba(154,169,188,.58); font:8px 'JetBrains Mono',monospace; letter-spacing:1.2px; }.carousel-footnote span:first-child { display:flex; align-items:center; gap:8px; }.carousel-footnote i { width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 10px rgba(0,245,160,.7); }
-@media(max-width:650px) { .project-carousel { --slide-w:230px; --slide-h:330px; padding:24px 0 36px; }.project-carousel-track { gap:18px; animation-duration:34s; }.projects-carousel-section .projects-heading { display:block; }.projects-carousel-section .projects-heading>p { margin-top:12px; }.slide-caption small { font-size:7px; }.carousel-footnote { padding:0 8px; font-size:7px; } }
-@media(prefers-reduced-motion:reduce) { .project-carousel-track { animation:none; transform:none; justify-content:center; }.slide-art::after,.data-rings i:nth-child(2) { animation:none; } }
+@media(max-width:650px) { .project-carousel { --slide-w:230px; --slide-h:330px; padding:24px 0 36px; }.project-carousel-set { gap:18px; padding-right:18px; }.projects-carousel-section .projects-heading { display:block; }.projects-carousel-section .projects-heading>p { margin-top:12px; }.slide-caption small { font-size:7px; }.carousel-footnote { padding:0 8px; font-size:7px; } }
+@media(prefers-reduced-motion:reduce) { .project-carousel-track { animation:none; transform:none; }.project-carousel-set { justify-content:center; flex-wrap:wrap; padding-right:0; }.slide-art::after,.data-rings i:nth-child(2) { animation:none; } }
 </style>
 
 <script>
-/* Center emphasis follows the continuously moving carousel. */
+/* Infinite project carousel: add cards only to .project-carousel-set.
+   The script measures one set, creates enough identical copies to fill the viewport,
+   and moves exactly one set-width per loop for a seamless repeat. */
 (() => {
+  const carousel = document.querySelector(".project-carousel");
   const track = document.querySelector(".project-carousel-track");
-  const slides = [...document.querySelectorAll(".project-slide")];
-  if (!track || !slides.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const originalSet = track && track.querySelector(".project-carousel-set");
+  if (!carousel || !track || !originalSet) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let raf = 0;
-  const update = () => {
+  let resizeFrame = 0;
+
+  const buildLoop = () => {
+    track.querySelectorAll(".project-carousel-set.is-clone").forEach(node => node.remove());
+    if (reduceMotion.matches) return;
+
+    const setWidth = originalSet.getBoundingClientRect().width;
+    if (!setWidth) return;
+    const totalSets = Math.max(2, Math.ceil(window.innerWidth / setWidth) + 1);
+    for (let i = 1; i < totalSets; i++) {
+      const clone = originalSet.cloneNode(true);
+      clone.classList.add("is-clone");
+      clone.setAttribute("aria-hidden", "true");
+      clone.querySelectorAll(".project-slide").forEach(slide => slide.setAttribute("aria-hidden", "true"));
+      track.appendChild(clone);
+    }
+    track.style.setProperty("--loop-distance", `-${setWidth}px`);
+    track.style.setProperty("--loop-duration", `${Math.max(24, setWidth / 31)}s`);
+  };
+
+  const updateCenter = () => {
+    const slides = track.querySelectorAll(".project-slide");
     const center = window.innerWidth / 2;
-    let closest = null, distance = Infinity;
+    let closest = null;
+    let distance = Infinity;
     slides.forEach(slide => {
       const rect = slide.getBoundingClientRect();
       const d = Math.abs((rect.left + rect.width / 2) - center);
       if (d < distance) { distance = d; closest = slide; }
     });
     slides.forEach(slide => slide.classList.toggle("is-center", slide === closest));
-    raf = requestAnimationFrame(update);
+    raf = requestAnimationFrame(updateCenter);
   };
-  const start = () => { if (!raf) raf = requestAnimationFrame(update); };
-  const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
-  const carousel = document.querySelector(".project-carousel");
+  const start = () => {
+    if (reduceMotion.matches || raf || document.hidden || carousel.matches(":hover")) return;
+    raf = requestAnimationFrame(updateCenter);
+  };
+  const stop = () => {
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+  };
+  const onResize = () => {
+    if (resizeFrame) cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => {
+      buildLoop();
+      stop();
+      start();
+    });
+  };
+
+  buildLoop();
   carousel.addEventListener("mouseenter", stop);
   carousel.addEventListener("mouseleave", start);
   document.addEventListener("visibilitychange", () => document.hidden ? stop() : start());
+  window.addEventListener("resize", onResize, { passive: true });
+  if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", onResize);
   start();
 })();
 </script>
