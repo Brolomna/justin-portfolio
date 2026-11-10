@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050a10">
-<meta name="description" content="Justin — developer and cybersecurity enthusiast building digital experiences and exploring how systems work.">
+<meta name="description" content="Justin — developer and cybersecurity enthusiast. I build web projects, explore cybersecurity, and test how systems work.">
 <title>Justin — Developer &amp; Cybersecurity Enthusiast</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -113,6 +113,16 @@ body {
 .mobile-menu.open { display:block; }
 .mobile-menu a { display:block; padding:12px 14px; border-radius:12px; font-size:15px; font-weight:500; color:var(--muted); }
 .mobile-menu a:hover { color:var(--white); background:rgba(0,245,160,.06); }
+/* NAV ACTIVE SECTION STATE */
+.nav-links a.active, .mobile-menu a.active {
+  color: var(--white);
+}
+.mobile-menu a.active {
+  background: rgba(0,245,160,.09);
+  box-shadow: inset 2px 0 0 var(--green);
+}
+.mobile-menu a { transition: color .2s, background .2s; }
+
 /* Keep browser/default link underlines out of the floating navigation. */
 .nav a, .nav a:link, .nav a:visited, .nav a:hover, .nav a:active,
 .mobile-menu a, .mobile-menu a:link, .mobile-menu a:visited, .mobile-menu a:hover, .mobile-menu a:active {
@@ -762,6 +772,10 @@ h1 .hero-better {
     letter-spacing: -2.8px;
   }
 
+  h1 .hero-third-line {
+    letter-spacing: -1px;
+  }
+
   .description {
     font-size: 14px;
   }
@@ -1188,7 +1202,8 @@ h1 .hero-better {
   <div class="about-layout">
     <div class="about-heading"><h2>Curious by nature.<br><span>Always building.</span></h2></div>
     <div class="about-copy">
-      <p>I'm Justin, a developer who enjoys turning ideas into useful digital products and exploring the technology behind them. I work across web development, Python automation, Linux, and cybersecurity learning — with a particular interest in understanding how applications and systems behave, where they can fail, and how they can be made safer.</p>
+      <p>Hey, I'm Justin. I work on web projects, experiment with different technologies, and spend a good amount of time exploring cybersecurity.</p>
+      <p>I enjoy building things that work, figuring out why they don't, and finding ways to make them better. Whether it's developing an application, testing a web service, or messing around in a security lab, I'm always up for a good technical challenge.</p>
       <p>My background includes working as a computer instructor and later as an English teacher. Those experiences shaped the way I approach collaboration: communicate clearly, stay patient, and make complicated things easier to understand.</p>
       <div class="about-facts"><div><strong>BUILD</strong><span>Websites, apps &amp; automation</span></div><div><strong>EXPLORE</strong><span>Linux, networking &amp; security</span></div><div><strong>PRACTISE</strong><span>Labs, CTFs &amp; continuous learning</span></div></div>
     </div>
@@ -1677,6 +1692,64 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
 .project-featured .moonfall-visual { min-height:245px; }
 @media(max-width:600px) { .cert-strip-embedded { align-items:flex-start; gap:14px; } .cert-badge-image { flex-basis:118px; min-width:118px; } .cert-badge-image > div { transform:scale(.88); transform-origin:top left; } }
 </style>
+
+
+<script>
+/* NAVIGATION: keep the active item in sync with clicks, hashes and scrolling. */
+(() => {
+  const sections = [
+    { id: 'top', links: ['.nav-links a[href="#top"]', '.mobile-menu a[href="#top"]'] },
+    { id: 'about', links: ['.nav-links a[href="#about"]', '.mobile-menu a[href="#about"]'] },
+    { id: 'projects', links: ['.nav-links a[href="#projects"]', '.mobile-menu a[href="#projects"]'] },
+    { id: 'skills', links: ['.nav-links a[href="#skills"]', '.mobile-menu a[href="#skills"]'] },
+    { id: 'learning', links: ['.nav-links a[href="#learning"]', '.mobile-menu a[href="#learning"]'] },
+    { id: 'contact', links: ['.nav-links a[href="#contact"]', '.mobile-menu a[href="#contact"]'] }
+  ];
+  const allLinks = [...document.querySelectorAll('.nav-links a[href^="#"], .mobile-menu a[href^="#"]')];
+  const setActive = (id) => {
+    allLinks.forEach(link => {
+      const active = link.getAttribute('href') === '#' + id;
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  };
+  const existingSections = sections.map(item => ({ ...item, element: document.getElementById(item.id) })).filter(item => item.element);
+  const updateFromScroll = () => {
+    const marker = Math.min(180, Math.max(110, window.innerHeight * 0.28));
+    let current = existingSections[0]?.id || 'top';
+    for (const section of existingSections) {
+      if (section.element.getBoundingClientRect().top <= marker) current = section.id;
+    }
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+      current = existingSections[existingSections.length - 1]?.id || current;
+    }
+    setActive(current);
+  };
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(() => { updateFromScroll(); ticking = false; });
+  };
+  allLinks.forEach(link => link.addEventListener('click', () => {
+    const id = link.getAttribute('href').slice(1);
+    if (document.getElementById(id)) setActive(id);
+  }));
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  window.addEventListener('hashchange', () => {
+    const id = location.hash.slice(1) || 'top';
+    if (document.getElementById(id)) setActive(id);
+    onScroll();
+  });
+  const initial = location.hash.slice(1);
+  if (initial && document.getElementById(initial)) setActive(initial);
+  else setActive('top');
+  window.addEventListener('load', updateFromScroll, { once: true });
+  updateFromScroll();
+})();
+</script>
 
 </body>
 </html>
