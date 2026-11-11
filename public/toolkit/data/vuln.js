@@ -77,8 +77,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "NVD"
    ],
    "commands": [],
-   "x": 0.1667,
-   "y": 0.4545
+   "x": 0.5,
+   "y": 0.3431
   },
   {
    "id": "vuln.vulnera2",
@@ -98,8 +98,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "SearchSploit"
    ],
    "commands": [],
-   "x": 0.255,
-   "y": 0.6439
+   "x": 0.5,
+   "y": 0.2206
   },
   {
    "id": "vuln.vulnera3",
@@ -119,8 +119,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "OpenVAS"
    ],
    "commands": [],
-   "x": 0.1096,
-   "y": 0.8333
+   "x": 0.5,
+   "y": 0.098
   },
   {
    "id": "vuln.exploit",
@@ -137,8 +137,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "Controlled lab exercises"
    ],
    "commands": [],
-   "x": 0.5696,
-   "y": 0.4545
+   "x": 0.6358,
+   "y": 0.5784
   },
   {
    "id": "vuln.metasploi",
@@ -157,8 +157,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "Metasploit Framework"
    ],
    "commands": [],
-   "x": 0.4187,
-   "y": 0.6439
+   "x": 0.742,
+   "y": 0.6397
   },
   {
    "id": "vuln.exploit2",
@@ -177,8 +177,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "Controlled lab environments"
    ],
    "commands": [],
-   "x": 0.483,
-   "y": 0.8333
+   "x": 0.8481,
+   "y": 0.701
   },
   {
    "id": "vuln.linux",
@@ -196,8 +196,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "manual auditing"
    ],
    "commands": [],
-   "x": 0.7406,
-   "y": 0.4545
+   "x": 0.3642,
+   "y": 0.5784
   },
   {
    "id": "vuln.postexplo",
@@ -216,8 +216,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "Metasploit lab"
    ],
    "commands": [],
-   "x": 0.8534,
-   "y": 0.6439
+   "x": 0.258,
+   "y": 0.6397
   },
   {
    "id": "vuln.remediati",
@@ -238,12 +238,12 @@ window.TOOLKIT_DATA["vuln"] = {
     "security reports"
    ],
    "commands": [],
-   "x": 0.9131,
-   "y": 0.8333
+   "x": 0.1519,
+   "y": 0.701
   }
  ],
  "layout": {
-  "w": 1440,
-  "h": 660
+  "w": 1020,
+  "h": 1020
  }
 };
