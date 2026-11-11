@@ -34,7 +34,7 @@ window.QUIZ_BANK = [
       "search -i error syslog"
     ],
     "a": 0,
-    "why": "grep filters text; -i makes it case-insensitive. find locates files by name, not content.",
+    "why": "grep filters text; -i makes it case-insensitive. find selects filesystem entries; by itself it does not search their text.",
     "level": "beginner",
     "topic": "Linux & Systems"
   },
@@ -47,7 +47,7 @@ window.QUIZ_BANK = [
       "jobs -l"
     ],
     "a": 0,
-    "why": "top refreshes continuously. ps shows a single snapshot; jobs lists shell background jobs only.",
+    "why": "top refreshes continuously. ps shows a single snapshot; jobs reports jobs managed by the current shell.",
     "level": "beginner",
     "topic": "Linux & Systems"
   },
