@@ -1244,7 +1244,7 @@ h1 .hero-better {
 <section class="projects-section projects-carousel-section" id="projects">
   <div class="projects-heading">
     <div><div class="section-kicker">// SELECTED WORK</div><h2>PROJECTS <span>&amp; BUILDS</span></h2></div>
-    <p>A rotating preview of the things I've been working on. Hover to pause, click a card to open the project.</p>
+    <p>A rotating preview of the things I've been working on. Drag or swipe to explore. Hover or hold to pause, tap a card to open the project.</p>
   </div>
   <div class="project-carousel" aria-label="Animated project card preview">
     <div class="project-carousel-track">
@@ -2135,6 +2135,9 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
   let activeSlides = [];
   let dragArmed = false;
   let dragging = false;
+  let activePointer = null;
+  let dragStartY = 0;
+  let hoverResumeAt = 0;
   let dragStartX = 0;
   let dragStartOffset = 0;
   let lastX = 0;
@@ -2211,7 +2214,7 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
     const dt = Math.min((now - lastTime) / 1000, 0.05);
     lastTime = now;
 
-    if (!reduceMotion.matches && !dragging) {
+    if (!reduceMotion.matches && !dragArmed) {
       if (!hoveredSlide) {
         if (Math.abs(velocity) > MIN_VELOCITY) {
           // Fling momentum; it counts as interaction, so the drift waits.
@@ -2243,7 +2246,7 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
 
   // Pointer position chooses the actual card under the cursor, including cloned cards.
   carousel.addEventListener("pointermove", event => {
-    if (event.pointerType === "touch" || dragging) return;
+    if (event.pointerType === "touch" || dragArmed || performance.now() < hoverResumeAt) return;
     const element = document.elementFromPoint(event.clientX, event.clientY);
     const slide = element && element.closest ? element.closest(".project-slide") : null;
     setHoveredSlide(slide && carousel.contains(slide) ? slide : null);
@@ -2255,6 +2258,9 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
   carousel.addEventListener("pointerdown", event => {
     if (event.button !== undefined && event.button !== 0) return;
     if (reduceMotion.matches) return;
+    if (activePointer !== null) return;
+    activePointer = event.pointerId;
+    dragStartY = event.clientY;
     dragArmed = true;
     dragging = false;
     dragStartX = lastX = event.clientX;
@@ -2264,8 +2270,12 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
   }, { passive: true });
 
   carousel.addEventListener("pointermove", event => {
-    if (!dragArmed) return;
+    if (!dragArmed || event.pointerId !== activePointer) return;
     const dx = event.clientX - dragStartX;
+    if (!dragging && event.pointerType === "touch" && Math.abs(event.clientY - dragStartY) > Math.max(DRAG_THRESHOLD, Math.abs(dx))) {
+      endDrag(event);
+      return;
+    }
     if (!dragging && Math.abs(dx) > DRAG_THRESHOLD) {
       dragging = true;
       clearHover();
@@ -2285,19 +2295,30 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
     track.style.transform = `translate3d(${offset}px,0,0)`;
   }, { passive: true });
 
-  const endDrag = () => {
-    if (!dragArmed) return;
+  // Links and artwork must never start the browser's native link/image drag.
+  // Native drag fires pointercancel before our horizontal swipe can take over.
+  carousel.addEventListener("dragstart", event => event.preventDefault());
+  const endDrag = event => {
+    if (!dragArmed || event.pointerId !== activePointer) return;
+    const wasDragging = dragging;
     dragArmed = false;
-    if (!dragging) return;
     dragging = false;
+    activePointer = null;
     carousel.classList.remove("is-dragging");
+    try { carousel.releasePointerCapture(event.pointerId); } catch (e) {}
     lastInteraction = performance.now();
-    if (Math.abs(velocity) < 40) velocity = 0;
+    if (!wasDragging) return;
+    clearHover();
+    hoverResumeAt = performance.now() + 250;
+    // A held-still release must stop; only a recent horizontal movement flings.
+    if (event.type === "pointercancel" || event.timeStamp - lastMoveT > 100 || Math.abs(velocity) < 40) velocity = 0;
+    velocity = Math.max(-2400, Math.min(2400, velocity));
     suppressClick = true;
-    window.setTimeout(() => { suppressClick = false; }, 60);
+    window.setTimeout(() => { suppressClick = false; }, 300);
   };
-  carousel.addEventListener("pointerup", endDrag, { passive: true });
-  carousel.addEventListener("pointercancel", endDrag, { passive: true });
+  // Window listeners also finish a press released outside the carousel.
+  window.addEventListener("pointerup", endDrag, { passive: true });
+  window.addEventListener("pointercancel", endDrag, { passive: true });
   carousel.addEventListener("click", event => {
     if (!suppressClick) return;
     event.preventDefault();
