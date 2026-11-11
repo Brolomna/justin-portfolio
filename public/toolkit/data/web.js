@@ -73,8 +73,8 @@ window.TOOLKIT_DATA["web"] = {
     "curl"
    ],
    "commands": [],
-   "x": 0.1667,
-   "y": 0.3822
+   "x": 0.5,
+   "y": 0.374
   },
   {
    "id": "web.request",
@@ -94,8 +94,8 @@ window.TOOLKIT_DATA["web"] = {
     "OWASP ZAP"
    ],
    "commands": [],
-   "x": 0.255,
-   "y": 0.5414
+   "x": 0.5,
+   "y": 0.2756
   },
   {
    "id": "web.proxy",
@@ -114,8 +114,8 @@ window.TOOLKIT_DATA["web"] = {
     "Burp Suite Repeater"
    ],
    "commands": [],
-   "x": 0.1096,
-   "y": 0.7006
+   "x": 0.5,
+   "y": 0.1772
   },
   {
    "id": "web.cookies",
@@ -134,8 +134,8 @@ window.TOOLKIT_DATA["web"] = {
     "Burp Suite"
    ],
    "commands": [],
-   "x": 0.1153,
-   "y": 0.8599
+   "x": 0.5,
+   "y": 0.0787
   },
   {
    "id": "web.authentic",
@@ -153,8 +153,8 @@ window.TOOLKIT_DATA["web"] = {
     "OWASP ZAP"
    ],
    "commands": [],
-   "x": 0.5696,
-   "y": 0.3822
+   "x": 0.6091,
+   "y": 0.563
   },
   {
    "id": "web.access",
@@ -173,8 +173,8 @@ window.TOOLKIT_DATA["web"] = {
     "Burp Suite"
    ],
    "commands": [],
-   "x": 0.4187,
-   "y": 0.5414
+   "x": 0.6943,
+   "y": 0.6122
   },
   {
    "id": "web.input",
@@ -192,8 +192,8 @@ window.TOOLKIT_DATA["web"] = {
     "OWASP ZAP"
    ],
    "commands": [],
-   "x": 0.7406,
-   "y": 0.3822
+   "x": 0.3909,
+   "y": 0.563
   },
   {
    "id": "web.injection",
@@ -214,8 +214,8 @@ window.TOOLKIT_DATA["web"] = {
     "Burp Suite"
    ],
    "commands": [],
-   "x": 0.8534,
-   "y": 0.5414
+   "x": 0.3057,
+   "y": 0.6122
   },
   {
    "id": "web.api",
@@ -236,8 +236,8 @@ window.TOOLKIT_DATA["web"] = {
     "curl"
    ],
    "commands": [],
-   "x": 0.9131,
-   "y": 0.7006
+   "x": 0.2204,
+   "y": 0.6614
   },
   {
    "id": "web.security",
@@ -258,12 +258,12 @@ window.TOOLKIT_DATA["web"] = {
     "OpenSSL"
    ],
    "commands": [],
-   "x": 0.7617,
-   "y": 0.8599
+   "x": 0.1352,
+   "y": 0.7106
   }
  ],
  "layout": {
-  "w": 1440,
-  "h": 785
+  "w": 1270,
+  "h": 1270
  }
 };
