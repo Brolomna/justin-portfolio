@@ -151,8 +151,8 @@ window.TOOLKIT_DATA["linux"] = {
     "ls",
     "cd"
    ],
-   "x": 0.125,
-   "y": 0.1775
+   "x": 0.5,
+   "y": 0.4208
   },
   {
    "id": "linux.fs",
@@ -175,8 +175,8 @@ window.TOOLKIT_DATA["linux"] = {
     "/var",
     "tree"
    ],
-   "x": 0.1865,
-   "y": 0.2318
+   "x": 0.5,
+   "y": 0.3589
   },
   {
    "id": "linux.file",
@@ -199,8 +199,8 @@ window.TOOLKIT_DATA["linux"] = {
     "mv",
     "rm"
    ],
-   "x": 0.0852,
-   "y": 0.286
+   "x": 0.5,
+   "y": 0.297
   },
   {
    "id": "linux.inspect",
@@ -223,8 +223,8 @@ window.TOOLKIT_DATA["linux"] = {
     "stat",
     "ls -lah"
    ],
-   "x": 0.0892,
-   "y": 0.3402
+   "x": 0.5,
+   "y": 0.2351
   },
   {
    "id": "linux.find",
@@ -246,8 +246,8 @@ window.TOOLKIT_DATA["linux"] = {
     "which",
     "whereis"
    ],
-   "x": 0.1879,
-   "y": 0.3945
+   "x": 0.5,
+   "y": 0.1733
   },
   {
    "id": "linux.grep",
@@ -272,8 +272,8 @@ window.TOOLKIT_DATA["linux"] = {
     "uniq",
     "wc"
    ],
-   "x": 0.1201,
-   "y": 0.4487
+   "x": 0.5,
+   "y": 0.1114
   },
   {
    "id": "linux.pipe",
@@ -296,8 +296,8 @@ window.TOOLKIT_DATA["linux"] = {
     "2>",
     "tee"
    ],
-   "x": 0.0652,
-   "y": 0.503
+   "x": 0.5,
+   "y": 0.0495
   },
   {
    "id": "linux.rwx",
@@ -315,8 +315,8 @@ window.TOOLKIT_DATA["linux"] = {
     "chmod",
     "ls -l"
    ],
-   "x": 0.4235,
-   "y": 0.1775
+   "x": 0.556,
+   "y": 0.444
   },
   {
    "id": "linux.owner",
@@ -336,8 +336,8 @@ window.TOOLKIT_DATA["linux"] = {
     "chown",
     "chgrp"
    ],
-   "x": 0.3183,
-   "y": 0.2426
+   "x": 0.5998,
+   "y": 0.4002
   },
   {
    "id": "linux.users",
@@ -360,8 +360,8 @@ window.TOOLKIT_DATA["linux"] = {
     "useradd",
     "usermod"
    ],
-   "x": 0.3632,
-   "y": 0.3077
+   "x": 0.6435,
+   "y": 0.3565
   },
   {
    "id": "linux.sudo",
@@ -382,8 +382,8 @@ window.TOOLKIT_DATA["linux"] = {
     "sudo -l",
     "visudo"
    ],
-   "x": 0.4393,
-   "y": 0.3728
+   "x": 0.6873,
+   "y": 0.3127
   },
   {
    "id": "linux.acl",
@@ -405,8 +405,8 @@ window.TOOLKIT_DATA["linux"] = {
     "getcap",
     "setcap"
    ],
-   "x": 0.3453,
-   "y": 0.4379
+   "x": 0.731,
+   "y": 0.269
   },
   {
    "id": "linux.audit",
@@ -428,8 +428,8 @@ window.TOOLKIT_DATA["linux"] = {
     "sudo",
     "Linux auditing utilities"
    ],
-   "x": 0.3299,
-   "y": 0.503
+   "x": 0.7748,
+   "y": 0.2252
   },
   {
    "id": "linux.ps",
@@ -448,8 +448,8 @@ window.TOOLKIT_DATA["linux"] = {
     "top",
     "htop"
    ],
-   "x": 0.5604,
-   "y": 0.1775
+   "x": 0.5792,
+   "y": 0.5
   },
   {
    "id": "linux.kill",
@@ -471,8 +471,8 @@ window.TOOLKIT_DATA["linux"] = {
     "pgrep",
     "nice"
    ],
-   "x": 0.639,
-   "y": 0.2589
+   "x": 0.6411,
+   "y": 0.5
   },
   {
    "id": "linux.systemd",
@@ -492,8 +492,8 @@ window.TOOLKIT_DATA["linux"] = {
     "systemctl",
     "systemd"
    ],
-   "x": 0.6805,
-   "y": 0.3402
+   "x": 0.703,
+   "y": 0.5
   },
   {
    "id": "linux.logs",
@@ -514,8 +514,8 @@ window.TOOLKIT_DATA["linux"] = {
     "/var/log",
     "dmesg"
    ],
-   "x": 0.5751,
-   "y": 0.4216
+   "x": 0.7649,
+   "y": 0.5
   },
   {
    "id": "linux.cron",
@@ -536,8 +536,8 @@ window.TOOLKIT_DATA["linux"] = {
     "crontab",
     "systemd timers"
    ],
-   "x": 0.6017,
-   "y": 0.503
+   "x": 0.8267,
+   "y": 0.5
   },
   {
    "id": "linux.apt",
@@ -555,8 +555,8 @@ window.TOOLKIT_DATA["linux"] = {
     "apt",
     "dpkg"
    ],
-   "x": 0.9126,
-   "y": 0.1775
+   "x": 0.556,
+   "y": 0.556
   },
   {
    "id": "linux.repo",
@@ -576,8 +576,8 @@ window.TOOLKIT_DATA["linux"] = {
     "GPG keys"
    ],
    "commands": [],
-   "x": 0.913,
-   "y": 0.2589
+   "x": 0.5998,
+   "y": 0.5998
   },
   {
    "id": "linux.disk",
@@ -599,8 +599,8 @@ window.TOOLKIT_DATA["linux"] = {
     "df",
     "du"
    ],
-   "x": 0.8128,
-   "y": 0.3402
+   "x": 0.6435,
+   "y": 0.6435
   },
   {
    "id": "linux.mount",
@@ -621,8 +621,8 @@ window.TOOLKIT_DATA["linux"] = {
     "umount",
     "findmnt"
    ],
-   "x": 0.8772,
-   "y": 0.4216
+   "x": 0.6873,
+   "y": 0.6873
   },
   {
    "id": "linux.tar",
@@ -644,8 +644,8 @@ window.TOOLKIT_DATA["linux"] = {
     "zip",
     "sha256sum"
    ],
-   "x": 0.9358,
-   "y": 0.503
+   "x": 0.731,
+   "y": 0.731
   },
   {
    "id": "linux.iface",
@@ -663,8 +663,8 @@ window.TOOLKIT_DATA["linux"] = {
     "ip link",
     "ip addr"
    ],
-   "x": 0.1395,
-   "y": 0.6154
+   "x": 0.5,
+   "y": 0.5792
   },
   {
    "id": "linux.ip",
@@ -684,8 +684,8 @@ window.TOOLKIT_DATA["linux"] = {
     "ip addr",
     "CIDR notation"
    ],
-   "x": 0.0604,
-   "y": 0.6696
+   "x": 0.5,
+   "y": 0.6411
   },
   {
    "id": "linux.route",
@@ -705,8 +705,8 @@ window.TOOLKIT_DATA["linux"] = {
     "ip route",
     "ip neigh"
    ],
-   "x": 0.1523,
-   "y": 0.7239
+   "x": 0.5,
+   "y": 0.703
   },
   {
    "id": "linux.ports",
@@ -727,8 +727,8 @@ window.TOOLKIT_DATA["linux"] = {
     "lsof",
     "netstat"
    ],
-   "x": 0.172,
-   "y": 0.7781
+   "x": 0.5,
+   "y": 0.7649
   },
   {
    "id": "linux.dns",
@@ -749,8 +749,8 @@ window.TOOLKIT_DATA["linux"] = {
     "nslookup",
     "getent"
    ],
-   "x": 0.0673,
-   "y": 0.8323
+   "x": 0.5,
+   "y": 0.8267
   },
   {
    "id": "linux.http",
@@ -771,8 +771,8 @@ window.TOOLKIT_DATA["linux"] = {
     "wget",
     "openssl"
    ],
-   "x": 0.1153,
-   "y": 0.8866
+   "x": 0.5,
+   "y": 0.8886
   },
   {
    "id": "linux.fw",
@@ -792,8 +792,8 @@ window.TOOLKIT_DATA["linux"] = {
     "nftables"
    ],
    "commands": [],
-   "x": 0.189,
-   "y": 0.9408
+   "x": 0.5,
+   "y": 0.9505
   },
   {
    "id": "linux.ssh",
@@ -810,8 +810,8 @@ window.TOOLKIT_DATA["linux"] = {
    "commands": [
     "ssh"
    ],
-   "x": 0.3181,
-   "y": 0.6154
+   "x": 0.444,
+   "y": 0.556
   },
   {
    "id": "linux.keys",
@@ -831,8 +831,8 @@ window.TOOLKIT_DATA["linux"] = {
     "ssh-keygen",
     "ssh-agent"
    ],
-   "x": 0.4231,
-   "y": 0.7239
+   "x": 0.4002,
+   "y": 0.5998
   },
   {
    "id": "linux.sftp",
@@ -853,8 +853,8 @@ window.TOOLKIT_DATA["linux"] = {
     "sftp",
     "rsync"
    ],
-   "x": 0.4008,
-   "y": 0.8323
+   "x": 0.3565,
+   "y": 0.6435
   },
   {
    "id": "linux.ssh-sec",
@@ -874,8 +874,8 @@ window.TOOLKIT_DATA["linux"] = {
     "sshd_config",
     "sshd -t"
    ],
-   "x": 0.3102,
-   "y": 0.9408
+   "x": 0.3127,
+   "y": 0.6873
   },
   {
    "id": "linux.env",
@@ -894,8 +894,8 @@ window.TOOLKIT_DATA["linux"] = {
     "export",
     "$PATH"
    ],
-   "x": 0.6863,
-   "y": 0.6154
+   "x": 0.4208,
+   "y": 0.5
   },
   {
    "id": "linux.bash",
@@ -914,8 +914,8 @@ window.TOOLKIT_DATA["linux"] = {
     "Bash"
    ],
    "commands": [],
-   "x": 0.6255,
-   "y": 0.6805
+   "x": 0.3589,
+   "y": 0.5
   },
   {
    "id": "linux.if",
@@ -937,8 +937,8 @@ window.TOOLKIT_DATA["linux"] = {
     "elif",
     "case"
    ],
-   "x": 0.5633,
-   "y": 0.7456
+   "x": 0.297,
+   "y": 0.5
   },
   {
    "id": "linux.loop",
@@ -959,8 +959,8 @@ window.TOOLKIT_DATA["linux"] = {
     "while",
     "functions"
    ],
-   "x": 0.6644,
-   "y": 0.8107
+   "x": 0.2351,
+   "y": 0.5
   },
   {
    "id": "linux.auto",
@@ -981,8 +981,8 @@ window.TOOLKIT_DATA["linux"] = {
     "xargs",
     "find"
    ],
-   "x": 0.6612,
-   "y": 0.8757
+   "x": 0.1733,
+   "y": 0.5
   },
   {
    "id": "linux.py",
@@ -1004,8 +1004,8 @@ window.TOOLKIT_DATA["linux"] = {
     "pathlib"
    ],
    "commands": [],
-   "x": 0.5622,
-   "y": 0.9408
+   "x": 0.1114,
+   "y": 0.5
   },
   {
    "id": "linux.harden",
@@ -1023,8 +1023,8 @@ window.TOOLKIT_DATA["linux"] = {
     "service configuration"
    ],
    "commands": [],
-   "x": 0.8502,
-   "y": 0.6154
+   "x": 0.444,
+   "y": 0.444
   },
   {
    "id": "linux.ssh-audit",
@@ -1044,8 +1044,8 @@ window.TOOLKIT_DATA["linux"] = {
     "sshd -T",
     "sshd -t"
    ],
-   "x": 0.8262,
-   "y": 0.6805
+   "x": 0.4002,
+   "y": 0.4002
   },
   {
    "id": "linux.expose",
@@ -1065,8 +1065,8 @@ window.TOOLKIT_DATA["linux"] = {
     "systemctl",
     "ss -tulpn"
    ],
-   "x": 0.9314,
-   "y": 0.7456
+   "x": 0.3565,
+   "y": 0.3565
   },
   {
    "id": "linux.perm-audit",
@@ -1087,8 +1087,8 @@ window.TOOLKIT_DATA["linux"] = {
     "getfacl",
     "namei"
    ],
-   "x": 0.8873,
-   "y": 0.8107
+   "x": 0.3127,
+   "y": 0.3127
   },
   {
    "id": "linux.lynis",
@@ -1107,8 +1107,8 @@ window.TOOLKIT_DATA["linux"] = {
     "Lynis"
    ],
    "commands": [],
-   "x": 0.8106,
-   "y": 0.8757
+   "x": 0.269,
+   "y": 0.269
   },
   {
    "id": "linux.backup",
@@ -1129,12 +1129,12 @@ window.TOOLKIT_DATA["linux"] = {
     "rsync",
     "checksums"
    ],
-   "x": 0.9043,
-   "y": 0.9408
+   "x": 0.2252,
+   "y": 0.2252
   }
  ],
  "layout": {
-  "w": 1440,
-  "h": 1690
+  "w": 2020,
+  "h": 2020
  }
 };
