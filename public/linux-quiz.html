@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Linux Command Quiz - Justin</title>
+<title>Linux & Security Quiz - Justin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -42,9 +42,9 @@
 <body>
 <div class="wrap">
   <div class="kicker">// MINI PROJECT 02</div>
-  <h1>LINUX <span>COMMAND QUIZ</span></h1>
-  <p class="sub">Command-line questions in two levels, with an explanation after every answer. A small practice project, not a certification test.</p>
-  <div class="levels" style="display:flex;gap:12px;align-items:center;margin-bottom:16px"><label for="level" style="font-size:12px">LEVEL</label><select id="level" style="background:#0b1822;color:#eef4f8;border:1px solid #00a877;border-radius:8px;padding:10px;font:12px monospace"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option></select></div>
+  <h1>LINUX &amp; <span>SECURITY QUIZ</span></h1>
+  <p class="sub">38 questions across the eight Loadout topics. Choose a level and a topic, then learn from each explanation. A practice project, not a certification test.</p>
+  <div class="levels" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px"><label for="level" style="font-size:12px">LEVEL</label><select id="level" style="background:#0b1822;color:#eef4f8;border:1px solid #00a877;border-radius:8px;padding:10px;font:12px monospace"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option></select><label for="topic" style="font-size:12px">TOPIC</label><select id="topic" style="width:100%;background:#0b1822;color:#eef4f8;border:1px solid #00a877;border-radius:8px;padding:10px;font:12px monospace"><option value="all">All Loadout topics</option></select></div>
   <div class="panel" id="panel">
     <div class="progress"><span id="step"></span><span id="score"></span></div>
     <div class="q" id="q"></div>
@@ -53,10 +53,10 @@
     <div class="explain" id="explain" aria-live="polite"></div>
     <button class="next" id="next" type="button" hidden>NEXT &rarr;</button>
   </div>
-  <p class="sub" style="font-size:11px"><b style="color:var(--green)">How it works:</b> The question bank is separate from the quiz engine. A level filters the bank; answers are shuffled, checked by their original index, then explained. Scores last only until this page reloads. This is practice, not a skills assessment.<br><a style="color:var(--green)" href="https://github.com/Brolomna/justin-portfolio" target="_blank" rel="noopener noreferrer">View the code: public/linux-quiz.html and linux-quiz-bank.js ↗</a></p>
+  <p class="sub" style="font-size:11px"><b style="color:var(--green)">How it works:</b> The question bank is separate from the quiz engine. A level filters the bank; answers are shuffled, checked by their original index, then explained. Scores last only until this page reloads. This is practice, not a skills assessment.<br><a style="color:var(--green)" href="https://github.com/Brolomna/justin-portfolio" target="_blank" rel="noopener noreferrer">View the code: public/linux-quiz.html and loadout-quiz-bank.js ↗</a></p>
   <a class="back" href="./#projects">&larr; BACK TO PORTFOLIO</a>
 </div>
-<script src="./linux-quiz-bank.js"></script>
+<script src="./loadout-quiz-bank.js"></script>
 <script>
 (function(){
   var QS = [];
@@ -70,7 +70,7 @@
     stepEl.textContent = document.querySelector('#level').value.toUpperCase() + ' ' + (i+1) + ' / ' + QS.length;
     scoreEl.textContent = 'SCORE ' + correct;
     qEl.innerHTML = item.q;
-    document.getElementById('qsub').textContent = '';
+    document.getElementById('qsub').textContent = item.topic;
     optsEl.innerHTML = '';
     exEl.textContent = '';
     nextBtn.hidden = true;
@@ -90,7 +90,7 @@
     });
     if (idx === item.a) { correct++; scoreEl.textContent = 'SCORE ' + correct; }
     else btn.classList.add('wrong');
-    exEl.textContent = item.why;
+    exEl.textContent = item.why; if(item.source){var a=document.createElement('a');a.href=item.source;a.target='_blank';a.rel='noopener noreferrer';a.textContent=' Read the reference ↗';a.style.color='var(--green)';exEl.appendChild(a);}
     nextBtn.hidden = false;
     nextBtn.textContent = (i === QS.length - 1) ? 'SEE RESULT \u2192' : 'NEXT \u2192';
     nextBtn.focus();
@@ -109,9 +109,13 @@
     i++;
     if (i >= QS.length) finish(); else render();
   });
-  function start(){ QS=window.QUIZ_BANK.filter(function(q){return q.level===document.querySelector('#level').value;});i=0;correct=0;render();}
-  document.querySelector('#level').addEventListener('change',function(){location.search='?level='+this.value;});
-  if(new URLSearchParams(location.search).get('level')==='intermediate')document.querySelector('#level').value='intermediate';
+  var params=new URLSearchParams(location.search),topicSelect=document.querySelector('#topic');
+  Array.from(new Set(window.QUIZ_BANK.map(function(q){return q.topic;}))).forEach(function(t){var o=document.createElement('option');o.value=t;o.textContent=t;topicSelect.appendChild(o);});
+  function start(){QS=window.QUIZ_BANK.filter(function(q){return q.level===document.querySelector('#level').value && (topicSelect.value==='all'||q.topic===topicSelect.value);});i=0;correct=0;render();}
+  function choose(){location.search='?level='+document.querySelector('#level').value+'&topic='+encodeURIComponent(topicSelect.value);}
+  document.querySelector('#level').addEventListener('change',choose);topicSelect.addEventListener('change',choose);
+  if(params.get('level')==='intermediate')document.querySelector('#level').value='intermediate';
+  if(Array.from(topicSelect.options).some(function(o){return o.value===params.get('topic');}))topicSelect.value=params.get('topic');
   start();
 })();
 </script>

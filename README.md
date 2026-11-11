@@ -19,3 +19,12 @@ Justin's personal site, live at https://brolomna.github.io/justin-portfolio/
 
 To plug the skill tree into any page: one `<link>` to `toolkit/toolkit.css`, a
 `<div id="toolkit-mount">`, and the script tags listed at the bottom of `index.html`.
+
+## Client-side mini projects
+
+- `public/password-checker.html` - heuristic strength demo and Web Crypto password generator. No network calls or saved password history.
+- `public/linux-quiz.html` + `public/loadout-quiz-bank.js` - Beginner and Intermediate questions across all eight Loadout topics. Add entries to the bank, not the engine.
+- `public/phishing-quiz.html` + `public/phishing-quiz-bank.js` - fictional scenarios, safer actions and explanations.
+- `public/social-card-preview.html` - preview only, not linked from the main page.
+
+Quizzes are learning examples, not certifications or proof of skill. Reference links accompany the broader security questions.
