@@ -4,7 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071018'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='34' font-weight='bold' fill='%2300f5a0' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
+  <meta name="robots" content="noindex">
 <meta name="theme-color" content="#050a10">
 <meta name="description" content="Justin — developer and cybersecurity enthusiast. I build web projects, explore cybersecurity, and test how systems work.">
 <title>Justin — Developer &amp; Cybersecurity Enthusiast</title>
@@ -1242,7 +1243,7 @@ h1 .hero-better {
 <section class="projects-section projects-carousel-section" id="projects">
   <div class="projects-heading">
     <div><div class="section-kicker">// SELECTED WORK</div><h2>PROJECTS <span>&amp; BUILDS</span></h2></div>
-    <p>A rotating preview of the things I've been working on.</p>
+    <p>A rotating preview of the things I've been working on. Hover to pause, click a card to open the project.</p>
   </div>
   <div class="project-carousel" aria-label="Animated project card preview">
     <div class="project-carousel-track">
@@ -1256,19 +1257,23 @@ h1 .hero-better {
           </div>
           <div class="slide-art-foot"><span>QR JOIN · MULTIPLAYER</span><span>01 — 04</span></div>
         </div>
-        <div class="slide-caption"><span>01</span><small>FEATURED BUILD</small></div>
+        <a class="slide-link" href="https://moonfall.onrender.com" target="_blank" rel="noopener noreferrer" aria-label="Moonfall - play the live game"></a>
+        <div class="slide-caption"><span>01</span><strong>MOONFALL</strong><small>FEATURED · LIVE ↗</small></div>
       </article>
       <article class="project-slide">
         <div class="slide-art workflow-art"><div class="art-grid"></div><span class="art-index">02 / AUTOMATION</span><div class="workflow-orb">AI<span>↗</span></div><div class="workflow-lines"><i></i><i></i><i></i></div><span class="art-bottom">WORKFLOW SYSTEM</span></div>
-        <div class="slide-caption"><span>02</span><strong>PROJECT TWO</strong><small>PREVIEW SLOT</small></div>
+        <a class="slide-link" href="https://github.com/Brolomna/ai-workflow-assistant" target="_blank" rel="noopener noreferrer" aria-label="AI Workflow Assistant on GitHub"></a>
+        <div class="slide-caption"><span>02</span><strong>AI WORKFLOW ASSISTANT</strong><small>PYTHON CLI ↗</small></div>
       </article>
       <article class="project-slide">
         <div class="slide-art data-art"><span class="art-index">03 / DATA</span><div class="data-rings"><i></i><i></i><i></i><b>01</b></div><div class="data-columns"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="art-bottom">STRUCTURED / SIGNAL</span></div>
-        <div class="slide-caption"><span>03</span><strong>PROJECT THREE</strong><small>PREVIEW SLOT</small></div>
+        <a class="slide-link" href="https://github.com/Brolomna/data_extractor" target="_blank" rel="noopener noreferrer" aria-label="JSON Data Extractor on GitHub"></a>
+        <div class="slide-caption"><span>03</span><strong>JSON DATA EXTRACTOR</strong><small>PYTHON CLI ↗</small></div>
       </article>
       <article class="project-slide">
-        <div class="slide-art bot-art"><span class="art-index">04 / COMMUNITY</span><div class="bot-orbit"><div class="bot-core">⌘</div><i></i><i></i><i></i></div><div class="bot-status"><b>●</b> SYSTEM ONLINE</div><span class="art-bottom">COMMUNITY / AUTOMATION</span></div>
-        <div class="slide-caption"><span>04</span><strong>PROJECT FOUR</strong><small>PREVIEW SLOT</small></div>
+        <div class="slide-art bot-art"><span class="art-index">04 / THIS SITE</span><div class="bot-orbit"><div class="bot-core">⌘</div><i></i><i></i><i></i></div><div class="bot-status"><b>●</b> SYSTEM ONLINE</div><span class="art-bottom">SINGLE PAGE · GITHUB PAGES</span></div>
+        <a class="slide-link" href="https://github.com/Brolomna/justin-portfolio" target="_blank" rel="noopener noreferrer" aria-label="justin-portfolio source on GitHub"></a>
+        <div class="slide-caption"><span>04</span><strong>JUSTIN-PORTFOLIO</strong><small>THIS SITE ↗</small></div>
       </article>
       </div>
     </div>
@@ -1818,6 +1823,9 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
 .project-carousel-track { display:flex; align-items:center; gap:0; width:max-content; padding:0; will-change:transform; transform:translate3d(0,0,0); }
 .project-carousel-set { display:flex; flex:0 0 auto; align-items:center; gap:clamp(18px,3vw,38px); padding-right:clamp(18px,3vw,38px); }
 @keyframes project-drift-right { from { transform:translateX(var(--loop-distance,-1200px)); } to { transform:translateX(0); } }
+.project-slide { position:relative; }
+.slide-link { position:absolute; inset:0; z-index:6; border-radius:20px; }
+.slide-link:focus-visible { outline:2px solid var(--green); outline-offset:3px; }
 .project-slide {
   flex:0 0 var(--slide-w); width:var(--slide-w);
   transform:translate3d(0,0,0) scale(.82);
