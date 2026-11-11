@@ -68,8 +68,8 @@ window.TOOLKIT_DATA["automation"] = {
     "Python"
    ],
    "commands": [],
-   "x": 0.1667,
-   "y": 0.3822
+   "x": 0.5,
+   "y": 0.374
   },
   {
    "id": "automation.bash",
@@ -88,8 +88,8 @@ window.TOOLKIT_DATA["automation"] = {
     "Bash"
    ],
    "commands": [],
-   "x": 0.255,
-   "y": 0.5414
+   "x": 0.5,
+   "y": 0.2756
   },
   {
    "id": "automation.git",
@@ -106,8 +106,8 @@ window.TOOLKIT_DATA["automation"] = {
     "Git"
    ],
    "commands": [],
-   "x": 0.5696,
-   "y": 0.3822
+   "x": 0.6091,
+   "y": 0.563
   },
   {
    "id": "automation.github",
@@ -126,8 +126,8 @@ window.TOOLKIT_DATA["automation"] = {
     "GitHub"
    ],
    "commands": [],
-   "x": 0.4187,
-   "y": 0.5414
+   "x": 0.6943,
+   "y": 0.6122
   },
   {
    "id": "automation.log",
@@ -146,8 +146,8 @@ window.TOOLKIT_DATA["automation"] = {
     "awk"
    ],
    "commands": [],
-   "x": 0.7406,
-   "y": 0.3822
+   "x": 0.3909,
+   "y": 0.563
   },
   {
    "id": "automation.security",
@@ -167,8 +167,8 @@ window.TOOLKIT_DATA["automation"] = {
     "GitHub"
    ],
    "commands": [],
-   "x": 0.8534,
-   "y": 0.5414
+   "x": 0.3057,
+   "y": 0.6122
   },
   {
    "id": "automation.api",
@@ -189,8 +189,8 @@ window.TOOLKIT_DATA["automation"] = {
     "JSON"
    ],
    "commands": [],
-   "x": 0.9131,
-   "y": 0.7006
+   "x": 0.2204,
+   "y": 0.6614
   },
   {
    "id": "automation.securit2",
@@ -210,12 +210,12 @@ window.TOOLKIT_DATA["automation"] = {
     "Bash"
    ],
    "commands": [],
-   "x": 0.7617,
-   "y": 0.8599
+   "x": 0.1352,
+   "y": 0.7106
   }
  ],
  "layout": {
-  "w": 1440,
-  "h": 785
+  "w": 1270,
+  "h": 1270
  }
 };
