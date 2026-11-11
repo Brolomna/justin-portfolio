@@ -67,7 +67,11 @@
 .st-node .lb { max-width:50px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .st-node .nm { margin-top:6px; color:#8b98a5; font:700 8.5px 'JetBrains Mono',monospace; letter-spacing:.8px; text-transform:uppercase; text-align:center; line-height:1.25; }
 .st-node .num { color:#4a5860; font:8px 'JetBrains Mono',monospace; margin-top:1px; }
-.st-node.locked { opacity:.55; }
+.st-node.locked { opacity:1; }
+.st-node.locked .hex { background:#2f3942; }
+.st-node.locked .hex-in { background:#0a141c; color:#4f5c66; }
+.st-node.locked .nm { color:#5d6a75; }
+.st-node.locked .num { color:#3c4850; }
 .st-node.locked .hex, .st-node.locked .hex-in { clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); }
 .st-node.available .hex { background:#9fb2bd; }
 .st-node.available .hex-in { color:#e8f2f4; }
