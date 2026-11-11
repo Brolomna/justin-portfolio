@@ -25,10 +25,12 @@ function computeStatuses(){
     if (stack.includes(id)) { statusCache[id] = 'locked'; return 'locked'; } // circular guard
     const p = repo.skill(id);
     if (p && p.status === 'verified') return statusCache[id] = 'verified';
+    // a recorded learning state is a fact about the learner, so it shows even
+    // when its prerequisites are not verified yet (e.g. the baked-in list)
+    if (p && p.status === 'in_progress') return statusCache[id] = 'in_progress';
     const s = SKILLS[id];
     const preMet = s.pre.every(pr => SKILLS[pr] ? visit(pr, stack.concat(id)) === 'verified' : true);
     if (!preMet) return statusCache[id] = 'locked';
-    if (p && p.status === 'in_progress') return statusCache[id] = 'in_progress';
     return statusCache[id] = 'available';
   };
   Object.keys(SKILLS).forEach(id => visit(id, []));
