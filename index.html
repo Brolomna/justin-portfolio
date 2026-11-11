@@ -1029,6 +1029,7 @@ h1 .hero-better {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
+<link rel="stylesheet" href="toolkit/toolkit.css">
 </head>
 
 <body id="top">
@@ -1048,7 +1049,7 @@ h1 .hero-better {
     <li><a href="#top" class="active">Home</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Toolkit</a></li>
+    <li><a href="#skills">Loadout</a></li>
     <li><a href="#learning">Learning</a></li>
   </ul>
   <a class="nav-cta" href="mailto:anmolsiwa30@gmail.com">Let's Talk
@@ -1059,7 +1060,7 @@ h1 .hero-better {
   </button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#top">Home</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#skills">Toolkit</a><a href="#learning">Learning</a><a href="#contact">Contact</a>
+  <a href="#top">Home</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#skills">Loadout</a><a href="#learning">Learning</a><a href="#contact">Contact</a>
   <a href="mailto:anmolsiwa30@gmail.com" style="color:var(--green)">Let's Talk</a>
 </div>
 
@@ -1276,21 +1277,7 @@ h1 .hero-better {
 </section>
 
 <!-- SECURITY TOOLKIT -->
-<section class="toolkit-section" id="skills">
-  <div class="toolkit-heading">
-    <div class="toolkit-kicker">// FIELD NOTES &amp; WORKBENCH</div>
-    <h2>THE <span>TOOLKIT</span></h2>
-    <p>The tools I'm exploring systems and practising security with. Still learning, one lab at a time.</p>
-  </div>
-  <div class="toolkit-grid">
-    <article class="toolkit-card"><div class="toolkit-card-top"><span>01 / RECON</span><span class="toolkit-mark">⌁</span></div><h3>Reconnaissance &amp; Enumeration</h3><p>Learning to map hosts, services, directories, and exposed endpoints.</p><div class="tool-tags"><span>Nmap</span><span>Gobuster</span><span>FFUF</span><span>Netcat</span></div></article>
-    <article class="toolkit-card"><div class="toolkit-card-top"><span>02 / WEB</span><span class="toolkit-mark">◈</span></div><h3>Web Application Security</h3><p>Inspecting requests, testing web applications, and learning common vulnerabilities in labs.</p><div class="tool-tags"><span>Burp Suite</span><span>OWASP ZAP</span><span>DVWA</span></div></article>
-    <article class="toolkit-card"><div class="toolkit-card-top"><span>03 / AUTH</span><span class="toolkit-mark">⌑</span></div><h3>Password &amp; Authentication Testing</h3><p>Exploring password security, hash auditing, and authentication testing.</p><div class="tool-tags"><span>John the Ripper</span><span>Hashcat</span><span>Hydra</span></div></article>
-    <article class="toolkit-card"><div class="toolkit-card-top"><span>04 / ANALYSIS</span><span class="toolkit-mark">⌘</span></div><h3>Exploitation &amp; Network Analysis</h3><p>Learning exploitation workflows and examining network traffic in controlled environments.</p><div class="tool-tags"><span>Metasploit</span><span>Wireshark</span></div></article>
-    <article class="toolkit-card"><div class="toolkit-card-top"><span>05 / PRIVACY</span><span class="toolkit-mark">◎</span></div><h3>Privacy, Anonymity &amp; Routing</h3><p>Exploring privacy-focused operating systems, Tor routing, and proxy-based workflows.</p><div class="tool-tags"><span>Tails</span><span>Tor</span><span>ProxyChains</span></div></article>
-    <article class="toolkit-card"><div class="toolkit-card-top"><span>06 / ENVIRONMENT</span><span class="toolkit-mark">▣</span></div><h3>Systems &amp; Environment</h3><p>Working in Linux-based environments and building familiarity with security tooling.</p><div class="tool-tags"><span>Kali Linux</span></div></article>
-  </div>
-</section>
+<section id="skills" class="toolkit-section" aria-label="Skill tree"><div id="toolkit-mount"></div></section>
 
 <section class="learning-section" id="learning">
   <div class="toolkit-kicker">// LEARN BY DOING</div><h2>LEARNING <span>IN PRACTICE</span></h2>
@@ -2158,6 +2145,19 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
   start();
 })();
 </script>
+<script src="toolkit/data/recon.js"></script>
+<script src="toolkit/data/web.js"></script>
+<script src="toolkit/data/identity.js"></script>
+<script src="toolkit/data/network.js"></script>
+<script src="toolkit/data/vuln.js"></script>
+<script src="toolkit/data/linux.js"></script>
+<script src="toolkit/data/privacy.js"></script>
+<script src="toolkit/data/automation.js"></script>
+<script src="toolkit/data/index.js"></script>
+<script src="toolkit/toolkit.js"></script>
+<script src="toolkit/progress.js"></script>
+<script src="toolkit/icons.js"></script>
+<script src="toolkit/engine.js"></script>
 </body>
 </html>
 

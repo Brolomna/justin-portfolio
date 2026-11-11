@@ -1,17 +1,7 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { fileURLToPath, URL } from 'node:url';
 
-// https://vitejs.dev/config/
+// Static single-page build: index.html is the whole site,
+// public/ is copied verbatim (toolkit module + preview page).
 export default defineConfig({
   base: './',
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
-  },
-  optimizeDeps: {
-    exclude: ['lucide-react'],
-  },
 });
