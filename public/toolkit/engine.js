@@ -140,6 +140,11 @@ function wireD(x1,y1,x2,y2,key){
   const b=Math.min(len*0.22,72)*(h%2?-1:1);
   return `M ${x1} ${y1} C ${(x1+dx*.3+px*b).toFixed(1)} ${(y1+dy*.3+py*b).toFixed(1)}, ${(x1+dx*.7-px*b).toFixed(1)} ${(y1+dy*.7-py*b).toFixed(1)}, ${x2} ${y2}`;
 }
+function iconSvg(id){
+  const key = id.indexOf('__root.')===0 ? (window.TOOLKIT_ROOT_ICONS||{})[id.slice(7)] : (window.TOOLKIT_ICONS||{})[id];
+  const paths = (window.TOOLKIT_ICON_PATHS||{})[key] || '';
+  return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+}
 function statusClass(id){ return statusOf(id).replace('_','-'); }
 
 function renderModule(){
@@ -178,13 +183,13 @@ function renderModule(){
   // root node
   const ms = moduleStats(m);
   let nodesHtml = `<button class="st-node rootn" data-id="__root" style="left:${root[0]}px;top:${root[1]}px" type="button" aria-label="${esc(m.short)} module root">
-    <span class="hex"><span class="hex-in"><span class="lb">&gt;_</span></span></span><span class="nm">${esc(m.short)}</span><span class="num">${ms.verified}/${ms.total} VERIFIED</span></button>`;
+    <span class="hex"><span class="hex-in">${iconSvg('__root.'+m.id)}</span></span><span class="nm">${esc(m.short)}</span><span class="num">${ms.verified}/${ms.total} VERIFIED</span></button>`;
   m.skills.forEach((s,i)=>{
     const [x,y]=pos[s.id];
     const t = statusOf(s.id);
     nodesHtml += `<button class="st-node ${statusClass(s.id)}" data-id="${s.id}" style="left:${x}px;top:${y}px" type="button"
       aria-label="${esc(s.name)}: ${STATUS_LABEL[t]}" aria-describedby="stTip">
-      <span class="hex"><span class="hex-in"><span class="lb">${esc(s.label)}</span></span></span><span class="nm">${esc(shortName(s.name))}</span><span class="num">#${String(s.n||i+1).padStart(2,'0')}</span></button>`;
+      <span class="hex"><span class="hex-in">${iconSvg(s.id)}</span></span><span class="nm">${esc(shortName(s.name))}</span><span class="num">#${String(s.n||i+1).padStart(2,'0')}</span></button>`;
   });
   nodesEl.innerHTML = nodesHtml;
   nodesEl.querySelectorAll('.st-node').forEach(el=>{

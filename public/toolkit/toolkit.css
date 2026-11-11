@@ -64,7 +64,8 @@
 .st-node { position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:0; background:none; border:0; cursor:pointer; padding:0; font:inherit; width:110px; }
 .st-node .hex { width:58px; height:64px; display:grid; place-items:center; clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); background:#42505c; transition:filter .25s; }
 .st-node .hex-in { width:calc(100% - 3.2px); height:calc(100% - 3.2px); display:grid; place-items:center; clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); background:#0a141c; color:#7a8a94; font:600 10px 'JetBrains Mono',monospace; }
-.st-node .lb { max-width:50px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.st-node .ic { width:22px; height:22px; display:block; }
+.st-node.rootn .ic { width:34px; height:34px; }
 .st-node .nm { margin-top:6px; color:#8b98a5; font:700 8.5px 'JetBrains Mono',monospace; letter-spacing:.8px; text-transform:uppercase; text-align:center; line-height:1.25; }
 .st-node .num { color:#4a5860; font:8px 'JetBrains Mono',monospace; margin-top:1px; }
 .st-node.locked { opacity:1; }
@@ -72,7 +73,6 @@
 .st-node.locked .hex-in { background:#0a141c; color:#4f5c66; }
 .st-node.locked .nm { color:#5d6a75; }
 .st-node.locked .num { color:#3c4850; }
-.st-node.locked .hex, .st-node.locked .hex-in { clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); }
 .st-node.available .hex { background:#9fb2bd; }
 .st-node.available .hex-in { color:#e8f2f4; }
 .st-node.available .nm { color:#c2cfd6; }
@@ -88,7 +88,10 @@
 .st-node.rootn .num { color:var(--green); }
 .st-node.selected .hex { filter:drop-shadow(0 0 18px rgba(255,255,255,.55)); }
 .st-node.path .hex { filter:drop-shadow(0 0 12px rgba(0,245,160,.6)); }
-.st-node.dimmed, .st-node.faded { opacity:.18; }
+.st-node.dimmed .hex, .st-node.faded .hex { background:#222b33; filter:none; }
+.st-node.dimmed .hex-in, .st-node.faded .hex-in { background:#0a141c; color:#3d4852; }
+.st-node.dimmed .nm, .st-node.faded .nm { color:#3d4852; }
+.st-node.dimmed .num, .st-node.faded .num { color:#2c343c; }
 .st-node:focus-visible { outline:none; }
 .st-node:focus-visible .hex { background:#fff; }
 .st-zoom { position:absolute; right:12px; top:12px; z-index:8; display:flex; flex-direction:column; gap:6px; }
