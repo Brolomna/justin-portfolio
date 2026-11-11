@@ -4,7 +4,7 @@ window.TOOLKIT_DATA = window.TOOLKIT_DATA || {};
 window.TOOLKIT_DATA["recon"] = {
  "id": "recon",
  "num": "01",
- "glyph": "\u2301",
+ "glyph": "⌁",
  "name": "Reconnaissance & Enumeration",
  "short": "RECON",
  "slug": "recon",
@@ -78,8 +78,8 @@ window.TOOLKIT_DATA["recon"] = {
     "testing checklists"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.374
+   "x": 0.5076,
+   "y": 0.3616
   },
   {
    "id": "recon.passive",
@@ -99,8 +99,8 @@ window.TOOLKIT_DATA["recon"] = {
     "public DNS records"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.2756
+   "x": 0.4884,
+   "y": 0.2885
   },
   {
    "id": "recon.dns",
@@ -121,8 +121,8 @@ window.TOOLKIT_DATA["recon"] = {
     "DNSRecon"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.1772
+   "x": 0.5184,
+   "y": 0.1651
   },
   {
    "id": "recon.subdomain",
@@ -142,8 +142,8 @@ window.TOOLKIT_DATA["recon"] = {
     "Subfinder"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.0787
+   "x": 0.4775,
+   "y": 0.092
   },
   {
    "id": "recon.host",
@@ -161,8 +161,8 @@ window.TOOLKIT_DATA["recon"] = {
     "arp-scan"
    ],
    "commands": [],
-   "x": 0.6091,
-   "y": 0.563
+   "x": 0.6125,
+   "y": 0.5809
   },
   {
    "id": "recon.port",
@@ -184,8 +184,8 @@ window.TOOLKIT_DATA["recon"] = {
     "Nmap"
    ],
    "commands": [],
-   "x": 0.6943,
-   "y": 0.6122,
+   "x": 0.6931,
+   "y": 0.5871,
    "obj": [
     "Understand how Nmap works.",
     "Identify active hosts.",
@@ -221,8 +221,8 @@ window.TOOLKIT_DATA["recon"] = {
     "Nmap -sV"
    ],
    "commands": [],
-   "x": 0.7796,
-   "y": 0.6614
+   "x": 0.7723,
+   "y": 0.6959
   },
   {
    "id": "recon.directory",
@@ -240,8 +240,8 @@ window.TOOLKIT_DATA["recon"] = {
     "FFUF"
    ],
    "commands": [],
-   "x": 0.3909,
-   "y": 0.563
+   "x": 0.3712,
+   "y": 0.5512
   },
   {
    "id": "recon.technolog",
@@ -261,8 +261,8 @@ window.TOOLKIT_DATA["recon"] = {
     "Wappalyzer"
    ],
    "commands": [],
-   "x": 0.3057,
-   "y": 0.6122
+   "x": 0.3338,
+   "y": 0.6313
   }
  ],
  "layout": {

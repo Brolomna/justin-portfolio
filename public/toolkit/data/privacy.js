@@ -4,7 +4,7 @@ window.TOOLKIT_DATA = window.TOOLKIT_DATA || {};
 window.TOOLKIT_DATA["privacy"] = {
  "id": "privacy",
  "num": "07",
- "glyph": "\u25ce",
+ "glyph": "◎",
  "name": "Privacy, Anonymity & Secure Operations",
  "short": "PRIVACY",
  "slug": "privacy",
@@ -72,8 +72,8 @@ window.TOOLKIT_DATA["privacy"] = {
     "Browser privacy settings"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.374
+   "x": 0.5076,
+   "y": 0.3616
   },
   {
    "id": "privacy.threat",
@@ -93,8 +93,8 @@ window.TOOLKIT_DATA["privacy"] = {
     "security checklists"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.2756
+   "x": 0.4884,
+   "y": 0.2885
   },
   {
    "id": "privacy.proxy",
@@ -114,8 +114,8 @@ window.TOOLKIT_DATA["privacy"] = {
     "proxy clients"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.1772
+   "x": 0.5184,
+   "y": 0.1651
   },
   {
    "id": "privacy.vpn",
@@ -134,8 +134,8 @@ window.TOOLKIT_DATA["privacy"] = {
     "VPN clients"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.0787
+   "x": 0.4775,
+   "y": 0.092
   },
   {
    "id": "privacy.tor",
@@ -152,8 +152,8 @@ window.TOOLKIT_DATA["privacy"] = {
     "Tor Browser"
    ],
    "commands": [],
-   "x": 0.6091,
-   "y": 0.563
+   "x": 0.6125,
+   "y": 0.5809
   },
   {
    "id": "privacy.tails",
@@ -172,8 +172,8 @@ window.TOOLKIT_DATA["privacy"] = {
     "Tails OS"
    ],
    "commands": [],
-   "x": 0.6943,
-   "y": 0.6122
+   "x": 0.6931,
+   "y": 0.5871
   },
   {
    "id": "privacy.dns",
@@ -191,8 +191,8 @@ window.TOOLKIT_DATA["privacy"] = {
     "DoT"
    ],
    "commands": [],
-   "x": 0.3909,
-   "y": 0.563
+   "x": 0.3712,
+   "y": 0.5512
   },
   {
    "id": "privacy.operation",
@@ -211,8 +211,8 @@ window.TOOLKIT_DATA["privacy"] = {
     "Security checklists"
    ],
    "commands": [],
-   "x": 0.3057,
-   "y": 0.6122
+   "x": 0.3338,
+   "y": 0.6313
   }
  ],
  "layout": {

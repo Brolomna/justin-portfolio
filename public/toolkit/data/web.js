@@ -4,7 +4,7 @@ window.TOOLKIT_DATA = window.TOOLKIT_DATA || {};
 window.TOOLKIT_DATA["web"] = {
  "id": "web",
  "num": "02",
- "glyph": "\u25c8",
+ "glyph": "◈",
  "name": "Web Application & API Security",
  "short": "WEB & API",
  "slug": "web",
@@ -73,8 +73,8 @@ window.TOOLKIT_DATA["web"] = {
     "curl"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.374
+   "x": 0.5076,
+   "y": 0.3616
   },
   {
    "id": "web.request",
@@ -94,8 +94,8 @@ window.TOOLKIT_DATA["web"] = {
     "OWASP ZAP"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.2756
+   "x": 0.4884,
+   "y": 0.2885
   },
   {
    "id": "web.proxy",
@@ -114,8 +114,8 @@ window.TOOLKIT_DATA["web"] = {
     "Burp Suite Repeater"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.1772
+   "x": 0.5184,
+   "y": 0.1651
   },
   {
    "id": "web.cookies",
@@ -134,8 +134,8 @@ window.TOOLKIT_DATA["web"] = {
     "Burp Suite"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.0787
+   "x": 0.4775,
+   "y": 0.092
   },
   {
    "id": "web.authentic",
@@ -153,8 +153,8 @@ window.TOOLKIT_DATA["web"] = {
     "OWASP ZAP"
    ],
    "commands": [],
-   "x": 0.6091,
-   "y": 0.563
+   "x": 0.6125,
+   "y": 0.5809
   },
   {
    "id": "web.access",
@@ -173,8 +173,8 @@ window.TOOLKIT_DATA["web"] = {
     "Burp Suite"
    ],
    "commands": [],
-   "x": 0.6943,
-   "y": 0.6122
+   "x": 0.6931,
+   "y": 0.5871
   },
   {
    "id": "web.input",
@@ -192,8 +192,8 @@ window.TOOLKIT_DATA["web"] = {
     "OWASP ZAP"
    ],
    "commands": [],
-   "x": 0.3909,
-   "y": 0.563
+   "x": 0.3712,
+   "y": 0.5512
   },
   {
    "id": "web.injection",
@@ -214,8 +214,8 @@ window.TOOLKIT_DATA["web"] = {
     "Burp Suite"
    ],
    "commands": [],
-   "x": 0.3057,
-   "y": 0.6122
+   "x": 0.3338,
+   "y": 0.6313
   },
   {
    "id": "web.api",
@@ -236,8 +236,8 @@ window.TOOLKIT_DATA["web"] = {
     "curl"
    ],
    "commands": [],
-   "x": 0.2204,
-   "y": 0.6614
+   "x": 0.1883,
+   "y": 0.624
   },
   {
    "id": "web.security",
@@ -258,8 +258,8 @@ window.TOOLKIT_DATA["web"] = {
     "OpenSSL"
    ],
    "commands": [],
-   "x": 0.1352,
-   "y": 0.7106
+   "x": 0.1793,
+   "y": 0.7533
   }
  ],
  "layout": {

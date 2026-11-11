@@ -133,6 +133,13 @@ function layoutFor(m){
   }
   return { W, H, pos, root:[W/2, wide?H/2:78] };
 }
+function wireD(x1,y1,x2,y2,key){
+  const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy)||1;
+  const px=-dy/len, py=dx/len;
+  let h=0; for (const c of key) h=(h*31+c.charCodeAt(0))>>>0;
+  const b=Math.min(len*0.22,72)*(h%2?-1:1);
+  return `M ${x1} ${y1} C ${(x1+dx*.3+px*b).toFixed(1)} ${(y1+dy*.3+py*b).toFixed(1)}, ${(x1+dx*.7-px*b).toFixed(1)} ${(y1+dy*.7-py*b).toFixed(1)}, ${x2} ${y2}`;
+}
 function statusClass(id){ return statusOf(id).replace('_','-'); }
 
 function renderModule(){
@@ -156,14 +163,14 @@ function renderModule(){
       const t = statusOf(s.id);
       const cls = t==='verified'?'lit':t==='in_progress'?'prog':t==='available'?'avail':'';
       const [x1,y1]=pos[pr], [x2,y2]=pos[s.id];
-      inner+=`<path class="wire ${cls}" data-pre="${pr}" data-skill="${s.id}" d="M ${x1} ${y1} Q ${(x1+x2)/2+(y2-y1)*.12} ${(y1+y2)/2-(x2-x1)*.12}, ${x2} ${y2}"/>`;
+      inner+=`<path class="wire ${cls}" data-pre="${pr}" data-skill="${s.id}" d="${wireD(x1,y1,x2,y2,s.id)}"/>`;
     });
     if (s.pre.length===0){
       // visual link from the module root to each branch entry (not a prerequisite - entries stay available)
       const t = statusOf(s.id);
       const cls = t==='verified'?'lit':t==='in_progress'?'prog':'avail';
       const [x1,y1]=root, [x2,y2]=pos[s.id];
-      inner+=`<path class="wire rootwire ${cls}" data-pre="__root" data-skill="${s.id}" d="M ${x1} ${y1} Q ${(x1+x2)/2+(y2-y1)*.12} ${(y1+y2)/2-(x2-x1)*.12}, ${x2} ${y2}"/>`;
+      inner+=`<path class="wire rootwire ${cls}" data-pre="__root" data-skill="${s.id}" d="${wireD(x1,y1,x2,y2,'root'+s.id)}"/>`;
     }
   });
   svgEl.setAttribute('viewBox',`0 0 ${W} ${H}`);

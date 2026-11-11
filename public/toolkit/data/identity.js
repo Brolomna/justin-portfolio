@@ -4,7 +4,7 @@ window.TOOLKIT_DATA = window.TOOLKIT_DATA || {};
 window.TOOLKIT_DATA["identity"] = {
  "id": "identity",
  "num": "03",
- "glyph": "\u2311",
+ "glyph": "⌑",
  "name": "Identity & Authentication Security",
  "short": "IDENTITY",
  "slug": "identity",
@@ -72,8 +72,8 @@ window.TOOLKIT_DATA["identity"] = {
     "password auditing utilities"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.374
+   "x": 0.5076,
+   "y": 0.3616
   },
   {
    "id": "identity.hashing",
@@ -92,8 +92,8 @@ window.TOOLKIT_DATA["identity"] = {
     "OpenSSL"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.2756
+   "x": 0.4884,
+   "y": 0.2885
   },
   {
    "id": "identity.hash",
@@ -112,8 +112,8 @@ window.TOOLKIT_DATA["identity"] = {
     "HashID"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.1772
+   "x": 0.5184,
+   "y": 0.1651
   },
   {
    "id": "identity.offline",
@@ -133,8 +133,8 @@ window.TOOLKIT_DATA["identity"] = {
     "Hashcat"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.0787
+   "x": 0.4775,
+   "y": 0.092
   },
   {
    "id": "identity.authentic",
@@ -151,8 +151,8 @@ window.TOOLKIT_DATA["identity"] = {
     "Lab applications"
    ],
    "commands": [],
-   "x": 0.6091,
-   "y": 0.563
+   "x": 0.6125,
+   "y": 0.5809
   },
   {
    "id": "identity.mfa",
@@ -171,8 +171,8 @@ window.TOOLKIT_DATA["identity"] = {
     "TOTP applications"
    ],
    "commands": [],
-   "x": 0.6943,
-   "y": 0.6122
+   "x": 0.6931,
+   "y": 0.5871
   },
   {
    "id": "identity.credentia",
@@ -190,8 +190,8 @@ window.TOOLKIT_DATA["identity"] = {
     "Burp Suite"
    ],
    "commands": [],
-   "x": 0.3909,
-   "y": 0.563
+   "x": 0.3712,
+   "y": 0.5512
   },
   {
    "id": "identity.ssh",
@@ -213,8 +213,8 @@ window.TOOLKIT_DATA["identity"] = {
     "ssh-keygen"
    ],
    "commands": [],
-   "x": 0.3057,
-   "y": 0.6122
+   "x": 0.3338,
+   "y": 0.6313
   }
  ],
  "layout": {

@@ -4,7 +4,7 @@ window.TOOLKIT_DATA = window.TOOLKIT_DATA || {};
 window.TOOLKIT_DATA["vuln"] = {
  "id": "vuln",
  "num": "05",
- "glyph": "\u2316",
+ "glyph": "⌖",
  "name": "Vulnerability Assessment & Exploitation",
  "short": "VULN & EXPLOIT",
  "slug": "vuln",
@@ -77,8 +77,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "NVD"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.3431
+   "x": 0.5095,
+   "y": 0.3277
   },
   {
    "id": "vuln.vulnera2",
@@ -98,8 +98,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "SearchSploit"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.2206
+   "x": 0.4855,
+   "y": 0.2367
   },
   {
    "id": "vuln.vulnera3",
@@ -119,8 +119,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "OpenVAS"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.098
+   "x": 0.523,
+   "y": 0.083
   },
   {
    "id": "vuln.exploit",
@@ -137,8 +137,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "Controlled lab exercises"
    ],
    "commands": [],
-   "x": 0.6358,
-   "y": 0.5784
+   "x": 0.6401,
+   "y": 0.6008
   },
   {
    "id": "vuln.metasploi",
@@ -157,8 +157,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "Metasploit Framework"
    ],
    "commands": [],
-   "x": 0.742,
-   "y": 0.6397
+   "x": 0.7404,
+   "y": 0.6084
   },
   {
    "id": "vuln.exploit2",
@@ -177,8 +177,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "Controlled lab environments"
    ],
    "commands": [],
-   "x": 0.8481,
-   "y": 0.701
+   "x": 0.839,
+   "y": 0.7439
   },
   {
    "id": "vuln.linux",
@@ -196,8 +196,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "manual auditing"
    ],
    "commands": [],
-   "x": 0.3642,
-   "y": 0.5784
+   "x": 0.3397,
+   "y": 0.5638
   },
   {
    "id": "vuln.postexplo",
@@ -216,8 +216,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "Metasploit lab"
    ],
    "commands": [],
-   "x": 0.258,
-   "y": 0.6397
+   "x": 0.2931,
+   "y": 0.6635
   },
   {
    "id": "vuln.remediati",
@@ -238,8 +238,8 @@ window.TOOLKIT_DATA["vuln"] = {
     "security reports"
    ],
    "commands": [],
-   "x": 0.1519,
-   "y": 0.701
+   "x": 0.1119,
+   "y": 0.6544
   }
  ],
  "layout": {

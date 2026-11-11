@@ -4,7 +4,7 @@ window.TOOLKIT_DATA = window.TOOLKIT_DATA || {};
 window.TOOLKIT_DATA["network"] = {
  "id": "network",
  "num": "04",
- "glyph": "\u25c9",
+ "glyph": "◉",
  "name": "Network Analysis & Traffic Monitoring",
  "short": "NET ANALYSIS",
  "slug": "network",
@@ -73,8 +73,8 @@ window.TOOLKIT_DATA["network"] = {
     "networking utilities"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.3431
+   "x": 0.5095,
+   "y": 0.3277
   },
   {
    "id": "network.packet",
@@ -94,8 +94,8 @@ window.TOOLKIT_DATA["network"] = {
     "TShark"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.2206
+   "x": 0.4855,
+   "y": 0.2367
   },
   {
    "id": "network.wireshark",
@@ -114,8 +114,8 @@ window.TOOLKIT_DATA["network"] = {
     "Wireshark"
    ],
    "commands": [],
-   "x": 0.5,
-   "y": 0.098
+   "x": 0.523,
+   "y": 0.083
   },
   {
    "id": "network.display",
@@ -132,8 +132,8 @@ window.TOOLKIT_DATA["network"] = {
     "Wireshark display filters"
    ],
    "commands": [],
-   "x": 0.6358,
-   "y": 0.5784
+   "x": 0.6401,
+   "y": 0.6008
   },
   {
    "id": "network.dns",
@@ -153,8 +153,8 @@ window.TOOLKIT_DATA["network"] = {
     "dig"
    ],
    "commands": [],
-   "x": 0.742,
-   "y": 0.6397
+   "x": 0.7404,
+   "y": 0.6084
   },
   {
    "id": "network.http",
@@ -173,8 +173,8 @@ window.TOOLKIT_DATA["network"] = {
     "Wireshark"
    ],
    "commands": [],
-   "x": 0.8481,
-   "y": 0.701
+   "x": 0.839,
+   "y": 0.7439
   },
   {
    "id": "network.tls",
@@ -192,8 +192,8 @@ window.TOOLKIT_DATA["network"] = {
     "OpenSSL"
    ],
    "commands": [],
-   "x": 0.3642,
-   "y": 0.5784
+   "x": 0.3397,
+   "y": 0.5638
   },
   {
    "id": "network.network",
@@ -213,8 +213,8 @@ window.TOOLKIT_DATA["network"] = {
     "Zeek"
    ],
    "commands": [],
-   "x": 0.258,
-   "y": 0.6397
+   "x": 0.2931,
+   "y": 0.6635
   },
   {
    "id": "network.firewall",
@@ -234,8 +234,8 @@ window.TOOLKIT_DATA["network"] = {
     "nftables"
    ],
    "commands": [],
-   "x": 0.1519,
-   "y": 0.701
+   "x": 0.1119,
+   "y": 0.6544
   }
  ],
  "layout": {
