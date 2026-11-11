@@ -1,0 +1,14 @@
+window.QUIZ_BANK = [
+    { q:'Which command lists files in a directory, including hidden ones?', opts:['ls -a','ls -l','dir -h','show --all'], a:0, why:'-a shows all entries, including dotfiles. -l only changes the format to a long listing.' },
+    { q:'What does <code>chmod 755 script.sh</code> do?', opts:['Owner: read/write/execute, group and others: read/execute','Everyone gets full permissions','Owner read-only, others execute','Deletes write permission for everyone'], a:0, why:'7 = rwx for the owner, 5 = r-x for group and others. A common setting for scripts.' },
+    { q:'How do you search for the word "error" inside syslog, case-insensitive?', opts:['grep -i "error" /var/log/syslog','find "error" syslog','cat syslog | error','search -i error syslog'], a:0, why:'grep filters text; -i makes it case-insensitive. find locates files by name, not content.' },
+    { q:'Which command shows running processes in a live, updating view?', opts:['top','ps --once','ls /proc -f','jobs -l'], a:0, why:'top refreshes continuously. ps shows a single snapshot; jobs lists shell background jobs only.' },
+    { q:'What does <code>sudo !!</code> do?', opts:['Re-runs the previous command through sudo','Cancels the last command','Prints the sudo version','Opens the sudoers file'], a:0, why:'In an interactive Bash shell with history expansion enabled, !! expands to the previous command. Check the expanded command before running it with sudo.' },
+    { q:'How do you send a command\'s output into a file, replacing its contents?', opts:['command > file.txt','command | file.txt','command >> file.txt','command < file.txt'], a:0, why:'> overwrites, >> appends, | pipes to another command, < reads input from a file.' },
+    { q:'Which command asks process 4321 to terminate?', opts:['kill 4321','stop 4321','ps -k 4321','endproc 4321'], a:0, why:'kill sends SIGTERM by default. The process can handle or ignore it. SIGKILL is a last resort because it prevents normal cleanup.' },
+    { q:'What does <code>df -h</code> show?', opts:['Disk space usage per filesystem, human-readable','Memory usage','Open files','Directory sizes'], a:0, why:'df reports mounted filesystem space; -h prints sizes as MB/GB. du is the one for directory sizes.' },
+    { q:'How do you copy a folder "logs" (and its contents) to /backup?', opts:['cp -r logs /backup','cp logs /backup','mv logs /backup','copy -all logs /backup'], a:0, why:'cp needs -r for directories. mv would move it instead of copying.' },
+    { q:'What does <code>systemctl status ssh</code> tell you?', opts:['The SSH service state, plus recent log lines','Your SSH keys','Open SSH connections','The SSH config file'], a:0, why:'On systems using systemd with a unit named ssh, this shows its state and recent logs. Some distributions call the unit sshd instead.' }
+  ];
+
+window.QUIZ_BANK.forEach(function(q,i){q.level=[1,4,6,9].includes(i)?"intermediate":"beginner";q.topic="Linux & Systems";});

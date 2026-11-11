@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Spot the Phishing - Justin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --green:#00f5a0; --white:#eef4f8; --muted:#9aa9bc; --bg:#050b11; --red:#ff5d6c; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { min-height:100vh; background:radial-gradient(ellipse 70% 50% at 50% 30%, rgba(0,245,160,.07), transparent 65%), var(--bg); font-family:'Manrope',sans-serif; color:var(--white); display:flex; justify-content:center; padding:48px 18px; }
+  .wrap { width:min(600px,100%); }
+  .kicker { color:var(--green); font:11px 'JetBrains Mono',monospace; letter-spacing:2px; margin-bottom:10px; }
+  h1 { font-size:clamp(26px,6vw,36px); font-weight:800; letter-spacing:-1px; }
+  h1 span { color:var(--green); }
+  .sub { color:var(--muted); font-size:13.5px; line-height:1.7; margin:12px 0 26px; }
+  .panel { border:1px solid rgba(0,245,160,.2); border-radius:18px; background:linear-gradient(155deg,#13242c,#071018 72%); padding:24px; box-shadow:inset 0 1px rgba(255,255,255,.045), 0 12px 35px rgba(0,0,0,.25); }
+  .progress { font:10px 'JetBrains Mono',monospace; letter-spacing:1.5px; color:var(--muted); margin-bottom:14px; display:flex; justify-content:space-between; }
+  .q { font-size:16.5px; font-weight:700; line-height:1.5; margin-bottom:6px; }
+  .q code { color:var(--green); font-family:'JetBrains Mono',monospace; font-size:15px; }
+  .qsub { white-space:pre-line; overflow-wrap:anywhere; line-height:1.8; border-left:2px solid #324754; padding:10px 12px; margin-top:14px; color:var(--muted); font-size:12px; margin-bottom:18px; }
+  .opts { display:grid; gap:10px; }
+  .opt { text-align:left; background:#050d13; border:1px solid rgba(0,245,160,.2); border-radius:12px; color:var(--white); font:13.5px 'JetBrains Mono',monospace; padding:13px 15px; cursor:pointer; transition:border-color .2s, background .2s; }
+  .opt:hover:not(:disabled) { border-color:var(--green); background:rgba(0,245,160,.06); }
+  .opt:disabled { cursor:default; opacity:.75; }
+  .opt.right { border-color:var(--green); background:rgba(0,245,160,.14); opacity:1; }
+  .opt.wrong { border-color:var(--red); background:rgba(255,93,108,.1); opacity:1; }
+  .explain { margin-top:16px; color:var(--muted); font-size:12.5px; line-height:1.7; border-left:2px solid var(--green); padding-left:12px; min-height:0; }
+  .explain:empty { display:none; }
+  .next { margin-top:18px; width:100%; background:rgba(0,245,160,.1); border:1px solid var(--green); color:var(--green); border-radius:12px; padding:13px; font:700 12px 'JetBrains Mono',monospace; letter-spacing:1.5px; cursor:pointer; }
+  .next:hover { background:rgba(0,245,160,.2); }
+  .result { text-align:center; padding:14px 0 4px; }
+  .result .big { font:800 44px 'Manrope',sans-serif; color:var(--green); }
+  .result p { color:var(--muted); font-size:13px; margin-top:8px; line-height:1.7; }
+  .back { display:inline-block; margin-top:26px; color:var(--green); font:11px 'JetBrains Mono',monospace; letter-spacing:1px; text-decoration:none; }
+  .back:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">// MINI PROJECT 03</div>
+  <h1>SPOT THE <span>PHISHING</span></h1>
+  <p class="sub">Fictional scenarios in two levels. Spot warning signs or choose the safer action. Real messages need independent checks, not a quiz score.</p>
+  <div class="levels" style="display:flex;gap:12px;align-items:center;margin-bottom:16px"><label for="level" style="font-size:12px">LEVEL</label><select id="level" style="background:#0b1822;color:#eef4f8;border:1px solid #00a877;border-radius:8px;padding:10px;font:12px monospace"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option></select></div>
+  <div class="panel" id="panel">
+    <div class="progress"><span id="step"></span><span id="score"></span></div>
+    <div class="q" id="q"></div>
+    <div class="qsub" id="qsub"></div>
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" aria-live="polite"></div>
+    <button class="next" id="next" type="button" hidden>NEXT &rarr;</button>
+  </div>
+  <p class="sub" style="font-size:11px">Learning reference: <a style="color:var(--green)" href="https://www.cisa.gov/secure-our-world/recognize-and-report-phishing" target="_blank" rel="noopener noreferrer">CISA: recognize and report phishing</a>. Message domains above use fictional .example addresses.</p>
+  <p class="sub" style="font-size:11px"><b style="color:var(--green)">How it works:</b> The question bank is separate from the quiz engine. A level filters the bank; answers are shuffled, checked by their original index, then explained. Scores last only until this page reloads. This is practice, not a skills assessment.<br><a style="color:var(--green)" href="https://github.com/Brolomna/justin-portfolio" target="_blank" rel="noopener noreferrer">View the code: public/phishing-quiz.html and phishing-quiz-bank.js ↗</a></p>
+  <a class="back" href="./#projects">&larr; BACK TO PORTFOLIO</a>
+</div>
+<script src="./phishing-quiz-bank.js"></script>
+<script>
+(function(){
+  var QS = [];
+  var i = 0, correct = 0;
+  var qEl = document.getElementById('q'), optsEl = document.getElementById('opts'),
+      exEl = document.getElementById('explain'), nextBtn = document.getElementById('next'),
+      stepEl = document.getElementById('step'), scoreEl = document.getElementById('score'),
+      panel = document.getElementById('panel');
+  function render(){
+    var item = QS[i];
+    stepEl.textContent = document.querySelector('#level').value.toUpperCase() + ' ' + (i+1) + ' / ' + QS.length;
+    scoreEl.textContent = 'SCORE ' + correct;
+    qEl.innerHTML = item.q;
+    document.getElementById('qsub').textContent = item.msg;
+    optsEl.innerHTML = '';
+    exEl.textContent = '';
+    nextBtn.hidden = true;
+    item.opts.map(function(text, idx){ return {text:text, idx:idx}; }).sort(function(){return Math.random()-.5;}).forEach(function(entry){
+      var text=entry.text, idx=entry.idx;
+      var b = document.createElement('button');
+      b.dataset.answer=idx; b.className = 'opt'; b.type = 'button'; b.textContent = text;
+      b.addEventListener('click', function(){ answer(idx, b); });
+      optsEl.appendChild(b);
+    });
+  }
+  function answer(idx, btn){
+    var item = QS[i];
+    optsEl.querySelectorAll('.opt').forEach(function(b, j){
+      b.disabled = true;
+      if (Number(b.dataset.answer) === item.a) b.classList.add('right');
+    });
+    if (idx === item.a) { correct++; scoreEl.textContent = 'SCORE ' + correct; }
+    else btn.classList.add('wrong');
+    exEl.textContent = item.why;
+    nextBtn.hidden = false;
+    nextBtn.textContent = (i === QS.length - 1) ? 'SEE RESULT \u2192' : 'NEXT \u2192';
+    nextBtn.focus();
+  }
+  function finish(){
+    var pct = Math.round(correct / QS.length * 100);
+    var msg = pct >= 80 ? 'Good spotting. Keep checking messages through a separate, trusted route.'
+            : pct >= 50 ? 'Keep practising. Unexpected requests deserve a pause.'
+            : 'The explanations are the useful part. Pause, verify, then act.';
+    panel.innerHTML = '<div class="result"><div class="big">' + correct + ' / ' + QS.length + '</div>' +
+      '<p>' + msg + '</p></div>' +
+      '<button class="next" id="again" type="button">TRY AGAIN</button>';
+    document.getElementById('again').addEventListener('click', function(){ location.reload(); });
+  }
+  nextBtn.addEventListener('click', function(){
+    i++;
+    if (i >= QS.length) finish(); else render();
+  });
+  function start(){ QS=window.QUIZ_BANK.filter(function(q){return q.level===document.querySelector('#level').value;});i=0;correct=0;render();}
+  document.querySelector('#level').addEventListener('change',function(){location.search='?level='+this.value;});
+  if(new URLSearchParams(location.search).get('level')==='intermediate')document.querySelector('#level').value='intermediate';
+  start();
+})();
+</script>
+</body>
+</html>
