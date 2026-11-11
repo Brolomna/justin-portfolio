@@ -73,8 +73,8 @@ window.TOOLKIT_DATA["network"] = {
     "networking utilities"
    ],
    "commands": [],
-   "x": 0.1667,
-   "y": 0.4545
+   "x": 0.5,
+   "y": 0.3431
   },
   {
    "id": "network.packet",
@@ -94,8 +94,8 @@ window.TOOLKIT_DATA["network"] = {
     "TShark"
    ],
    "commands": [],
-   "x": 0.255,
-   "y": 0.6439
+   "x": 0.5,
+   "y": 0.2206
   },
   {
    "id": "network.wireshark",
@@ -114,8 +114,8 @@ window.TOOLKIT_DATA["network"] = {
     "Wireshark"
    ],
    "commands": [],
-   "x": 0.1096,
-   "y": 0.8333
+   "x": 0.5,
+   "y": 0.098
   },
   {
    "id": "network.display",
@@ -132,8 +132,8 @@ window.TOOLKIT_DATA["network"] = {
     "Wireshark display filters"
    ],
    "commands": [],
-   "x": 0.5696,
-   "y": 0.4545
+   "x": 0.6358,
+   "y": 0.5784
   },
   {
    "id": "network.dns",
@@ -153,8 +153,8 @@ window.TOOLKIT_DATA["network"] = {
     "dig"
    ],
    "commands": [],
-   "x": 0.4187,
-   "y": 0.6439
+   "x": 0.742,
+   "y": 0.6397
   },
   {
    "id": "network.http",
@@ -173,8 +173,8 @@ window.TOOLKIT_DATA["network"] = {
     "Wireshark"
    ],
    "commands": [],
-   "x": 0.483,
-   "y": 0.8333
+   "x": 0.8481,
+   "y": 0.701
   },
   {
    "id": "network.tls",
@@ -192,8 +192,8 @@ window.TOOLKIT_DATA["network"] = {
     "OpenSSL"
    ],
    "commands": [],
-   "x": 0.7406,
-   "y": 0.4545
+   "x": 0.3642,
+   "y": 0.5784
   },
   {
    "id": "network.network",
@@ -213,8 +213,8 @@ window.TOOLKIT_DATA["network"] = {
     "Zeek"
    ],
    "commands": [],
-   "x": 0.8534,
-   "y": 0.6439
+   "x": 0.258,
+   "y": 0.6397
   },
   {
    "id": "network.firewall",
@@ -234,12 +234,12 @@ window.TOOLKIT_DATA["network"] = {
     "nftables"
    ],
    "commands": [],
-   "x": 0.9131,
-   "y": 0.8333
+   "x": 0.1519,
+   "y": 0.701
   }
  ],
  "layout": {
-  "w": 1440,
-  "h": 660
+  "w": 1020,
+  "h": 1020
  }
 };
