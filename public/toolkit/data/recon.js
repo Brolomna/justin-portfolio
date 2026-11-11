@@ -78,8 +78,8 @@ window.TOOLKIT_DATA["recon"] = {
     "testing checklists"
    ],
    "commands": [],
-   "x": 0.1667,
-   "y": 0.3822
+   "x": 0.5,
+   "y": 0.374
   },
   {
    "id": "recon.passive",
@@ -99,8 +99,8 @@ window.TOOLKIT_DATA["recon"] = {
     "public DNS records"
    ],
    "commands": [],
-   "x": 0.255,
-   "y": 0.5414
+   "x": 0.5,
+   "y": 0.2756
   },
   {
    "id": "recon.dns",
@@ -121,8 +121,8 @@ window.TOOLKIT_DATA["recon"] = {
     "DNSRecon"
    ],
    "commands": [],
-   "x": 0.1096,
-   "y": 0.7006
+   "x": 0.5,
+   "y": 0.1772
   },
   {
    "id": "recon.subdomain",
@@ -142,8 +142,8 @@ window.TOOLKIT_DATA["recon"] = {
     "Subfinder"
    ],
    "commands": [],
-   "x": 0.1153,
-   "y": 0.8599
+   "x": 0.5,
+   "y": 0.0787
   },
   {
    "id": "recon.host",
@@ -161,8 +161,8 @@ window.TOOLKIT_DATA["recon"] = {
     "arp-scan"
    ],
    "commands": [],
-   "x": 0.5696,
-   "y": 0.3822
+   "x": 0.6091,
+   "y": 0.563
   },
   {
    "id": "recon.port",
@@ -184,8 +184,8 @@ window.TOOLKIT_DATA["recon"] = {
     "Nmap"
    ],
    "commands": [],
-   "x": 0.4187,
-   "y": 0.5414,
+   "x": 0.6943,
+   "y": 0.6122,
    "obj": [
     "Understand how Nmap works.",
     "Identify active hosts.",
@@ -221,8 +221,8 @@ window.TOOLKIT_DATA["recon"] = {
     "Nmap -sV"
    ],
    "commands": [],
-   "x": 0.483,
-   "y": 0.7006
+   "x": 0.7796,
+   "y": 0.6614
   },
   {
    "id": "recon.directory",
@@ -240,8 +240,8 @@ window.TOOLKIT_DATA["recon"] = {
     "FFUF"
    ],
    "commands": [],
-   "x": 0.7406,
-   "y": 0.3822
+   "x": 0.3909,
+   "y": 0.563
   },
   {
    "id": "recon.technolog",
@@ -261,12 +261,12 @@ window.TOOLKIT_DATA["recon"] = {
     "Wappalyzer"
    ],
    "commands": [],
-   "x": 0.8534,
-   "y": 0.5414
+   "x": 0.3057,
+   "y": 0.6122
   }
  ],
  "layout": {
-  "w": 1440,
-  "h": 785
+  "w": 1270,
+  "h": 1270
  }
 };
