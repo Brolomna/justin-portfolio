@@ -120,7 +120,7 @@ function layoutFor(m){
     m.skills.forEach(s => pos[s.id] = [s.x*W, s.y*H]);
   } else {
     // mobile: vertical winding 3-column layout
-    const xs=[62,195,328], per=3, y0=170, dy=104;
+    const xs=[62,195,328], per=3, y0=215, dy=104;
     H = y0 + (m.skills.length-1)*dy/per*1 + 0; // placeholder, computed below
     let i=0; H = 0;
     m.skills.forEach(s => {
@@ -131,7 +131,7 @@ function layoutFor(m){
     });
     H += 100;
   }
-  return { W, H, pos, root:[W/2, wide?118:78] };
+  return { W, H, pos, root:[W/2, wide?H/2:78] };
 }
 function statusClass(id){ return statusOf(id).replace('_','-'); }
 
@@ -158,6 +158,13 @@ function renderModule(){
       const [x1,y1]=pos[pr], [x2,y2]=pos[s.id];
       inner+=`<path class="wire ${cls}" data-pre="${pr}" data-skill="${s.id}" d="M ${x1} ${y1} Q ${(x1+x2)/2+(y2-y1)*.12} ${(y1+y2)/2-(x2-x1)*.12}, ${x2} ${y2}"/>`;
     });
+    if (s.pre.length===0){
+      // visual link from the module root to each branch entry (not a prerequisite - entries stay available)
+      const t = statusOf(s.id);
+      const cls = t==='verified'?'lit':t==='in_progress'?'prog':'avail';
+      const [x1,y1]=root, [x2,y2]=pos[s.id];
+      inner+=`<path class="wire rootwire ${cls}" data-pre="__root" data-skill="${s.id}" d="M ${x1} ${y1} Q ${(x1+x2)/2+(y2-y1)*.12} ${(y1+y2)/2-(x2-x1)*.12}, ${x2} ${y2}"/>`;
+    }
   });
   svgEl.setAttribute('viewBox',`0 0 ${W} ${H}`);
   svgEl.innerHTML = inner;
