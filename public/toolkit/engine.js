@@ -478,9 +478,10 @@ function refresh(){
     if (!currentModule) return;
     e.preventDefault();
     if (e.ctrlKey) {
-      // touchpad pinch (browsers report it as ctrl+wheel): zoom around the cursor
+      // touchpad pinch (browsers report it as ctrl+wheel): gentle delta-proportional zoom around the cursor
       const [cx,cy] = stagePoint(e);
-      zoomAt(e.deltaY<0?1.12:0.89, cx, cy);
+      const f = Math.min(1.06, Math.max(0.94, Math.exp(-e.deltaY*0.0012)));
+      zoomAt(f, cx, cy);
     } else {
       // two-finger scroll: pan the tree
       view.tx -= e.deltaX; view.ty -= e.deltaY; applyView();
