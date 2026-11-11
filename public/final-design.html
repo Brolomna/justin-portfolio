@@ -1206,7 +1206,26 @@ h1 .hero-better {
       <p>Hey, I'm Justin. I work on web projects, experiment with different technologies, and spend a good amount of time exploring cybersecurity.</p>
       <p>I enjoy building things that work, figuring out why they don't, and finding ways to make them better. Whether it's developing an application, testing a web service, or messing around in a security lab, I'm always up for a good technical challenge.</p>
       <p>My background includes working as a computer instructor and later as an English teacher. Those experiences shaped the way I approach collaboration: communicate clearly, stay patient, and make complicated things easier to understand.</p>
-      <div class="about-facts"><div><strong>BUILD</strong><span>Websites, apps &amp; automation</span></div><div><strong>EXPLORE</strong><span>Linux, networking &amp; security</span></div><div><strong>PRACTISE</strong><span>Labs, CTFs &amp; continuous learning</span></div></div>
+      <div class="traits-grid">
+        <article class="trait-card">
+          <div class="trait-top"><span class="trait-num">01</span><span class="trait-glyph">&lt;/&gt;</span></div>
+          <h3>BUILD</h3>
+          <p>Websites, apps &amp; automation</p>
+          <div class="trait-cmd"><b>$</b> make cool stuff</div>
+        </article>
+        <article class="trait-card">
+          <div class="trait-top"><span class="trait-num">02</span><span class="trait-glyph">⌖</span></div>
+          <h3>EXPLORE</h3>
+          <p>Linux, networking &amp; security</p>
+          <div class="trait-cmd"><b>$</b> nmap -sV localhost</div>
+        </article>
+        <article class="trait-card">
+          <div class="trait-top"><span class="trait-num">03</span><span class="trait-glyph">⚑</span></div>
+          <h3>PRACTISE</h3>
+          <p>Labs, CTFs &amp; continuous learning</p>
+          <div class="trait-cmd"><b>$</b> ./keep_learning.sh</div>
+        </article>
+      </div>
     </div>
   </div>
   <div class="cert-strip cert-strip-embedded">
@@ -1311,11 +1330,17 @@ h1 .hero-better {
 .about-heading h2,.projects-heading h2,.contact-section h2 { color:var(--white); font:800 clamp(30px,5vw,46px)/1.12 'Manrope',Inter,sans-serif; letter-spacing:-2px; }
 .about-heading h2 span,.projects-heading h2 span,.contact-section h2 span { color:var(--green); }
 .about-copy>p { color:var(--muted); font-size:14px; line-height:1.85; margin-bottom:14px; }
-.about-facts { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:23px; }
-.about-facts div { border:1px solid rgba(0,245,160,.16); background:rgba(12,25,31,.6); border-radius:12px; padding:13px; }
-.about-facts strong,.about-facts span { display:block; }
-.about-facts strong { color:var(--green); font:10px 'JetBrains Mono',monospace; margin-bottom:7px; }
-.about-facts span { color:var(--muted); font-size:11px; line-height:1.5; }
+.traits-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:30px; }
+.trait-card { position:relative; overflow:hidden; border:1px solid rgba(0,245,160,.18); border-radius:16px; background:radial-gradient(circle at 88% -12%,rgba(0,245,160,.1),transparent 55%),linear-gradient(150deg,rgba(18,31,39,.9),rgba(8,15,22,.86)); padding:20px 20px 18px; box-shadow:inset 0 1px rgba(255,255,255,.035),0 12px 30px rgba(0,0,0,.16); transition:transform .25s,border-color .25s,box-shadow .25s; }
+.trait-card:hover { transform:translateY(-4px); border-color:rgba(0,245,160,.5); box-shadow:0 16px 36px rgba(0,245,160,.09),inset 0 1px rgba(255,255,255,.05); }
+.trait-top { display:flex; justify-content:space-between; align-items:flex-start; }
+.trait-num { color:var(--green); font:11px 'JetBrains Mono',monospace; letter-spacing:1.5px; opacity:.85; }
+.trait-glyph { color:var(--green); font-size:22px; line-height:1; text-shadow:0 0 16px rgba(0,245,160,.55); transition:transform .3s,text-shadow .3s; }
+.trait-card:hover .trait-glyph { transform:scale(1.18) rotate(-7deg); text-shadow:0 0 26px rgba(0,245,160,.85); }
+.trait-card h3 { color:var(--white); font:800 20px 'Manrope',Inter,sans-serif; letter-spacing:.5px; margin:16px 0 7px; }
+.trait-card p { color:var(--muted); font-size:13.5px; line-height:1.6; }
+.trait-cmd { margin-top:16px; padding-top:11px; border-top:1px dashed rgba(0,245,160,.2); color:#6f8f95; font:10.5px 'JetBrains Mono',monospace; }
+.trait-cmd b { color:var(--green); font-weight:400; margin-right:6px; }
 .cert-strip { display:flex; align-items:center; gap:16px; margin-top:34px; padding:17px 19px; border:1px solid rgba(0,245,160,.2); border-radius:15px; background:linear-gradient(110deg,rgba(0,245,160,.06),rgba(10,18,27,.7)); }
 .cert-icon { display:grid; place-items:center; width:38px; height:38px; flex:0 0 38px; border:1px solid rgba(0,245,160,.4); border-radius:11px; color:var(--green); font-size:20px; }
 .cert-strip>div:nth-child(2) { flex:1; }.cert-label { display:block; color:var(--green); font:9px 'JetBrains Mono',monospace; letter-spacing:1px; margin-bottom:4px; }.cert-strip strong { color:var(--white); font:600 14px 'Manrope',sans-serif; }.cert-strip p { color:var(--muted); font-size:11px; margin-top:3px; }.cert-strip>a { color:var(--green); font-size:11px; white-space:nowrap; }
@@ -1331,7 +1356,7 @@ h1 .hero-better {
 .contact-section { padding:65px 0 35px; border-top:1px solid rgba(255,255,255,.08); }.contact-section h2 { font-size:clamp(36px,6vw,58px); }.contact-section>p { color:var(--muted); font-size:13px; margin:15px 0 22px; }.contact-section>a { display:inline-flex; color:var(--green); border:1px solid rgba(0,245,160,.4); border-radius:999px; padding:12px 17px; font-size:12px; }.contact-meta { display:flex; justify-content:space-between; margin-top:54px; padding-top:17px; border-top:1px solid rgba(255,255,255,.08); color:var(--muted); font:9px 'JetBrains Mono',monospace; letter-spacing:.8px; }.contact-meta a,.site-footer a { color:var(--green); }.site-footer { width:min(1100px,calc(100% - 42px)); margin:0 auto; padding:16px 0 25px; display:flex; justify-content:space-between; gap:12px; color:#66798a; font:9px 'JetBrains Mono',monospace; letter-spacing:.8px; }.site-footer b { color:var(--green); }
 
 .contact-anchor a { color:var(--green); font:600 13px Inter,sans-serif; border:1px solid rgba(0,245,160,.4); border-radius:999px; padding:10px 16px; }
-@media(max-width:760px){ .nav { padding-left:14px; } .nav-links,.nav-cta { display:none; } .nav-toggle { display:block; margin-left:auto; } .about-layout { grid-template-columns:1fr; gap:20px; } .projects-heading { display:block; } .projects-heading>p { margin-top:14px; } .project-featured { grid-column:span 1; display:flex; flex-direction:column; } .project-featured .project-visual { min-height:210px; border-right:0; border-bottom:1px solid rgba(255,255,255,.07); } .projects-grid,.toolkit-grid { grid-template-columns:1fr; } .about-facts { grid-template-columns:1fr; } .cert-strip { align-items:flex-start; flex-wrap:wrap; } .cert-strip>a { margin-left:54px; } .toolkit-section { padding-top:55px; } .toolkit-card p { min-height:0; } .site-footer { flex-wrap:wrap; } }
+@media(max-width:760px){ .nav { padding-left:14px; } .nav-links,.nav-cta { display:none; } .nav-toggle { display:block; margin-left:auto; } .about-layout { grid-template-columns:1fr; gap:20px; } .projects-heading { display:block; } .projects-heading>p { margin-top:14px; } .project-featured { grid-column:span 1; display:flex; flex-direction:column; } .project-featured .project-visual { min-height:210px; border-right:0; border-bottom:1px solid rgba(255,255,255,.07); } .projects-grid,.toolkit-grid { grid-template-columns:1fr; } .traits-grid { grid-template-columns:1fr; } .cert-strip { align-items:flex-start; flex-wrap:wrap; } .cert-strip>a { margin-left:54px; } .toolkit-section { padding-top:55px; } .toolkit-card p { min-height:0; } .site-footer { flex-wrap:wrap; } }
 @media(prefers-reduced-motion:reduce){ .nav { animation:none; } .toolkit-card { transition:none; } }
 </style>
 
