@@ -66,7 +66,7 @@
 .st-node .hexbg { position:absolute; inset:0; width:100%; height:100%; display:block; }
 .st-node .hx-face { fill:#0a141c; stroke:#42505c; stroke-width:2.5; stroke-linejoin:round; }
 .st-node .hx-depth { fill:#1a2128; stroke:none; }
-.st-node .hex-in { position:relative; display:grid; place-items:center; color:#7a8a94; font:600 10px 'JetBrains Mono',monospace; }
+.st-node .hex-in { position:absolute; top:2.7%; left:0; right:0; height:81.1%; display:grid; place-items:center; color:#7a8a94; font:600 10px 'JetBrains Mono',monospace; }
 .st-node .ic { width:22px; height:22px; display:block; }
 .st-node.rootn .ic { width:34px; height:34px; }
 .st-node .nm { margin-top:6px; color:#8b98a5; font:700 8.5px 'JetBrains Mono',monospace; letter-spacing:.8px; text-transform:uppercase; text-align:center; line-height:1.25; }
