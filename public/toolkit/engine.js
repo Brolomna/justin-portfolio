@@ -183,13 +183,13 @@ function renderModule(){
   // root node
   const ms = moduleStats(m);
   let nodesHtml = `<button class="st-node rootn" data-id="__root" style="left:${root[0]}px;top:${root[1]}px" type="button" aria-label="${esc(m.short)} module root">
-    <span class="hex"><span class="hex-in">${iconSvg('__root.'+m.id)}</span></span><span class="nm">${esc(m.short)}</span><span class="num">${ms.verified}/${ms.total} VERIFIED</span></button>`;
+    <span class="hex"><svg class="hexbg" viewBox="0 0 64 74" aria-hidden="true"><polygon class="hx-depth" points="32,8 60,23 60,53 32,68 4,53 4,23"/><polygon class="hx-face" points="32,2 60,17 60,47 32,62 4,47 4,17"/></svg><span class="hex-in">${iconSvg('__root.'+m.id)}</span></span><span class="nm">${esc(m.short)}</span><span class="num">${ms.verified}/${ms.total} VERIFIED</span></button>`;
   m.skills.forEach((s,i)=>{
     const [x,y]=pos[s.id];
     const t = statusOf(s.id);
     nodesHtml += `<button class="st-node ${statusClass(s.id)}" data-id="${s.id}" style="left:${x}px;top:${y}px" type="button"
       aria-label="${esc(s.name)}: ${STATUS_LABEL[t]}" aria-describedby="stTip">
-      <span class="hex"><span class="hex-in">${iconSvg(s.id)}</span></span><span class="nm">${esc(shortName(s.name))}</span><span class="num">#${String(s.n||i+1).padStart(2,'0')}</span></button>`;
+      <span class="hex"><svg class="hexbg" viewBox="0 0 64 74" aria-hidden="true"><polygon class="hx-depth" points="32,8 60,23 60,53 32,68 4,53 4,23"/><polygon class="hx-face" points="32,2 60,17 60,47 32,62 4,47 4,17"/></svg><span class="hex-in">${iconSvg(s.id)}</span></span><span class="nm">${esc(shortName(s.name))}</span><span class="num">#${String(s.n||i+1).padStart(2,'0')}</span></button>`;
   });
   nodesEl.innerHTML = nodesHtml;
   nodesEl.querySelectorAll('.st-node').forEach(el=>{
