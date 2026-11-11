@@ -472,8 +472,14 @@ function refresh(){
   stageEl.addEventListener('wheel', e=>{
     if (!currentModule) return;
     e.preventDefault();
-    const [cx,cy] = stagePoint(e);
-    zoomAt(e.deltaY<0?1.12:0.89, cx, cy);
+    if (e.ctrlKey) {
+      // touchpad pinch (browsers report it as ctrl+wheel): zoom around the cursor
+      const [cx,cy] = stagePoint(e);
+      zoomAt(e.deltaY<0?1.12:0.89, cx, cy);
+    } else {
+      // two-finger scroll: pan the tree
+      view.tx -= e.deltaX; view.ty -= e.deltaY; applyView();
+    }
   }, {passive:false});
   stageEl.addEventListener('pointerdown', e=>{
     if (e.target.closest('.st-node') || e.target.closest('.st-panel') || e.target.closest('.st-zoom')) return;
