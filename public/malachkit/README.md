@@ -65,7 +65,3 @@ MalachKit is linked as card eight in the portfolio carousel. The app is indexabl
 ## Acceptance checks
 
 See [TESTING.md](./TESTING.md) for tested cases and limitations. Repeat the 53 business-logic assertions with `node tests/malachkit.mjs` from the repository root (Node 22+). Browser interaction checks used safe local fixtures at the five requested widths; no production secrets were used.
-
-## Previous address
-
-The old `/fieldkit/` entry redirects to `/malachkit/`, preserving query parameters and tool hash links when JavaScript is enabled. The no-JavaScript fallback opens the new overview. The old path is kept only for compatibility.
