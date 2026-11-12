@@ -10,7 +10,7 @@ const pages = {
   hashcheck: ['FILE INTEGRITY / 01', 'HashCheck', 'Generate and verify SHA-256 checksums for files. One fingerprint. A clear comparison.'],
   tokenlens: ['AUTHENTICATION & TOKEN INSPECTION / 02', 'TokenLens', 'Decode a JSON Web Token and inspect its claims. Read the contents, never assume trust.'],
   netcalc: ['NETWORKING / 03', 'NetCalc', 'An IPv4 subnet calculator. Turn an address and CIDR prefix into a range you can understand.'],
-  about: ['PURPOSE & TECHNICAL NOTES', 'About FieldKit', 'Lightweight tools for hands-on learning and everyday technical work. Built to show its workings.']
+  about: ['PURPOSE & TECHNICAL NOTES', 'About MalachKit', 'Lightweight tools for hands-on learning and everyday technical work. Built to show its workings.']
 };
 let current = '';
 function route(focus = true) {
@@ -29,7 +29,7 @@ function route(focus = true) {
   if (page === 'overview') $('page-title').append(document.createTextNode('Practical tools.'), document.createElement('br'), Object.assign(document.createElement('span'), { textContent: 'Clear results.' }));
   else $('page-title').textContent = title;
   $('page-description').textContent = description;
-  document.title = `${title === 'Overview' ? 'FieldKit' : title + ' | FieldKit'} - Practical tools. Clear results.`;
+  document.title = `${title === 'Overview' ? 'MalachKit' : title + ' | MalachKit'} - Practical tools. Clear results.`;
   document.querySelector('.sidebar').classList.remove('menu-open');
   document.querySelector('.menu-toggle').setAttribute('aria-expanded', 'false');
   $('notification').hidden = true;

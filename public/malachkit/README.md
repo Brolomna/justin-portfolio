@@ -1,8 +1,8 @@
-# FieldKit
+# MalachKit
 
 Practical tools. Clear results.
 
-FieldKit is a small browser workbench built by Justin as a portfolio project. It brings file integrity checks, JWT inspection, and IPv4 subnet arithmetic into one local interface. The point is to make common technical tasks useful while demonstrating how they work, not to claim that decoding or calculating something establishes trust.
+MalachKit is a small browser workbench built by Justin as a portfolio project. It brings file integrity checks, JWT inspection, and IPv4 subnet arithmetic into one local interface. The point is to make common technical tasks useful while demonstrating how they work, not to claim that decoding or calculating something establishes trust.
 
 ## Tools
 
@@ -18,7 +18,7 @@ Paste a compact three-segment JWT. Base64URL translates the URL-safe `-` and `_`
 
 Common registered claims: issuer (`iss`), subject (`sub`), audience (`aud`), expiration (`exp`), not before (`nbf`), issued at (`iat`), and token ID (`jti`). Numeric timestamp claims are Unix seconds; local and UTC dates are displayed. Expiration and not-before comparisons use the device clock without clock-skew allowance. Nonnumeric or unsupported timestamps are flagged. Optional claims need not be present. Unsecured `alg: none` tokens with an empty signature are labeled unsecured.
 
-**Decoding is NOT signature verification.** No signature or key is checked; no issuer, audience, or algorithm is trusted. Encrypted five-segment tokens are unsupported. Input is capped at 100,000 characters to keep parsing manageable. Don't paste production credentials or secrets into an environment you don't trust. Input and decoded output are cleared when leaving the tool or page, including cached-page restoration. Clipboard copies are outside FieldKit's control.
+**Decoding is NOT signature verification.** No signature or key is checked; no issuer, audience, or algorithm is trusted. Encrypted five-segment tokens are unsupported. Input is capped at 100,000 characters to keep parsing manageable. Don't paste production credentials or secrets into an environment you don't trust. Input and decoded output are cleared when leaving the tool or page, including cached-page restoration. Clipboard copies are outside MalachKit's control.
 
 ### NetCalc
 
@@ -49,11 +49,11 @@ Business functions are exported separately from UI setup for testing. Untrusted 
 
 ## Run and deploy
 
-From the existing justin-portfolio repository, run `npm run dev` and open `/fieldkit/`. Alternatively serve `public/` with a local HTTP server and open `/fieldkit/`. Do not use `file://` because ES modules and Web Crypto need a suitable browser origin.
+From the existing justin-portfolio repository, run `npm run dev` and open `/malachkit/`. Alternatively serve `public/` with a local HTTP server and open `/malachkit/`. Do not use `file://` because ES modules and Web Crypto need a suitable browser origin.
 
-`npm run build` copies `public/fieldkit/` unchanged into `dist/fieldkit/`. The existing GitHub Actions workflow deploys `dist`; it is not replaced. All internal paths are relative, including `../` back to the portfolio. Production path: `https://brolomna.github.io/justin-portfolio/fieldkit/`.
+`npm run build` copies `public/malachkit/` unchanged into `dist/malachkit/`. The existing GitHub Actions workflow deploys `dist`; it is not replaced. All internal paths are relative, including `../` back to the portfolio. Production path: `https://brolomna.github.io/justin-portfolio/malachkit/`.
 
-FieldKit is linked as card eight in the portfolio carousel. The app is indexable. The existing carousel behavior, other projects, and Moonfall code are preserved.
+MalachKit is linked as card eight in the portfolio carousel. The app is indexable. The existing carousel behavior, other projects, and Moonfall code are preserved.
 
 ## References
 
@@ -64,4 +64,8 @@ FieldKit is linked as card eight in the portfolio carousel. The app is indexable
 
 ## Acceptance checks
 
-See [TESTING.md](./TESTING.md) for tested cases and limitations. Repeat the 53 business-logic assertions with `node tests/fieldkit.mjs` from the repository root (Node 22+). Browser interaction checks used safe local fixtures at the five requested widths; no production secrets were used.
+See [TESTING.md](./TESTING.md) for tested cases and limitations. Repeat the 53 business-logic assertions with `node tests/malachkit.mjs` from the repository root (Node 22+). Browser interaction checks used safe local fixtures at the five requested widths; no production secrets were used.
+
+## Previous address
+
+The old `/fieldkit/` entry redirects to `/malachkit/`, preserving query parameters and tool hash links when JavaScript is enabled. The no-JavaScript fallback opens the new overview. The old path is kept only for compatibility.

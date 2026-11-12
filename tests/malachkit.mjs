@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { hashFile, compareHash } from '../public/fieldkit/js/hashcheck.js';
-import { inspectToken, decodeBase64URL } from '../public/fieldkit/js/tokenlens.js';
-import { calculateSubnet, parseIPv4 } from '../public/fieldkit/js/netcalc.js';
+import { hashFile, compareHash } from '../public/malachkit/js/hashcheck.js';
+import { inspectToken, decodeBase64URL } from '../public/malachkit/js/tokenlens.js';
+import { calculateSubnet, parseIPv4 } from '../public/malachkit/js/netcalc.js';
 let count=0;const check=(name,fn)=>{fn();count++;console.log('PASS',name)};
 const hello='2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824';
 assert.equal(await hashFile(new Blob(['hello'])),hello);count++;console.log('PASS hello SHA-256',hello);

@@ -52,7 +52,7 @@ export function inspectToken(input, now = Date.now() / 1000) {
 }
 export function safeExample() {
   const encode = data => btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(data)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  return `${encode({ alg: 'HS256', typ: 'JWT' })}.${encode({ sub: 'local-example', iss: 'FieldKit demo', iat: Math.floor(Date.now() / 1000), note: 'Example only. No real signature.' })}.${btoa('not-a-real-signature').replace(/=+$/, '')}`;
+  return `${encode({ alg: 'HS256', typ: 'JWT' })}.${encode({ sub: 'local-example', iss: 'MalachKit demo', iat: Math.floor(Date.now() / 1000), note: 'Example only. No real signature.' })}.${btoa('not-a-real-signature').replace(/=+$/, '')}`;
 }
 export function initTokenLens() {
   let result = null;

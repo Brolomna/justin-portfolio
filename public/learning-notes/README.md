@@ -5,7 +5,7 @@ Preview listing: `../learning-notes-preview.html`. Each card opens its own stati
 ## Add or revise a note
 
 1. Edit `public/learning-notes/notes.json`. Add a unique lowercase hyphenated slug, title, short summary, category, type, tags, date added, estimated read time, symbol, honest basis statement, sections, and source links.
-2. Supported block types: `p`, `list`, `code`, `callout`, and the reviewed FieldKit `link`. All text is HTML-escaped by the generator. Add any new link destination deliberately, not by trusting pasted content.
+2. Supported block types: `p`, `list`, `code`, `callout`, and the reviewed MalachKit `link`. All text is HTML-escaped by the generator. Add any new link destination deliberately, not by trusting pasted content.
 3. Use a real basis: an actual completed course, covered topic, project, or authorized lab. A reference example is not a claim that the command was run in a real engagement. Keep draft reflections separate from established milestones.
 4. Run `python3 scripts/build-learning-notes.py` from the repository root, then `npm run build`. No new packages are required. Generated HTML is checked in and copied through the existing Vite build.
 5. Inspect desktop/mobile, sources, internal links, code examples, and factual/personal claims before publishing. Keep the main page untouched until approval.

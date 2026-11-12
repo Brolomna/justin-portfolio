@@ -1,10 +1,10 @@
-# FieldKit acceptance checks
+# MalachKit acceptance checks
 
 Tested November 12, 2026 (Asia/Kathmandu).
 
 ## Repeatable calculation tests
 
-Run `node tests/fieldkit.mjs` from the repository root with Node 22+. No extra dependencies. 53 assertions passed. The tests cover SHA-256, expected checksum matching/format, file API failures, unsupported crypto, empty file hashing, strict Base64URL/UTF-8/JSON parsing, claims, and subnet arithmetic.
+Run `node tests/malachkit.mjs` from the repository root with Node 22+. No extra dependencies. 53 assertions passed. The tests cover SHA-256, expected checksum matching/format, file API failures, unsupported crypto, empty file hashing, strict Base64URL/UTF-8/JSON parsing, claims, and subnet arithmetic.
 
 SHA-256 for the five bytes `hello` (no newline):
 
@@ -31,7 +31,7 @@ In Chromium, all three tool flows passed at 320, 390, 768, 1280, and 1440 CSS pi
 - No horizontal overflow, JavaScript exceptions, external service requests, or local/session storage writes during the tests. Only app static assets were requested.
 - Visual checks of overview and tool/result layouts across the five widths; readable wrapping, labels, notices, controls, and results.
 
-`npm run build` succeeds and the application is copied into `dist/fieldkit/`. The approved portfolio integration adds FieldKit as card eight, linking relatively to `./fieldkit/`. Back to Portfolio resolves relatively from /justin-portfolio/fieldkit/.
+`npm run build` succeeds and the application is copied into `dist/malachkit/`. The approved portfolio integration adds MalachKit as card eight, linking relatively to `./malachkit/`. Back to Portfolio resolves relatively from /justin-portfolio/malachkit/.
 
 ## Scope and limits
 
