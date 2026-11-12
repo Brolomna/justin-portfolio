@@ -1,0 +1,59 @@
+[
+  {
+    "slug": "checksums-and-file-integrity",
+    "title": "A checksum match is not a safety verdict.",
+    "summary": "SHA-256 is useful for comparing file bytes. The part that matters next is where the expected hash came from.",
+    "category": "Build notes",
+    "type": "Reference note",
+    "tags": ["SHA-256", "File integrity", "FieldKit"],
+    "date": "2026-11-12",
+    "readTime": "3 min",
+    "symbol": "#",
+    "basis": "Connected to archives and checksums in my Linux Loadout, and to the working HashCheck utility in FieldKit. This is a short reference note, not a report about a separate lab.",
+    "sections": [
+      {"heading": "Start with the question", "blocks": [{"type": "p", "text": "A checksum answers a narrow question: do these bytes produce the expected fingerprint? It does not tell me whether I should run a program or trust the person distributing it."}, {"type": "callout", "label": "KEEP THE DISTINCTION", "text": "Matching a trusted SHA-256 checksum is evidence of file integrity. It is not a malware scan, a signature check, or proof that the original file was safe."}]},
+      {"heading": "A small example with exact bytes", "blocks": [{"type": "p", "text": "These commands are a reproducible example. printf sends the five bytes hello without a trailing newline, then sha256sum calculates their SHA-256 digest."}, {"type": "code", "language": "SHELL / SAFE LOCAL EXAMPLE", "text": "printf %s hello | sha256sum"}, {"type": "code", "language": "EXPECTED SHA-256", "text": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"}, {"type": "p", "text": "A file containing hello followed by a newline has different bytes and a different digest. When comparing results, first make sure the input is really the same."}]},
+      {"heading": "Where trust enters the comparison", "blocks": [{"type": "list", "items": ["Get the expected checksum from a source you trust, such as the publisher's authenticated release channel.", "Calculate the checksum of the file you actually downloaded.", "Compare every character. If it differs, stop and investigate instead of treating it as close enough.", "If an attacker can replace both the file and the checksum you use, a matching result does not solve that trust problem."]}]},
+      {"heading": "How this connects to FieldKit", "blocks": [{"type": "p", "text": "HashCheck reads a file locally with the File API and passes its bytes to crypto.subtle.digest using SHA-256. It checks that an expected digest has 64 hexadecimal characters and compares it without treating uppercase and lowercase letters as different."}, {"type": "p", "text": "Web Crypto digest is not streaming: the whole file must be in memory. FieldKit caps files at 50 MB (50,000,000 bytes) and explains that limit. Files and hashes are not uploaded or saved as input history."}, {"type": "link", "label": "Open HashCheck in FieldKit ↗", "href": "../fieldkit/#hashcheck"}]},
+      {"heading": "What to keep in mind", "blocks": [{"type": "p", "text": "The useful habit is to separate byte equality from trust. A checksum is one check in a workflow, not permission to skip the other checks."}]}
+    ],
+    "sources": [{"label": "sha256sum manual", "url": "https://man7.org/linux/man-pages/man1/sha256sum.1.html"}, {"label": "MDN: SubtleCrypto.digest and its memory limitation", "url": "https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest"}]
+  },
+  {
+    "slug": "reading-linux-permissions",
+    "title": "Read the permissions before changing them.",
+    "summary": "A compact guide to owner, group, others, and rwx. Useful basics without making chmod 777 the default answer.",
+    "category": "Linux",
+    "type": "Reference note",
+    "tags": ["Permissions", "Linux", "rwx"],
+    "date": "2026-11-12",
+    "readTime": "3 min",
+    "symbol": ">_",
+    "basis": "Linux permissions is one of the topics I marked as covered in my Loadout. Ownership management and users/groups are still learning areas for me. This note stays with the basic permission bits; it is not a privilege-escalation write-up.",
+    "sections": [
+      {"heading": "Read one group at a time", "blocks": [{"type": "code", "language": "ILLUSTRATIVE PERMISSION STRING", "text": "-rw-r-----\n │  │  └── others: no permissions\n │  └───── group: read\n └──────── owner: read and write"}, {"type": "p", "text": "For a regular file, the leading dash is the file type marker. The next nine positions are three groups of read, write, and execute bits: owner, group, and others. A dash in a group means that bit is not set."}]},
+      {"heading": "What the letters mean", "blocks": [{"type": "list", "items": ["r (4): read file contents. For a directory, list its entries.", "w (2): modify file contents. For a directory, change its entries, subject to other permissions and rules.", "x (1): execute a file when the file format and system allow it. For a directory, search or traverse it."]}, {"type": "callout", "label": "FILES AND DIRECTORIES DIFFER", "text": "Directory permissions control access to entries, not simply the same operations as file permissions. Deleting a file depends on its containing directory and other rules; a file's own write bit is not the whole story."}]},
+      {"heading": "Make the smallest intended change", "blocks": [{"type": "p", "text": "Use a file you own in a disposable practice directory. Inspect it first; don't apply recursive permission changes to system paths to make an error disappear."}, {"type": "code", "language": "SHELL / PRACTICE FILE ONLY", "text": "ls -l ./practice.txt\nchmod u+rw,go-rwx ./practice.txt\nls -l ./practice.txt"}, {"type": "p", "text": "The symbolic mode adds owner read/write and removes read/write/execute from group and others. It deliberately leaves any existing owner execute bit unchanged. For an ordinary practice file where the intended basic mode is exactly owner read/write only, chmod 600 ./practice.txt expresses that mode."}, {"type": "code", "language": "NUMERIC MODE / ORDINARY PRACTICE FILE", "text": "chmod 600 ./practice.txt\n# owner: 4 + 2 = 6   group: 0   others: 0"}]},
+      {"heading": "The edge of this note", "blocks": [{"type": "p", "text": "Basic rwx bits are not a full explanation of access. ACLs, ownership, directory traversal, sticky/set-ID bits, mount options, and security policies can change the result. Understanding users and groups better is part of what I am still learning."}, {"type": "p", "text": "This is a reference example, not evidence that I solved a particular machine or changed a real system. Use the manual when the situation goes beyond these basics."}]}
+    ],
+    "sources": [{"label": "chmod manual: symbolic and numeric modes", "url": "https://man7.org/linux/man-pages/man1/chmod.1.html"}, {"label": "Linux path resolution and directory search permissions", "url": "https://man7.org/linux/man-pages/man7/path_resolution.7.html"}]
+  },
+  {
+    "slug": "cisco-introduction-to-cybersecurity",
+    "title": "A first course, not a finish line.",
+    "summary": "My Cisco Introduction to Cybersecurity completion, kept in perspective. A small starting point for more learning and practice.",
+    "category": "Security basics",
+    "type": "Course milestone",
+    "tags": ["Cisco", "Introduction to Cybersecurity", "Learning"],
+    "date": "2026-11-12",
+    "readTime": "2 min",
+    "symbol": "◇",
+    "basis": "I completed Cisco Networking Academy's Introduction to Cybersecurity course on November 8, 2026. This page records that real milestone and a short security-basics reference. It is not a professional certification claim or a transcript of my course answers.",
+    "sections": [
+      {"heading": "What is actually complete", "blocks": [{"type": "p", "text": "The introductory course is complete, with a course-completion certificate and badge. That is the scope of this milestone. It does not make me an expert, prove practical mastery, or stand in for deeper work."}, {"type": "callout", "label": "THE RIGHT SCALE", "text": "A completed introduction is a starting point. The rest of the portfolio should show the practice and projects that come after it, without pretending they happened before they did."}]},
+      {"heading": "A small security-basics reference", "blocks": [{"type": "p", "text": "These are general reminders from public security guidance, not a claim about a specific course exercise or changes I have already made to all of my accounts."}, {"type": "list", "items": ["Use a different strong password for each account. A password manager can help generate and store long, random, unique passwords.", "Turn on multi-factor authentication where it is available. It adds another check beyond a password; it does not remove every account risk.", "Keep the distinction between knowing a term and applying it correctly. Notes, small projects, and authorized practice can make the gaps easier to see."]}]},
+      {"heading": "What belongs in a later note", "blocks": [{"type": "p", "text": "A useful lab note needs a real task, what I observed, what I tried, what changed, and what remains unclear. I will keep course completion separate from platform-room or machine completion."}, {"type": "p", "text": "There is no HTB machine or TryHackMe room walkthrough on this page. Platform-specific write-ups should only be added when the work and the rules for sharing it are clear. No active HTB machine solutions are included here."}]}
+    ],
+    "sources": [{"label": "Cisco: Introduction to Cybersecurity", "url": "https://www.netacad.com/courses/introduction-to-cybersecurity"}, {"label": "CISA: Use strong passwords", "url": "https://www.cisa.gov/secure-our-world/use-strong-passwords"}, {"label": "CISA: Turn on MFA", "url": "https://www.cisa.gov/secure-our-world/turn-mfa"}]
+  }
+]
