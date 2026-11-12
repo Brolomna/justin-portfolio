@@ -31,7 +31,7 @@ In Chromium, all three tool flows passed at 320, 390, 768, 1280, and 1440 CSS pi
 - No horizontal overflow, JavaScript exceptions, external service requests, or local/session storage writes during the tests. Only app static assets were requested.
 - Visual checks of overview and tool/result layouts across the five widths; readable wrapping, labels, notices, controls, and results.
 
-`npm run build` succeeds and the application is copied into `dist/fieldkit/`. The unchanged portfolio does not yet have a FieldKit card: adding that link awaits Justin's review. Back to Portfolio resolves relatively from /justin-portfolio/fieldkit/.
+`npm run build` succeeds and the application is copied into `dist/fieldkit/`. The approved portfolio integration adds FieldKit as card eight, linking relatively to `./fieldkit/`. Back to Portfolio resolves relatively from /justin-portfolio/fieldkit/.
 
 ## Scope and limits
 

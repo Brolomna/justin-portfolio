@@ -53,7 +53,7 @@ From the existing justin-portfolio repository, run `npm run dev` and open `/fiel
 
 `npm run build` copies `public/fieldkit/` unchanged into `dist/fieldkit/`. The existing GitHub Actions workflow deploys `dist`; it is not replaced. All internal paths are relative, including `../` back to the portfolio. Production path: `https://brolomna.github.io/justin-portfolio/fieldkit/`.
 
-This first standalone release is review-first and carries noindex. The portfolio project card is intentionally not added until Justin approves it. No other portfolio page or Moonfall code is changed by this release.
+FieldKit is linked as card eight in the portfolio carousel. The app is indexable. The existing carousel behavior, other projects, and Moonfall code are preserved.
 
 ## References
 
