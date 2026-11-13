@@ -35,3 +35,7 @@ The elaborate desktop hero, map, carousel and navigation are retained. Changes a
 These are Chrome viewport and touch emulation tests, not physical iPhone/Android or Safari/Firefox tests. An actual operating-system keyboard, device notch, screen reader and third-party certificate embed could not be fully validated on hardware. Clipboard/download UI can depend on browser permissions. No lint or typecheck script is configured in this static project.
 
 The draft beginner cybersecurity guide is not included in this release. Learning Notes remains a separate preview; this cleanup does not approve its integration into the main Learning section.
+
+## Deployment follow-through
+
+The live check found an edge-cached 404 for the newly created stylesheet. Asset URLs now carry a release version so an old edge/browser cache cannot mix the previous renderer/styles with this release. The deployment workflow and domain settings are unchanged.

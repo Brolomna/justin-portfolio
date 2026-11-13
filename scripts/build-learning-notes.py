@@ -24,7 +24,7 @@ def header(title, description, article=False):
     home = '../' if article else './'
     listing = '../learning-notes-preview.html' if article else './learning-notes-preview.html'
     return f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#050a10"><meta name="description" content="{e(description)}"><link rel="icon" href="data:,"><title>{e(title)} | Justin's Learning Notes</title><link rel="stylesheet" href="{base}styles.css"><script src="{base}notes.js" defer></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#050a10"><meta name="description" content="{e(description)}"><link rel="icon" href="data:,"><title>{e(title)} | Justin's Learning Notes</title><link rel="stylesheet" href="{base}styles.css?v=20261113-mobile"><script src="{base}notes.js" defer></script></head>
 <body><a class="skip" href="#main">Skip to content</a><div class="preview-bar"><b>DESIGN PREVIEW</b> Separate from the main site. Content and layout are open for review.</div><div class="shell"><header class="nav"><a class="brand" href="{home}"><span>J</span>Justin</a><nav class="nav-links" aria-label="Main navigation"><a href="{home}">Portfolio</a><a class="current" href="{listing}">Learning notes</a><a class="back-link" href="{home}#learning">Back to Learning ↗</a></nav></header>'''
 
 def footer(article=False):
