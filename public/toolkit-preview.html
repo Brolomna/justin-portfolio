@@ -7,6 +7,7 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#050a10">
 <meta name="description" content="Justin — developer and cybersecurity enthusiast. I build web projects, explore cybersecurity, and test how systems work.">
+<link rel="icon" href="data:,">
 <title>Justin — Developer &amp; Cybersecurity Enthusiast</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +37,6 @@ body {
   background: var(--bg);
   color: var(--white);
   font-family: Inter, sans-serif;
-  overflow-x: hidden;
   min-height: 100vh;
 }
 
@@ -727,155 +727,6 @@ h1 .hero-better {
   }
 }
 
-/* RESPONSIVE MOBILE */
-
-@media(max-width: 600px) {
-  nav {
-    width: calc(100% - 24px);
-    padding: 0 18px;
-  }
-
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 75px;
-    left: 0;
-    width: 100%;
-    background: #101923f5;
-    border: 1px solid #ffffff20;
-    border-radius: 18px;
-    padding: 22px;
-    flex-direction: column;
-    gap: 22px;
-  }
-
-  .nav-links.open {
-    display: flex;
-  }
-
-  .nav-button {
-    display: none;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-
-  .hero {
-    width: calc(100% - 35px);
-    padding-top: 125px;
-    padding-bottom: 60px;
-  }
-
-  h1 {
-    font-size: clamp(42px, 12vw, 58px);
-    letter-spacing: -2.8px;
-  }
-
-  h1 .hero-third-line {
-    letter-spacing: -1px;
-  }
-
-  .description {
-    font-size: 14px;
-  }
-
-  .visual {
-    height: 390px;
-    margin-bottom: -15px;
-  }
-
-  .developer-art {
-    width: 130%;
-    left: -15%;
-  }
-
-  .hud {
-    padding: 10px;
-    font-size: 8px;
-  }
-
-  .hud-one {
-    top: 37%;
-    left: -5px;
-  }
-
-  .hud-two {
-    right: -5px;
-    bottom: 2%;
-  }
-
-  .holo-code {
-    width: min(275px, 78%);
-    top: 1%;
-    right: -1%;
-    padding: 11px 12px 10px;
-  }
-
-  .code-row { font-size: 8px; gap: 7px; }
-  .holo-title { font-size: 7px; }
-
-  .holo-kali {
-    width: min(270px, 77%);
-    left: -1%;
-    bottom: 1%;
-    padding: 10px 11px 9px;
-  }
-  .kali-terminal { min-height: 126px; font-size: 7px; }
-  .kali-brand { font-size: 8px; }
-  .kali-session { font-size: 6px; }
-
-  .orb-one {
-    width: 40px;
-    height: 40px;
-  }
-
-  .tech-strip {
-    width: calc(100% - 35px);
-    margin-bottom: 50px;
-  }
-
-  .tech-list {
-    gap: 23px;
-    font-size: 13px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-}
-
-/* SMALL MOBILE */
-
-@media(max-width: 380px) {
-  h1 {
-    font-size: 39px;
-  }
-
-  .visual {
-    height: 330px;
-  }
-
-  .developer-art {
-    width: 145%;
-    left: -22%;
-  }
-
-  .hud-one {
-    top: 0;
-  }
-
-  .hud-two {
-    bottom: 0;
-  }
-
-  .holo-kali {
-    width: min(245px, 76%);
-    bottom: -2%;
-    left: -2%;
-    padding: 9px;
-  }
-  .kali-terminal { min-height: 116px; font-size: 6.5px; }
-}
-
 /* Reduced-motion preference is handled by the accessible motion toggle. */
 @media (prefers-reduced-motion: reduce) {
   .project-slide.is-hovered { transition-duration:0.01ms !important; }
@@ -1030,6 +881,7 @@ h1 .hero-better {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
+
 </head>
 
 <body id="top">
@@ -1124,15 +976,15 @@ h1 .hero-better {
     <!-- HOLOGRAPHIC SYSTEM PANEL -->
 
     <div class="hud hud-one" id="targetMachinePanel">
-      <span id="targetMachineHeading">● TARGET MACHINE</span>
-      <p id="targetMachineStatus">Injecting Payload..</p>
+      <span id="targetMachineHeading">● LOCAL LAB SIMULATION</span>
+      <p id="targetMachineStatus">Visual demonstration running...</p>
       <div class="hud-bar" id="targetMachineProgress" role="progressbar" aria-label="Payload deployment progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
     </div>
 
     <!-- LIVE DEVELOPMENT PANEL -->
 
     <div class="hud hud-two decrypt-panel" aria-label="Decorative password decryption animation">
-      <div class="decrypt-heading"><span>SECURE ACCESS</span><span class="decrypt-live">● LIVE</span></div>
+      <div class="decrypt-heading"><span>LOCAL LAB DEMO</span><span class="decrypt-live">● SIMULATION</span></div>
       <p class="decrypt-subtitle">PASSWORD ANALYSIS / SIMULATION</p>
       <div class="decrypt-stream" aria-live="off">
         <span class="decrypt-prefix">HASH //</span>
@@ -1183,7 +1035,7 @@ h1 .hero-better {
         <div class="kali-line"><span class="kali-prompt">└─$</span><span class="kali-cursor">▋</span></div>
       </div>
       <div class="kali-rule"></div>
-      <div class="kali-bottom"><span>● SESSION ACTIVE</span><span>AUTHORIZED LAB ONLY</span></div>
+      <div class="kali-bottom"><span>● VISUAL DEMO</span><span>AUTHORIZED LAB ONLY</span></div>
       <div class="kali-scan"></div>
     </div>
 
@@ -1273,11 +1125,11 @@ h1 .hero-better {
       </div>
     </div>
   </div>
-  <div class="carousel-footnote"><span><i></i> CONTINUOUS PROJECT ROTATION</span><span>HOVER TO PAUSE</span></div>
+  <div class="carousel-footnote"><span class="carousel-desktop-hint"><i></i> CONTINUOUS PROJECT ROTATION</span><span class="carousel-desktop-hint">HOVER TO PAUSE</span><span class="carousel-mobile-hint">SWIPE TO BROWSE PROJECTS</span><span class="carousel-mobile-hint">TAP A CARD TO OPEN</span></div>
 </section>
 
 <!-- SECURITY TOOLKIT -->
-<section id="skills" class="toolkit-section" aria-label="Skill tree"><div id="toolkit-mount"></div></section>
+<div id="toolkit-mount"></div>
   <!-- Toolkit module: styles toolkit/toolkit.css, data toolkit/data/*.js, logic toolkit/{toolkit,progress,engine}.js -->
 
 
@@ -1352,31 +1204,32 @@ h1 .hero-better {
 
 <script>
 
-/* MOBILE NAVIGATION */
-const toggle = document.getElementById("menuToggle");
-const mobileMenu = document.getElementById("mobileMenu");
-if (toggle && mobileMenu) {
-  toggle.addEventListener("click", () => {
-    const open = mobileMenu.classList.toggle("open");
-    toggle.setAttribute("aria-expanded", String(open));
-    toggle.innerHTML = open
-      ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
-      : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
-  });
-  mobileMenu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
-    mobileMenu.classList.remove("open");
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
-  }));
+/* Mobile navigation: one state setter for every close route. */
+const toggle=document.getElementById('menuToggle'),mobileMenu=document.getElementById('mobileMenu');
+function setMobileMenu(open,restore=false){
+ mobileMenu.classList.toggle('open',open);toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close menu':'Open menu');
+ if(restore)toggle.focus();
 }
+if(toggle && mobileMenu){
+ toggle.addEventListener('click',()=>setMobileMenu(toggle.getAttribute('aria-expanded')!=='true'));
+ mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMobileMenu(false)));
+ document.addEventListener('click',e=>{if(!e.target.closest('.nav,.mobile-menu'))setMobileMenu(false);});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&toggle.getAttribute('aria-expanded')==='true')setMobileMenu(false,true);});
+ window.matchMedia('(min-width:761px)').addEventListener('change',e=>{if(e.matches)setMobileMenu(false);});
+}
+const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
+const smallScreen=window.matchMedia('(max-width:600px)');
+const decorativeMotionAllowed=()=>!document.hidden&&!motionPreference.matches&&!smallScreen.matches;
 
+document.addEventListener("visibilitychange",()=>document.documentElement.classList.toggle("page-hidden",document.hidden));
 
 /* MOUSE FOLLOWING LIGHT */
 
 const glow = document.getElementById("cursorGlow");
 
-if (window.matchMedia("(pointer: fine)").matches) {
+if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
   document.addEventListener("mousemove", e => {
+    if(!decorativeMotionAllowed())return;
     glow.style.left = e.clientX + "px";
     glow.style.top = e.clientY + "px";
   });
@@ -1425,6 +1278,7 @@ function resizeCanvas() {
 /* DRAW AND ANIMATE */
 
 function animateParticles() {
+  if(!decorativeMotionAllowed()){animationFrame=null;return;}
 
   ctx.clearRect(0, 0, width, height);
 
@@ -1478,6 +1332,8 @@ function animateParticles() {
 
 resizeCanvas();
 animateParticles();
+function syncParticleMotion(){cancelAnimationFrame(animationFrame);animationFrame=null;ctx.clearRect(0,0,width,height);if(decorativeMotionAllowed())animateParticles();}
+motionPreference.addEventListener("change",syncParticleMotion);smallScreen.addEventListener("change",syncParticleMotion);
 
 
 /* RESIZE */
@@ -1492,7 +1348,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     cancelAnimationFrame(animationFrame);
   } else {
-    animateParticles();
+    syncParticleMotion();
   }
 
 });
@@ -1507,8 +1363,8 @@ document.addEventListener("visibilitychange", () => {
   if (!panel || !bar || !heading || !status) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     bar.style.background = "linear-gradient(90deg,#00f5a0 100%,#ffffff15 100%)";
-    heading.textContent = "● TARGET MACHINE";
-    status.textContent = "PAYLOAD COMPLETE // ACCESS GRANTED";
+    heading.textContent = "● LOCAL LAB SIMULATION";
+    status.textContent = "SIMULATION COMPLETE // LOCAL LAB DEMO";
     return;
   }
   let value = 20;
@@ -1525,25 +1381,26 @@ document.addEventListener("visibilitychange", () => {
     paint();
     if (value >= 100) {
       completed = true;
-      heading.textContent = "● TARGET MACHINE // COMPROMISED";
-      status.textContent = "PAYLOAD DEPLOYED // TARGET HACKED";
+      heading.textContent = "● LOCAL LAB DEMO";
+      status.textContent = "SIMULATION COMPLETE // LOCAL LAB DEMO";
       resetTimer = window.setTimeout(() => {
         value = 20;
         completed = false;
-        heading.textContent = "● TARGET MACHINE";
-        status.textContent = "Injecting Payload..";
+        heading.textContent = "● LOCAL LAB SIMULATION";
+        status.textContent = "Visual demonstration running...";
         paint();
       }, 4200);
     }
   };
-  const start = () => { if (!timer) timer = window.setInterval(tick, 100); };
+  const start = () => { if (!timer && decorativeMotionAllowed()) timer = window.setInterval(tick, 100); };
   const stop = () => {
     if (timer) { window.clearInterval(timer); timer = null; }
     if (resetTimer) { window.clearTimeout(resetTimer); resetTimer = null; }
   };
   paint();
   start();
-  document.addEventListener("visibilitychange", () => document.hidden ? stop() : start());
+  const sync=()=>{stop();if(decorativeMotionAllowed()){completed=false;start();}};
+  document.addEventListener("visibilitychange",sync);motionPreference.addEventListener("change",sync);smallScreen.addEventListener("change",sync);
 })();
 
 /* PASSWORD-DECRYPTION VISUAL — FICTIONAL DISPLAY ONLY; NO PASSWORDS ARE CRACKED */
@@ -1573,12 +1430,12 @@ document.addEventListener("visibilitychange", () => {
       completed = true;
       progress.style.width = "100%";
       percent.textContent = "100%";
-      heading.textContent = "PASSWORD CRACKED";
-      status.textContent = "HASH MATCH FOUND // ACCESS VERIFIED";
+      heading.textContent = "SIMULATION COMPLETE";
+      status.textContent = "VISUAL DEMONSTRATION COMPLETE";
       completeTimer = window.setTimeout(() => {
         value = 20;
         completed = false;
-        heading.textContent = "SECURE ACCESS";
+        heading.textContent = "LOCAL LAB DEMO";
         status.textContent = "ROTATING CANDIDATES";
         percent.textContent = "20.0%";
         progress.style.width = "20%";
@@ -1586,7 +1443,7 @@ document.addEventListener("visibilitychange", () => {
     }
   };
   const start = () => {
-    if (!timer && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) timer = window.setInterval(update, 100);
+    if (!timer && decorativeMotionAllowed()) timer = window.setInterval(update, 100);
   };
   const stop = () => {
     if (timer) { window.clearInterval(timer); timer = null; }
@@ -1596,7 +1453,8 @@ document.addEventListener("visibilitychange", () => {
   percent.textContent = "20.0%";
   updateHash();
   start();
-  document.addEventListener("visibilitychange", () => document.hidden ? stop() : start());
+  const sync=()=>{stop();if(decorativeMotionAllowed()){completed=false;start();}};
+  document.addEventListener("visibilitychange",sync);motionPreference.addEventListener("change",sync);smallScreen.addEventListener("change",sync);
 })();
 
 /* CODE EDITOR TYPEWRITER — REVEALS THE EXISTING SYNTAX-HIGHLIGHTED CODE IN ORDER */
@@ -1624,13 +1482,14 @@ document.addEventListener("visibilitychange", () => {
     for (let i = 0; i < entry.full.length; i++) sequence.push([nodeIndex, i + 1]);
   });
   if (!sequence.length) { panel.classList.add("is-typed"); return; }
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (!decorativeMotionAllowed()) {
     textNodes.forEach(entry => entry.node.textContent = entry.full);
     panel.classList.add("is-typed");
     return;
   }
   let index = 0;
   const typeNext = () => {
+    if(!decorativeMotionAllowed()){textNodes.forEach(entry=>entry.node.textContent=entry.full);panel.classList.add("is-typed");return;}
     const batch = 2;
     for (let n = 0; n < batch && index < sequence.length; n++, index++) {
       const [nodeIndex, chars] = sequence[index];
@@ -1644,7 +1503,7 @@ document.addEventListener("visibilitychange", () => {
 
 /* KALI TERMINAL VISUAL ROTATION — DISPLAY ONLY, NO COMMANDS ARE EXECUTED */
 const kaliTerminal = document.getElementById("kaliTerminal");
-if (kaliTerminal && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+if (kaliTerminal && decorativeMotionAllowed()) {
   const terminalScenes = [
     [
       ["prompt", "┌──(justin㉿kali)-[~]"],
@@ -1693,13 +1552,13 @@ if (kaliTerminal && !window.matchMedia("(prefers-reduced-motion: reduce)").match
     kaliSceneIndex = (kaliSceneIndex + 1) % terminalScenes.length;
   }
   renderKaliScene();
-  let kaliCycle = window.setInterval(renderKaliScene, 5200);
+  let kaliCycle = window.setInterval(()=>{if(decorativeMotionAllowed())renderKaliScene();},5200);
+  const stopKali=()=>{if(!decorativeMotionAllowed())clearInterval(kaliCycle);};motionPreference.addEventListener("change",stopKali);smallScreen.addEventListener("change",stopKali);
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       window.clearInterval(kaliCycle);
     } else {
-      renderKaliScene();
-      kaliCycle = window.setInterval(renderKaliScene, 5200);
+      if(decorativeMotionAllowed()){renderKaliScene();kaliCycle = window.setInterval(renderKaliScene, 5200);}
     }
   });
 }
@@ -1942,6 +1801,7 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
   if (!carousel || !track || !originalSet) return;
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const nativeCarousel=()=>reduceMotion.matches||window.matchMedia("(max-width:600px)").matches;
   const SPEED = 31;                 // pixels per second (auto drift)
   const RESUME_DELAY = 1.6;         // seconds of idle before the drift returns
   const DRAG_THRESHOLD = 6;         // pixels before a press becomes a drag
@@ -1978,19 +1838,19 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
     setWidth = originalSet.getBoundingClientRect().width;
     if (!setWidth) return;
 
-    if (!reduceMotion.matches) {
+    if (!nativeCarousel()) {
       const totalSets = Math.max(3, Math.ceil((window.innerWidth + setWidth * 2) / setWidth) + 1);
       for (let i = 1; i < totalSets; i++) {
         const clone = originalSet.cloneNode(true);
         clone.classList.add("is-clone");
-        clone.setAttribute("aria-hidden", "true");
+        clone.setAttribute("aria-hidden", "true");clone.querySelectorAll("a,button").forEach(el=>el.tabIndex=-1);
         clone.querySelectorAll(".project-slide").forEach(slide => slide.setAttribute("aria-hidden", "true"));
         track.appendChild(clone);
       }
     }
 
     activeSlides = Array.from(track.querySelectorAll(".project-slide"));
-    offset = reduceMotion.matches ? 0 : -setWidth;
+    offset = nativeCarousel() ? 0 : -setWidth;
     track.style.transform = `translate3d(${offset}px,0,0)`;
   };
 
@@ -2028,6 +1888,7 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
   };
 
   const animate = now => {
+    if(nativeCarousel()||document.hidden){raf=0;return;}
     if (!lastTime) lastTime = now;
     const dt = Math.min((now - lastTime) / 1000, 0.05);
     lastTime = now;
@@ -2052,6 +1913,7 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
   };
 
   const start = () => {
+    if(nativeCarousel()||document.hidden)return;
     if (raf || document.hidden) return;
     lastTime = 0;
     raf = requestAnimationFrame(animate);
@@ -2074,6 +1936,7 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
 
   // Drag / swipe: press, move past a small threshold, release with momentum.
   carousel.addEventListener("pointerdown", event => {
+    if(nativeCarousel())return;
     if (event.button !== undefined && event.button !== 0) return;
     if (reduceMotion.matches) return;
     dragArmed = true;
@@ -2160,6 +2023,7 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
 <script src="toolkit/icons.js"></script>
 <script src="toolkit/engine.js"></script>
 
+<link rel="stylesheet" href="./responsive.css">
 </body>
 </html>
 

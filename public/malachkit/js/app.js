@@ -50,3 +50,8 @@ window.addEventListener('pagehide', () => tokens.clear());
 // A cached page restoration must never resurrect a sensitive token.
 window.addEventListener('pageshow', event => { if (event.persisted) tokens.clear(); });
 route(false);
+
+// Outside clicks and Escape use the same menu state, without intercepting inputs.
+const sidebar=document.querySelector('.sidebar'),menuButton=document.querySelector('.menu-toggle');
+document.addEventListener('click',event=>{if(!sidebar.contains(event.target)){sidebar.classList.remove('menu-open');menuButton.setAttribute('aria-expanded','false');}});
+document.addEventListener('keydown',event=>{if(event.key==='Escape' && sidebar.contains(document.activeElement)){menuButton.focus();}});

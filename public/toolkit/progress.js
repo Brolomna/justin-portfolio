@@ -10,7 +10,7 @@ const CONFIG = {
   levelThresholds: [0, 100, 250, 500, 900, 1400, 2000, 2700, 3500], // XP needed for LVL n (index)
   zoomMin: 0.5, zoomMax: 2.5
 };
-const STATUS_LABEL = {locked:'○ LOCKED', available:'◎ AVAILABLE', in_progress:'◐ IN PROGRESS', verified:'✓ VERIFIED'};
+const STATUS_LABEL = {locked:'○ LOCKED', available:'◎ AVAILABLE', in_progress:'◐ IN PROGRESS', verified:'✓ SELF-MARKED'};
 
 // ---- baked-in starting state (Justin's own list, 2026-11-11) ----
 // Shown to every visitor. No notes or evidence links are invented here - these

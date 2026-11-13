@@ -5,3 +5,7 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
 .notes-grid>.note-card>a{display:flex;flex-direction:column;min-width:0}
 @media(min-width:551px) and (max-width:800px){.notes-grid>.note-card{display:block}.notes-grid>.note-card>a{display:grid;grid-template-columns:150px minmax(0,1fr)}}
+
+/* Reading and code remain contained on narrow phones. */
+.shell,.article-layout>*,.note-body,.note-card{min-width:0}.article-content{overflow-wrap:anywhere}.code-block pre{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.article-content table{display:block;max-width:100%;overflow-x:auto}.nav{flex-wrap:wrap;gap:12px}.nav-links{flex-wrap:wrap}.copy-code{min-width:44px;min-height:44px}.toc a{min-height:32px}.breadcrumb{flex-wrap:wrap}.reading-footer{padding-bottom:env(safe-area-inset-bottom)}
+@media(max-width:550px){.shell{padding:0 16px}.article-hero h1{font-size:clamp(29px,8vw,37px);overflow-wrap:anywhere}.nav-links a{display:inline-flex;align-items:center;min-height:44px;font-size:12px}.note-body{padding:20px}.article-meta,.hero-meta,.basis strong,.code-head span,.toc>p,.callout strong,footer{font-size:10px}.toc a,.sources li{font-size:13px}.article-content{font-size:15px}.code-block pre{font-size:12px;white-space:pre;overflow-wrap:normal;word-break:normal}.article-content h2{font-size:23px}.note-body h2{font-size:24px}.filter{font-size:12px}.note-summary{font-size:14px}}

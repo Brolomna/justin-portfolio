@@ -7,7 +7,7 @@
   <div class="toolkit-heading" id="toolkitHeading">
     <div class="toolkit-kicker">// FIELD NOTES &amp; WORKBENCH</div>
     <h2>CHOOSE YOUR <span>LOADOUT</span></h2>
-    <p>The honest map of what I'm learning in security: 8 modules, 107 skills. Green means demonstrated with evidence, cyan means learning, grey means not yet unlocked. Still early, one lab at a time.</p>
+    <p>The honest map of what I'm learning in security: 8 modules, 107 skills. Green means self-assessed as completed, cyan means learning, grey means not yet unlocked. Progress is manually marked, not independently verified. Still early, one lab at a time.</p>
     <div class="st-search">
       <input id="stSearchInput" type="search" autocomplete="off" placeholder='Search all 107 skills - try "nmap", "grep", "burp"...' aria-label="Search skills across all modules">
       <div class="st-search-results" id="stSearchResults" hidden></div>

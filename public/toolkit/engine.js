@@ -84,24 +84,25 @@ const headingEl=$('toolkitHeading'), loadoutEl=$('loadout'), loadNoteEl=$('loado
       takeoverEl=$('skilltree'), stageEl=$('stStage'), worldEl=$('stWorld'), svgEl=$('stSvg'),
       nodesEl=$('stNodes'), tipEl=$('stTip'), panelEl=$('stPanel'), filtersEl=$('stFilters'),
       headEl=$('stHead'), titleEl=$('treeTitle'), noteEl=$('stTreeNote');
-const mq = window.matchMedia('(max-width:760px)');
+const mq = window.matchMedia('(max-width:767px)');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // status -> shape: verified/in_progress/available = hexagon; locked = cracked diamond
 let currentModule = null, selectedId = null;
 let branchFilter = null, statusFilter = null, diffFilter = null;
+let filtersOpen = false, panelReturnFocus = null;
 
 // ---- ToolkitOverview + ModuleCard ----
 function renderOverview(){
   const ts = totalStats();
-  loadNoteEl.innerHTML = `Overall: <b>${ts.verified}/${ts.total}</b> verified · <b>${ts.in_progress}</b> in progress · <b>${ts.xp} XP</b> · LVL ${ts.level} — tools are attachments, skills are earned. Practice happens on my own systems, authorized targets, or intentionally vulnerable labs only.`;
+  loadNoteEl.innerHTML = `Overall: <b>${ts.verified}/${ts.total}</b> self-marked · <b>${ts.in_progress}</b> in progress · <b>${ts.xp} XP</b> · LVL ${ts.level} — tools are attachments, skills are earned. Practice happens on my own systems, authorized targets, or intentionally vulnerable labs only.`;
   loadoutEl.innerHTML = MODULES.map(m => {
     const st = moduleStats(m);
     const tools = m.tools.slice(0,4).map(t=>`<span>${esc(t)}</span>`).join('') + (m.tools.length>4?`<span class="more">+${m.tools.length-4}</span>`:'');
     return `<button class="loadout-slot" data-module="${m.id}" type="button" aria-label="Open ${esc(m.name)} skill tree">
       <span class="lo-top"><span class="lo-icon">${m.glyph}</span><span class="lo-name">${esc(m.name)}<small>${m.num} / ${m.short}</small></span><span class="lo-lvl">LVL ${st.level}</span></span>
       <span class="lo-xp"><i style="width:${st.pct}%"></i></span>
-      <span class="lo-xp-label"><span>${st.verified}/${st.total} VERIFIED</span><span>${st.xp} XP</span></span>
+      <span class="lo-xp-label"><span>${st.verified}/${st.total} SELF-MARKED</span><span>${st.xp} XP</span></span>
       <span class="lo-desc">${esc(m.desc)}</span>
       <span class="lo-mods"><b>ATTACHMENTS</b>${tools}</span>
       <span class="lo-tree">▸ OPEN SKILL TREE (${st.available} AVAILABLE)</span>
@@ -152,6 +153,7 @@ function statusClass(id){ return statusOf(id).replace('_','-'); }
 function renderModule(){
   const m = currentModule; if (!m) return;
   computeStatuses();
+  if (mq.matches) { renderMobileModule(); return; }
   const { W, H, pos, root } = layoutFor(m);
   const fit = stageEl.clientWidth / W;
   curLayout = { W, H, fit };
@@ -185,7 +187,7 @@ function renderModule(){
   // root node
   const ms = moduleStats(m);
   let nodesHtml = `<button class="st-node rootn" data-id="__root" style="left:${root[0]}px;top:${root[1]}px" type="button" aria-label="${esc(m.short)} module root">
-    <span class="hex"><svg class="hexbg" viewBox="0 0 64 74" aria-hidden="true"><polygon class="hx-depth" points="32,8 60,23 60,53 32,68 4,53 4,23"/><polygon class="hx-face" points="32,2 60,17 60,47 32,62 4,47 4,17"/></svg><span class="hex-in">${iconSvg('__root.'+m.id)}</span></span><span class="nm">${esc(m.short)}</span><span class="num">${ms.verified}/${ms.total} VERIFIED</span></button>`;
+    <span class="hex"><svg class="hexbg" viewBox="0 0 64 74" aria-hidden="true"><polygon class="hx-depth" points="32,8 60,23 60,53 32,68 4,53 4,23"/><polygon class="hx-face" points="32,2 60,17 60,47 32,62 4,47 4,17"/></svg><span class="hex-in">${iconSvg('__root.'+m.id)}</span></span><span class="nm">${esc(m.short)}</span><span class="num">${ms.verified}/${ms.total} SELF-MARKED</span></button>`;
   m.skills.forEach((s,i)=>{
     const [x,y]=pos[s.id];
     const t = statusOf(s.id);
@@ -205,6 +207,16 @@ function renderModule(){
   renderFilters();
   applyFilters();
   if (selectedId && SKILLS[selectedId] && SKILLS[selectedId].module===m.id) highlightPath(selectedId);
+}
+// Same curriculum and IDs, presented as one readable branch on phones.
+function renderMobileModule(){
+  const m = currentModule;
+  if (!branchFilter || !m.branches.some(b=>b.id===branchFilter)) branchFilter=m.branches[0].id;
+  worldEl.style.cssText=''; stageEl.style.height='auto'; svgEl.innerHTML='';
+  const skills=m.skills.filter(s=>s.branch===branchFilter && (!statusFilter || statusOf(s.id)===statusFilter) && (!diffFilter || s.difficulty===diffFilter));
+  nodesEl.innerHTML=`<p class="mobile-skill-count" role="status">${skills.length} skill${skills.length===1?'':'s'} · tap a skill for details</p>` + (skills.length ? skills.map(s=>`<button class="mobile-skill ${statusClass(s.id)}" data-id="${esc(s.id)}" type="button"><span class="mobile-skill-icon">${iconSvg(s.id)}</span><span class="mobile-skill-copy"><strong>${esc(s.name)}</strong><small>${esc(s.difficulty)} · ${s.xp} XP</small><span class="ts ${statusClass(s.id)}">${STATUS_LABEL[statusOf(s.id)]}</span></span><span aria-hidden="true">↗</span></button>`).join('') : '<p class="mobile-empty">No skills match. Try clearing your filters.</p>');
+  nodesEl.querySelectorAll('.mobile-skill').forEach(b=>b.addEventListener('click',()=>selectSkill(b.dataset.id)));
+  renderFilters();
 }
 function shortName(n){
   if (n.length<=17) return n;
@@ -234,10 +246,13 @@ function highlightPath(id){
   });
 }
 function selectSkill(id){
+  const wasOpen = !panelEl.hidden;
+  if(id && !wasOpen) panelReturnFocus=nodesEl.querySelector(`[data-id="${CSS.escape(id)}"]`) || document.activeElement;
   selectedId = id;
   highlightPath(id);
   hideTip();
-  if (id) renderPanel(id); else panelEl.hidden = true;
+  if (id) { renderPanel(id); if(mq.matches && !wasOpen) $('pClose').focus({preventScroll:true}); }
+  else { panelEl.hidden = true; if(wasOpen && panelReturnFocus?.isConnected) panelReturnFocus.focus({preventScroll:true}); }
 }
 
 // zoom / pan
@@ -257,6 +272,18 @@ function stagePoint(e){ const r=stageEl.getBoundingClientRect(); return [e.clien
 function renderFilters(){
   const m = currentModule;
   const bs = branchStats(m);
+  if(mq.matches){
+    const active=(statusFilter?1:0)+(diffFilter?1:0);
+    filtersEl.innerHTML=`<div class="mobile-branch-nav"><button id="branchPrevious" type="button" aria-label="Previous branch">‹</button><span>${esc(BRANCHES[branchFilter].name)}</span><button id="branchNext" type="button" aria-label="Next branch">›</button></div><details class="mobile-filters" ${filtersOpen?'open':''}><summary>FILTERS <span>${active?active+' active':'All states · all levels'}</span></summary><div class="mobile-filter-fields"><label class="mobile-branch">BRANCH<select id="mobileBranch">${bs.map(b=>`<option value="${b.id}" ${branchFilter===b.id?'selected':''}>${esc(b.name)} (${b.total})</option>`).join('')}</select></label><label>Status<select id="mobileStatus"><option value="">All states</option>${['verified','in_progress','available','locked'].map(v=>`<option value="${v}" ${statusFilter===v?'selected':''}>${STATUS_LABEL[v]}</option>`).join('')}</select></label><label>Difficulty<select id="mobileDifficulty"><option value="">All levels</option>${['foundation','intermediate','advanced','project'].map(v=>`<option ${diffFilter===v?'selected':''}>${v}</option>`).join('')}</select></label><button type="button" id="clearMobileFilters">Clear all filters</button><p>One branch at a time. Use the arrows to keep browsing.</p></div></details>`;
+    filtersEl.querySelector('details').addEventListener('toggle',e=>{filtersOpen=e.currentTarget.open;});
+    const changeBranch=direction=>{const i=m.branches.findIndex(b=>b.id===branchFilter);branchFilter=m.branches[(i+direction+m.branches.length)%m.branches.length].id;renderModule();};
+    $('branchPrevious').addEventListener('click',()=>changeBranch(-1));$('branchNext').addEventListener('click',()=>changeBranch(1));
+    $('mobileBranch').addEventListener('change',e=>{branchFilter=e.target.value;renderModule();$('mobileBranch').focus({preventScroll:true});});
+    $('mobileStatus').addEventListener('change',e=>{statusFilter=e.target.value||null;renderModule();$('mobileStatus').focus({preventScroll:true});});
+    $('mobileDifficulty').addEventListener('change',e=>{diffFilter=e.target.value||null;renderModule();$('mobileDifficulty').focus({preventScroll:true});});
+    $('clearMobileFilters').addEventListener('click',()=>{statusFilter=diffFilter=null;branchFilter=m.branches[0].id;renderModule();});
+    return;
+  }
   let h = `<div class="f-row" role="group" aria-label="Branch filter">
     <button class="chip${branchFilter?'':' on'}" data-f="branch" data-v="" type="button">ALL BRANCHES</button>` +
     bs.map(b=>`<button class="chip${branchFilter===b.id?' on':''}" data-f="branch" data-v="${b.id}" type="button">${b.letter} · ${esc(b.name)} <i>${b.verified+b.in_progress}/${b.total}</i></button>`).join('') + '</div>';
@@ -338,18 +365,21 @@ function renderPanel(id){
   if (p.notes) h += `<div class="p-sec"><b>NOTES</b><p class="p-notes">${esc(p.notes)}</p></div>`;
   if (owner) {
     h += `<div class="p-sec p-owner"><b>OWNER MODE (this browser only)</b><div class="p-actions">`;
-    if (t==='available'||t==='locked') h += `<button class="act" data-act="start" type="button" ${t==='locked'?'disabled title="Prerequisites not verified yet"':''}>START LEARNING</button>`;
-    if (t==='in_progress') h += `<button class="act go" data-act="verify" type="button">MARK VERIFIED</button><button class="act" data-act="unstart" type="button">PAUSE</button>`;
-    if (t==='verified') h += `<button class="act" data-act="unverify" type="button">UNMARK VERIFIED</button>`;
+    if (t==='available'||t==='locked') h += `<button class="act" data-act="start" type="button" ${t==='locked'?'disabled title="Prerequisites not marked completed yet"':''}>START LEARNING</button>`;
+    if (t==='in_progress') h += `<button class="act go" data-act="verify" type="button">MARK COMPLETED</button><button class="act" data-act="unstart" type="button">PAUSE</button>`;
+    if (t==='verified') h += `<button class="act" data-act="unverify" type="button">UNMARK COMPLETED</button>`;
     if (p.status||ev.length||p.notes) h += `<button class="act danger" data-act="reset" type="button">RESET</button>`;
     h += `</div>`;
     if (t==='in_progress') h += `<label class="p-lab">PROGRESS <span id="pPctVal">${p.percent||0}%</span><input type="range" id="pPct" min="0" max="100" value="${p.percent||0}"></label>`;
     h += `<label class="p-lab">NOTES<textarea id="pNotes" rows="3" placeholder="What I practised, what clicked...">${esc(p.notes||'')}</textarea></label>`;
-    h += `<label class="p-lab">ADD EVIDENCE LINK<input id="pEvT" type="text" placeholder="Title (e.g. Nmap lab report)"><input id="pEvU" type="url" placeholder="https://github.com/..."><button class="act" data-act="addev" type="button">ADD EVIDENCE</button></label>`;
+    h += `<label class="p-lab">ADD EVIDENCE LINK<input id="pEvT" aria-label="Evidence title" type="text" placeholder="Title (e.g. Nmap lab report)"><input id="pEvU" aria-label="Evidence URL" type="url" placeholder="https://github.com/..."><button class="act" data-act="addev" type="button">ADD EVIDENCE</button></label>`;
     h += `</div>`;
   }
+  panelEl.setAttribute('role', mq.matches?'dialog':'region');
+  panelEl.setAttribute('aria-label', s.name+' skill details');
   panelEl.innerHTML = h;
   panelEl.hidden = false;
+  panelEl.scrollTop=0;
   bindPanel(id);
 }
 function bindPanel(id){
@@ -365,7 +395,7 @@ function bindPanel(id){
   panelEl.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>{
     const a=b.dataset.act;
     if(a==='start') startSkill(id);
-    if(a==='verify'){ if(window.confirm('Mark "'+SKILLS[id].name+'" as VERIFIED? Only do this when you can demonstrate it with evidence.')) verifySkill(id); }
+    if(a==='verify'){ if(window.confirm('Mark "'+SKILLS[id].name+'" completed locally? This is self-assessed, not independent verification.')) verifySkill(id); }
     if(a==='unstart') repo.patch(id,{status:null}), refresh();
     if(a==='unverify') unverifySkill(id);
     if(a==='reset'){ if(window.confirm('Reset all saved progress, notes and evidence for "'+SKILLS[id].name+'"?')) resetSkill(id); }
@@ -435,39 +465,39 @@ function applyRoute(){
   }
 }
 function showOverview(){
-  currentModule = null; selectedId = null;
+  panelEl.hidden=true; currentModule = null; selectedId = null;
   takeoverEl.hidden = true;
   headingEl.style.display=''; loadoutEl.style.display=''; loadNoteEl.style.display='';
   renderOverview();
 }
 function openModule(m, selectId){
-  currentModule = m; selectedId = null;
-  branchFilter = statusFilter = diffFilter = null;
+  panelEl.hidden=true; currentModule = m; selectedId = null;
+  branchFilter = statusFilter = diffFilter = null; filtersOpen=false;
   headingEl.style.display='none'; loadoutEl.style.display='none'; loadNoteEl.style.display='none';
   takeoverEl.hidden = false;
   const ms = moduleStats(m);
   headEl.innerHTML = `
     <button class="st-back" id="treeBack" type="button">◀ LOADOUT</button>
     <span class="st-chip"><span class="st-chip-ic">${m.glyph}</span><span><b>${esc(m.name)}</b><small>${m.num} / ${esc(m.short)}</small></span></span>
-    <span class="st-lvl">LVL ${ms.level} · ${ms.xp} XP · ${ms.verified}/${ms.total} VERIFIED</span>
-    <button class="st-owner" id="ownerToggle" type="button" aria-pressed="${state.ownerMode}">OWNER MODE: ${state.ownerMode?'ON':'OFF'}</button>`;
+    <span class="st-lvl">LVL ${ms.level} · ${ms.xp} XP · ${ms.verified}/${ms.total} SELF-MARKED</span>
+    <button class="st-owner" id="ownerToggle" type="button" aria-pressed="${state.ownerMode}">LOCAL EDITOR: ${state.ownerMode?'ON':'OFF'}</button>`;
   titleEl.innerHTML = esc(m.short) + ' <span>SKILL TREE</span>';
-  noteEl.textContent = 'Green = demonstrated with evidence · cyan = learning · grey = locked. ' + (state.ownerMode ? 'Owner mode ON: changes save only in this browser.' : 'Read-only for visitors.');
+  noteEl.textContent = 'Green = self-assessed as completed · cyan = learning · grey = locked. ' + (state.ownerMode ? 'Owner Mode is a local editor, not authentication. Changes save only in this browser.' : 'Progress is manually marked, not independently verified. Local editing is available in Owner Mode.');
   $('treeBack').addEventListener('click',closeModule);
   $('ownerToggle').addEventListener('click',()=>{
     state.ownerMode = !state.ownerMode; repo.save(); openModule(m, selectedId);
   });
   resetZoom();
   renderModule();
-  if (selectId && SKILLS[selectId] && SKILLS[selectId].module===m.id) selectSkill(selectId);
-  document.getElementById('skills').scrollIntoView({behavior: reduceMotion.matches?'auto':'smooth', block:'start'});
+  if (selectId && SKILLS[selectId] && SKILLS[selectId].module===m.id) { if(mq.matches){branchFilter=SKILLS[selectId].branch;renderModule();} selectSkill(selectId); }
+  document.getElementById('skills').scrollIntoView({behavior: mq.matches || reduceMotion.matches?'auto':'smooth', block:'start'});
 }
 function refresh(){
   computeStatuses();
   if (currentModule) {
     const keep = selectedId;
     const ms = moduleStats(currentModule);
-    const lvl = headEl.querySelector('.st-lvl'); if (lvl) lvl.textContent = `LVL ${ms.level} · ${ms.xp} XP · ${ms.verified}/${ms.total} VERIFIED`;
+    const lvl = headEl.querySelector('.st-lvl'); if (lvl) lvl.textContent = `LVL ${ms.level} · ${ms.xp} XP · ${ms.verified}/${ms.total} SELF-MARKED`;
     renderModule();
     if (keep && SKILLS[keep]) { selectSkill(keep); }
   } else renderOverview();
@@ -477,7 +507,7 @@ function refresh(){
 (function(){
   let drag = null;
   stageEl.addEventListener('wheel', e=>{
-    if (!currentModule) return;
+    if (!currentModule || mq.matches) return;
     e.preventDefault();
     if (e.ctrlKey) {
       // touchpad pinch (browsers report it as ctrl+wheel): gentle delta-proportional zoom around the cursor
@@ -490,6 +520,7 @@ function refresh(){
     }
   }, {passive:false});
   stageEl.addEventListener('pointerdown', e=>{
+    if (mq.matches) return;
     if (e.target.closest('.st-node') || e.target.closest('.st-panel') || e.target.closest('.st-zoom')) return;
     drag = { x:e.clientX, y:e.clientY, tx:view.tx, ty:view.ty };
     stageEl.setPointerCapture(e.pointerId);
@@ -500,11 +531,15 @@ function refresh(){
     applyView();
   });
   stageEl.addEventListener('pointerup', ()=>{ drag=null; });
+  stageEl.addEventListener('pointercancel', ()=>{ drag=null; });
+  stageEl.addEventListener('lostpointercapture', ()=>{ drag=null; });
   let pinch = null;
   stageEl.addEventListener('touchstart', e=>{
+    if (mq.matches) return;
     if (e.touches.length===2){ const [a,b]=e.touches; pinch = Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY); }
   }, {passive:true});
   stageEl.addEventListener('touchmove', e=>{
+    if (mq.matches) return;
     if (e.touches.length===2 && pinch){
       const [a,b]=e.touches; const d = Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY);
       const r = stageEl.getBoundingClientRect();
@@ -523,6 +558,12 @@ function refresh(){
 
 // ---- global keys, breakpoint, routing ----
 document.addEventListener('keydown',e=>{
+  if(e.key==='Tab' && mq.matches && !panelEl.hidden){
+    const focusable=[...panelEl.querySelectorAll('button:not(:disabled),a,input,textarea,select')].filter(el=>el.getClientRects().length);
+    const first=focusable[0],last=focusable.at(-1);
+    if(e.shiftKey && document.activeElement===first){e.preventDefault();last?.focus();}
+    else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first?.focus();}
+  }
   if (e.key==='Escape'){
     if (!searchResults.hidden) { searchResults.hidden = true; return; }
     if (selectedId) { selectSkill(null); return; }
@@ -537,6 +578,9 @@ const qp = new URLSearchParams(location.search);
 if (qp.get('owner')==='1' && !state.ownerMode){ state.ownerMode = true; repo.save(); }
 if (qp.get('tree')) location.hash = '#/toolkit/' + qp.get('tree') + (qp.get('select') ? '?select='+encodeURIComponent(qp.get('select')) : '');
 
+// Keep the sheet within the visible viewport when the mobile keyboard opens.
+function fitSheet(){panelEl.style.setProperty('--sheet-height',Math.max(120,(window.visualViewport?.height||innerHeight)-20)+'px'); panelEl.style.setProperty('--sheet-bottom',Math.max(0,innerHeight-(window.visualViewport?.height||innerHeight)-(window.visualViewport?.offsetTop||0))+'px');}
+window.visualViewport?.addEventListener('resize',fitSheet); window.visualViewport?.addEventListener('scroll',fitSheet); fitSheet();
 // ---- init ----
 computeStatuses();
 applyRoute();
