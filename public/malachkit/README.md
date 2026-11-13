@@ -53,7 +53,7 @@ From the existing justin-portfolio repository, run `npm run dev` and open `/mala
 
 `npm run build` copies `public/malachkit/` unchanged into `dist/malachkit/`. The existing GitHub Actions workflow deploys `dist`; it is not replaced. All internal paths are relative, including `../` back to the portfolio. Production path: `https://brolomna.github.io/justin-portfolio/malachkit/`.
 
-MalachKit is linked as card eight in the portfolio carousel. The app is indexable. The existing carousel behavior, other projects, and Moonfall code are preserved.
+MalachKit is linked as card eight in the portfolio carousel. The app is indexable. The existing carousel behavior, other projects, and Howlfall code are preserved.
 
 ## References
 
