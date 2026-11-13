@@ -39,3 +39,5 @@ The draft beginner cybersecurity guide is not included in this release. Learning
 ## Deployment follow-through
 
 The live check found an edge-cached 404 for the newly created stylesheet. Asset URLs now carry a release version so an old edge/browser cache cannot mix the previous renderer/styles with this release. The deployment workflow and domain settings are unchanged.
+
+Phone hero follow-up: removed inherited desktop -3px tracking from the third heading line, added explicit word spacing and a viewport-scaled font size. Rechecked 320, 360, 375, 390, 414 and 430px.
