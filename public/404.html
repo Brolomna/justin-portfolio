@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Page not found | Anmol (Justin) Siwa</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#050a10">
+<style>
+:root{--bg:#050a10;--green:#00f5a0;--white:#f1f5ff;--muted:#a5b5c8}
+*{margin:0;box-sizing:border-box}
+body{min-height:100vh;display:grid;place-items:center;padding:24px 16px;background:radial-gradient(ellipse at 70% 30%,#092c3055,transparent 50%),var(--bg);color:var(--white);font-family:Inter,system-ui,sans-serif;background-attachment:fixed}
+main{max-width:560px;width:100%;border:1px solid #23513e;border-radius:18px;padding:34px 28px;background:linear-gradient(140deg,#0b211a,#08121c)}
+pre{font:14px/1.7 ui-monospace,Menlo,Consolas,monospace;color:var(--muted);white-space:pre-wrap}
+pre b{color:var(--green);font-weight:600}
+h1{font-size:clamp(30px,7vw,44px);letter-spacing:-1.5px;margin:20px 0 10px;line-height:1.1}
+h1 span{color:var(--green)}
+p{color:var(--muted);line-height:1.7}
+nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+a{color:var(--green);text-decoration:none;border:1px solid #00f5a066;border-radius:999px;padding:10px 18px;font-weight:600;font-size:14px}
+a:hover{background:#00f5a014}
+a:focus-visible{outline:2px solid #00cfff;outline-offset:3px}
+</style>
+</head>
+<body>
+<main>
+<pre><b>justin@portfolio</b>:~$ cd <span id="p">this-page</span>
+bash: cd: No such file or directory</pre>
+<h1>404 — <span>page not found.</span></h1>
+<p>That link may be old or mistyped. Everything still lives on the main site.</p>
+<nav>
+<a href="/">← Back to the portfolio</a>
+<a href="/#projects">See projects</a>
+<a href="/#contact">Get in touch</a>
+</nav>
+</main>
+<script>document.getElementById('p').textContent=location.pathname.replace(/^\//,'')||'this-page';</script>
+</body>
+</html>

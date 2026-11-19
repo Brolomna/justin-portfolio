@@ -1,6 +1,6 @@
 # justin-portfolio
 
-Justin's personal site, live at https://brolomna.github.io/justin-portfolio/
+Portfolio of Anmol (Justin) Siwa, live at https://anmolsiwa.com.np/ (custom domain for GitHub Pages).
 
 ## File map
 
@@ -19,6 +19,19 @@ Justin's personal site, live at https://brolomna.github.io/justin-portfolio/
 
 To plug the skill tree into any page: one `<link>` to `toolkit/toolkit.css`, a
 `<div id="toolkit-mount">`, and the script tags listed at the bottom of `index.html`.
+
+## SEO and sharing
+
+- `index.html` head holds the title, description, canonical URL, Open Graph/Twitter tags and
+  JSON-LD (ProfilePage + Person + WebSite). Keep the canonical domain `https://anmolsiwa.com.np/`.
+- `public/assets/` - hero artwork and project posters (formerly inlined as base64).
+- `public/og-image.jpg` - 1200x630 link-preview image for LinkedIn, X, WhatsApp, etc.
+- `public/robots.txt`, `public/sitemap.xml` - add any new public page to the sitemap.
+- `public/404.html` - GitHub Pages "not found" page.
+- `public/favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192/512.png`, `site.webmanifest`.
+
+After deploying, submit `https://anmolsiwa.com.np/sitemap.xml` in Google Search Console
+(Sitemaps) and use URL Inspection -> Request indexing on the home page.
 
 ## Client-side mini projects
 
