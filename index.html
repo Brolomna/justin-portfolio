@@ -51,7 +51,1201 @@
       "isPartOf": { "@id": "https://anmolsiwa.com.np/#website" },
       "mainEntity": { "@id": "https://anmolsiwa.com.np/#person" },
       "primaryImageOfPage": "https://anmolsiwa.com.np/og-image.jpg",
-      "dateModified": "2026-11-19"
+      "dateModified": "2026-11-19T00:00:00+05:45"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://anmolsiwa.com.np/#person",
+      "name": "Anmol Siwa",
+      "alternateName": ["Justin", "Anmol (Justin) Siwa", "Brolomna"],
+      "url": "https://anmolsiwa.com.np/",
+      "image": "https://anmolsiwa.com.np/og-image.jpg",
+      "jobTitle": "Web Developer & Cybersecurity Enthusiast",
+      "description": "Web developer and cybersecurity learner who builds web apps, Python automation tools and browser-based security utilities. Former computer instructor and English teacher.",
+      "email": "mailto:anmolsiwa30@gmail.com",
+      "knowsAbout": ["Web development", "JavaScript", "HTML", "CSS", "Python", "Cybersecurity", "Linux", "Networking", "Progressive Web Apps", "Automation"],
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "name": "Introduction to Cybersecurity",
+        "credentialCategory": "Course completion badge",
+        "recognizedBy": { "@type": "Organization", "name": "Cisco Networking Academy" },
+        "url": "https://www.credly.com/badges/56dfc04d-df11-4450-b498-1f8be8b4a363"
+      },
+      "sameAs": [
+        "https://github.com/Brolomna",
+        "https://www.linkedin.com/in/just9n55",
+        "https://www.instagram.com/Just9n555"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://anmolsiwa.com.np/#website",
+      "url": "https://anmolsiwa.com.np/",
+      "name": "Anmol (Justin) Siwa",
+      "alternateName": "Justin's Portfolio",
+      "publisher": { "@id": "https://anmolsiwa.com.np/#person" },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
+
+<link rel="preload" as="image" href="./assets/justin-developer-workstation-960.webp" imagesrcset="./assets/justin-developer-workstation-960.webp 960w, ./assets/justin-developer-workstation-1400.webp 1400w" imagesizes="(max-width: 900px) 100vw, 55vw" fetchpriority="high">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #050a10;
+  --green: #00f5a0;
+  --cyan: #00cfff;
+  --white: #f1f5ff;
+  --muted: #8999b0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: Inter, sans-serif;
+  min-height: 100vh;
+}
+
+/* BACKGROUND */
+
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(ellipse at 75% 35%, #092c303d, transparent 40%),
+    radial-gradient(ellipse at 20% 70%, #063b2b20, transparent 45%),
+    #050a10;
+}
+
+.grid {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(#16405a25 1px, transparent 1px),
+    linear-gradient(90deg, #16405a25 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(to bottom, black, transparent 95%);
+  pointer-events: none;
+}
+
+#particles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.cursor-glow {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00f5a010, transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+/* FLOATING GLASS NAVIGATION — adapted to the portfolio's emerald theme */
+.nav {
+  position: fixed; top: 18px; left: 50%; transform: translateX(-50%); z-index: 100;
+  width: min(1020px, calc(100% - 32px));
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 10px 9px 18px;
+  background: rgba(16,25,35,.82);
+  border: 1px solid rgba(255,255,255,.10); border-radius: 999px;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 40px #0005, 0 0 22px rgba(0,245,160,.045);
+  animation: nav-in .7s cubic-bezier(.2,.7,.3,1) both;
+}
+@keyframes nav-in { from { opacity: 0; transform: translate(-50%,-14px); } to { opacity: 1; transform: translate(-50%,0); } }
+.nav-logo { display:flex; align-items:center; gap:9px; font-family:'Manrope',Inter,sans-serif; font-weight:800; font-size:16.5px; letter-spacing:-.01em; margin-right:auto; color:var(--white); }
+.nav-logo .mono-badge { display:grid; place-items:center; width:30px; height:30px; border-radius:9px; font-family:'JetBrains Mono',monospace; font-size:16px; color:var(--green); border:1px solid rgba(0,245,160,.45); text-shadow:0 0 12px rgba(0,245,160,.6); box-shadow:0 0 14px rgba(0,245,160,.18),inset 0 0 10px rgba(0,245,160,.07); }
+.nav-links { display:flex; align-items:center; gap:2px; list-style:none; }
+.nav-links a { position:relative; display:block; padding:8px 13px; border-radius:999px; font-size:13.5px; font-weight:500; color:var(--muted); transition:color .25s; }
+.nav-links a:hover,.nav-links a.active { color:var(--white); }
+.nav-links a::after { content:""; position:absolute; left:50%; bottom:3px; width:4px; height:4px; border-radius:50%; background:var(--green); opacity:0; transform:translateX(-50%) scale(.4); transition:opacity .25s,transform .25s; box-shadow:0 0 8px rgba(0,245,160,.9); }
+.nav-links a.active::after,.nav-links a:hover::after { opacity:1; transform:translateX(-50%) scale(1); }
+.nav-cta { display:inline-flex; align-items:center; gap:7px; margin-left:6px; padding:8.5px 17px; border-radius:999px; font-size:13.5px; font-weight:600; color:var(--green); border:1px solid rgba(0,245,160,.55); box-shadow:0 0 16px rgba(0,245,160,.14),inset 0 0 12px rgba(0,245,160,.05); transition:box-shadow .3s,background .3s; white-space:nowrap; }
+.nav-cta:hover { background:rgba(0,245,160,.08); box-shadow:0 0 26px rgba(0,245,160,.3),inset 0 0 14px rgba(0,245,160,.09); }
+.nav-cta svg { transition:transform .3s; }
+.nav-cta:hover svg { transform:translate(2px,-2px); }
+.nav-toggle { display:none; background:none; border:0; color:var(--white); cursor:pointer; padding:8px; }
+.mobile-menu { display:none; position:fixed; top:74px; left:16px; right:16px; z-index:99; background:rgba(16,25,35,.97); border:1px solid rgba(255,255,255,.10); border-radius:20px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); padding:10px; box-shadow:0 15px 40px #0007; }
+.mobile-menu.open { display:block; }
+.mobile-menu a { display:block; padding:12px 14px; border-radius:12px; font-size:15px; font-weight:500; color:var(--muted); }
+.mobile-menu a:hover { color:var(--white); background:rgba(0,245,160,.06); }
+/* NAV ACTIVE SECTION STATE */
+.nav-links a.active, .mobile-menu a.active {
+  color: var(--white);
+}
+.mobile-menu a.active {
+  background: rgba(0,245,160,.09);
+  box-shadow: inset 2px 0 0 var(--green);
+}
+.mobile-menu a { transition: color .2s, background .2s; }
+
+/* Keep browser/default link underlines out of the floating navigation. */
+.nav a, .nav a:link, .nav a:visited, .nav a:hover, .nav a:active,
+.mobile-menu a, .mobile-menu a:link, .mobile-menu a:visited, .mobile-menu a:hover, .mobile-menu a:active {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+}
+/* Explicitly suppress underlines on the final "Let's Talk" CTA in every state. */
+.nav .nav-cta,
+.nav .nav-cta:link,
+.nav .nav-cta:visited,
+.nav .nav-cta:hover,
+.nav .nav-cta:focus,
+.nav .nav-cta:active {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-color: transparent !important;
+}
+
+/* HERO */
+
+.hero {
+  width: min(1250px, calc(100% - 60px));
+  min-height: 100vh;
+  margin: auto;
+  padding-top: 125px;
+  padding-bottom: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 35px;
+  position: relative;
+}
+
+/* LEFT CONTENT */
+
+.content {
+  position: relative;
+  z-index: 5;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  border: 1px solid #00f5a055;
+  border-radius: 30px;
+  color: #b6c9d0;
+  font-size: 11px;
+  letter-spacing: 1px;
+  background: #00f5a008;
+  margin-bottom: 27px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--green);
+  animation: pulse 1.7s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: .3;
+    transform: scale(.7);
+  }
+}
+
+h1 {
+  font-size: clamp(42px, 5.5vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -4px;
+  font-weight: 900;
+  max-width: 650px;
+}
+
+.skip-link {
+  position: fixed; left: 16px; top: -60px; z-index: 1000;
+  padding: 10px 16px; border-radius: 10px;
+  background: var(--green); color: #031008; font-weight: 700; font-size: 14px;
+  text-decoration: none; transition: top .2s;
+}
+.skip-link:focus { top: 16px; }
+
+h1 .hero-name {
+  display: block;
+  margin-bottom: 18px;
+  font-family: 'JetBrains Mono', 'DM Mono', monospace;
+  font-size: clamp(13px, 1.25vw, 16px);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #d9e6ee;
+  text-shadow: none;
+}
+h1 .hero-name em, h1 .hero-name i { font-style: normal; color: var(--muted); }
+@media (max-width: 600px) {
+  h1 .hero-name { letter-spacing: 1px; margin-bottom: 14px; }
+  h1 .hero-name em { display: block; }
+  h1 .hero-name em i { display: none; }
+}
+
+h1 span {
+  color: var(--green);
+  text-shadow: 0 0 35px #00f5a033;
+}
+
+/* Hero emphasis: solid green BREAK, holographic outlined BETTER */
+h1 .hero-break {
+  color: var(--green);
+  text-shadow: 0 0 12px rgba(0, 245, 160, .32), 0 0 35px rgba(0, 245, 160, .18);
+}
+
+h1 .hero-third-line {
+  /* Keep "I MAKE IT" white; only BETTER gets the green outline. */
+  color: #F2F7FA;
+  text-shadow: none;
+  display: block;
+  white-space: nowrap;
+  font-size: clamp(26px, 5vw, 64px);
+  letter-spacing: -3px;
+  line-height: 1.08;
+}
+
+h1 .hero-better {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px var(--green);
+  /* Softer holographic edge: keep the outline crisp, with only a restrained glow. */
+  text-shadow: 0 0 4px rgba(0, 245, 160, .32), 0 0 12px rgba(0, 245, 160, .16);
+  filter: drop-shadow(0 0 3px rgba(0, 245, 160, .18));
+}
+
+.description {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+  max-width: 470px;
+  margin-top: 25px;
+}
+
+.buttons {
+  display: flex;
+  gap: 13px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  transition: .3s;
+}
+
+.primary {
+  background: var(--green);
+  color: #00160e;
+  box-shadow: 0 0 25px #00f5a025;
+}
+
+.primary:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 40px #00f5a077;
+}
+
+.secondary {
+  color: #baffdc;
+  background: rgba(0, 245, 160, .055);
+  border: 1px solid rgba(0, 245, 160, .42);
+  box-shadow: inset 0 0 14px rgba(0, 245, 160, .035);
+}
+
+.secondary:hover {
+  color: #eafff4;
+  background: rgba(0, 245, 160, .13);
+  border-color: rgba(0, 245, 160, .78);
+  box-shadow: 0 0 24px rgba(0, 245, 160, .14);
+  transform: translateY(-5px);
+}
+
+/* DEVELOPER GRAPHIC SCENE */
+
+.visual {
+  height: 600px;
+  width: 100%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.scene-glow {
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  background: #00f5a0;
+  filter: blur(120px);
+  opacity: .12;
+  animation: glowPulse 5s infinite alternate;
+  z-index: -1;
+}
+
+/* DEVELOPER ARTWORK */
+
+.developer-art {
+  position: absolute;
+  width: 115%;
+  max-width: none;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  left: -7%;
+  z-index: 2;
+  animation: developerFloat 7s ease-in-out infinite;
+  --mouse-x: 0px;
+  --mouse-y: 0px;
+  filter: drop-shadow(0 0 30px #00f5a018);
+  pointer-events: none;
+}
+
+/* ORBITAL EFFECTS */
+
+.floating-orb {
+  position: absolute;
+  border: 1px solid #00f5a080;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #00f5a044;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.orb-one {
+  width: 65px;
+  height: 65px;
+  top: 10%;
+  right: 12%;
+  animation: orbitFloat 9s linear infinite;
+}
+
+.orb-two {
+  width: 25px;
+  height: 25px;
+  bottom: 18%;
+  left: 8%;
+  border-color: #00cfff;
+  animation: orbitFloat 6s linear infinite reverse;
+}
+
+/* HOLOGRAPHIC PANELS */
+
+.hud {
+  position: absolute;
+  z-index: 5;
+  padding: 15px;
+  border: 1px solid #00f5a055;
+  border-radius: 12px;
+  background: #07131bdc;
+  backdrop-filter: blur(15px);
+  font: 10px monospace;
+  box-shadow: 0 0 30px #00f5a015;
+  animation: hudFloat 5s ease-in-out infinite;
+}
+
+.hud span {
+  color: var(--green);
+}
+
+.hud p {
+  margin-top: 10px;
+  color: #d6e5ee;
+  line-height: 1.5;
+}
+
+.hud-one {
+  top: 12%;
+  left: 0;
+}
+
+.hud-two {
+  right: 0;
+  bottom: 14%;
+  animation-delay: -2.5s;
+}
+
+.typing {
+  display: block;
+  margin-top: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: typing 4s steps(28) infinite;
+}
+
+.hud-bar {
+  height: 3px;
+  margin-top: 12px;
+  background: linear-gradient(
+    90deg,
+    #00f5a0 20%,
+    #ffffff15 20%
+  );
+  animation: none;
+}
+
+/* FLOATING PARTICLES */
+
+.floating-particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00f5a0;
+  box-shadow: 0 0 15px #00f5a0;
+  z-index: 4;
+  animation: particleDrift 7s infinite ease-in-out;
+  pointer-events: none;
+}
+
+.particle-one {
+  top: 20%;
+  left: 20%;
+}
+
+.particle-two {
+  top: 65%;
+  right: 20%;
+  animation-delay: -2s;
+}
+
+.particle-three {
+  bottom: 10%;
+  left: 45%;
+  animation-delay: -4s;
+}
+
+.particle-four {
+  top: 40%;
+  right: 8%;
+  animation-delay: -1s;
+}
+
+/* CODE EDITOR HOLOGRAM — PURE HTML/CSS, NO IMAGE */
+.holo-code {
+  position: absolute;
+  top: 3%;
+  right: 1%;
+  z-index: 8;
+  width: min(310px, 72%);
+  padding: 14px 15px 12px;
+  overflow: hidden;
+  color: #dfffee;
+  font-family: "DM Mono", monospace;
+  background: #07131bdc;
+  border: 1px solid rgba(0,245,160,.58);
+  border-radius: 11px;
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+  box-shadow: 0 0 18px rgba(0,245,160,.16), 0 0 48px rgba(0,245,160,.08);
+  animation: holoDrift 7s ease-in-out infinite, holoGlow 4s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+.holo-top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px; }
+.window-dots { display:flex; gap:5px; flex:none; }
+.window-dots span { width:7px; height:7px; border-radius:50%; }
+.window-dots span:nth-child(1) { background:#ff625c; box-shadow:0 0 7px #ff625c66; }
+.window-dots span:nth-child(2) { background:#ffc04a; box-shadow:0 0 7px #ffc04a66; }
+.window-dots span:nth-child(3) { background:#39d98a; box-shadow:0 0 7px #39d98a66; }
+.holo-title { color:#9acdb5; font-size:8px; letter-spacing:1px; white-space:nowrap; }
+.live-status { display:flex; align-items:center; gap:5px; color:#00f5a0; font-size:8px; letter-spacing:.7px; }
+.live-status span { width:5px; height:5px; border-radius:50%; background:#00f5a0; box-shadow:0 0 9px #00f5a0; animation:statusBlink 1.5s infinite; }
+.holo-divider { height:1px; margin:10px 0; background:linear-gradient(90deg,transparent,rgba(0,245,160,.65),rgba(0,245,160,.45),transparent); }
+.editor-content { display:flex; flex-direction:column; gap:8px; }
+.code-row { display:flex; align-items:center; gap:10px; min-height:14px; white-space:nowrap; font-size:9px; line-height:1.45; }
+.code-row:nth-child(2) { animation-delay:.2s; }
+.code-row:nth-child(3) { animation-delay:.4s; }
+.code-row:nth-child(4) { animation-delay:.6s; }
+.code-row:nth-child(5) { animation-delay:.8s; }
+.code-row:nth-child(6) { animation-delay:1s; }
+.line-number { flex:none; width:15px; color:#557b69; font-size:8px; }
+.code-row code { font:inherit; }
+.code-row.indent { padding-left:12px; }
+.purple { color:#c792ea; }
+.blue { color:#75f0b5; }
+.green { color:#c5ff9b; }
+.white { color:#e3fff0; }
+.cursor { color:#00f5a0; animation:cursorBlink .8s steps(2) infinite; visibility:hidden; }
+.holo-code.is-typed .cursor { visibility:visible; }
+.holo-footer { display:flex; justify-content:space-between; gap:8px; margin-top:12px; font-size:7px; letter-spacing:.5px; }
+.holo-footer span:first-child { color:#00f5a0; }
+.holo-footer span:last-child { color:#719b86; }
+.holo-scan { position:absolute; left:0; right:0; top:-30%; height:35px; pointer-events:none; background:linear-gradient(transparent,rgba(0,245,160,.10),transparent); animation:holoScan 5s linear infinite; }
+@keyframes holoDrift { 0%,100% { transform:translate3d(0,0,0) rotate(-1deg); } 50% { transform:translate3d(-7px,-15px,0) rotate(1deg); } }
+@keyframes holoGlow { from { filter:brightness(.94); } to { filter:brightness(1.18); } }
+@keyframes cursorBlink { 50% { opacity:0; } }
+@keyframes statusBlink { 50% { opacity:.3; } }
+@keyframes holoScan { from { top:-30%; } to { top:130%; } }
+@keyframes codeAppear { from { opacity:0; transform:translateX(-7px); } to { opacity:1; transform:translateX(0); } }
+
+
+
+/* KALI LINUX TERMINAL HOLOGRAM — PURE HTML/CSS */
+.holo-kali {
+  position: absolute;
+  left: 0;
+  bottom: 5%;
+  z-index: 9;
+  width: min(320px, 74%);
+  padding: 13px 14px 11px;
+  overflow: hidden;
+  color: #e1ffef;
+  font-family: "DM Mono", monospace;
+  background: #07131bdc;
+  border: 1px solid rgba(0,245,160,.62);
+  border-radius: 10px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 0 18px rgba(0,245,160,.18), 0 0 48px rgba(0,245,160,.09);
+  animation: kaliDrift 8s ease-in-out infinite, kaliGlow 4s ease-in-out infinite alternate;
+}
+.kali-topbar { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+.kali-brand { display:flex; align-items:center; gap:7px; color:#a5f5c8; font-size:9px; letter-spacing:.8px; white-space:nowrap; }
+.kali-mark { width:17px; height:17px; display:grid; place-items:center; border:1px solid #63e8a5; border-radius:5px; color:#a2f5c5; font-size:11px; box-shadow:0 0 10px #00f5a055; }
+.kali-window-dots { display:flex; gap:4px; }
+.kali-window-dots span { width:6px; height:6px; border-radius:50%; background:#49739d; }
+.kali-window-dots span:first-child { background:#ff625c; }
+.kali-window-dots span:nth-child(2) { background:#ffc04a; }
+.kali-window-dots span:nth-child(3) { background:#39d98a; }
+.kali-session { display:flex; align-items:center; gap:5px; color:#8be9b5; font-size:7px; letter-spacing:.5px; white-space:nowrap; }
+.kali-session i { width:5px; height:5px; border-radius:50%; background:#00f5a0; box-shadow:0 0 8px #00f5a0; animation:kaliBlink 1.4s infinite; }
+.kali-rule { height:1px; margin:9px 0; background:linear-gradient(90deg,transparent,rgba(0,245,160,.7),rgba(132,255,190,.38),transparent); }
+.kali-terminal { min-height:145px; font-size:8px; line-height:1.65; }
+.kali-line { display:flex; gap:6px; align-items:flex-start; white-space:normal; overflow-wrap:anywhere; }
+.kali-prompt { flex:none; color:#7cf0b2; }
+.kali-command { color:#e3fff0; }
+.kali-output { color:#91bba3; padding-left:13px; }
+.kali-output.good { color:#83e6b4; }
+.kali-output.info { color:#a5f5c8; }
+.kali-dim { color:#557b68; }
+.kali-cursor { display:inline-block; color:#a5f5c8; animation:kaliBlink .8s steps(2) infinite; }
+.kali-bottom { display:flex; justify-content:space-between; gap:8px; margin-top:9px; color:#719b86; font-size:7px; letter-spacing:.4px; }
+.kali-bottom span:first-child { color:#8cf0b8; }
+.kali-scan { position:absolute; left:0; right:0; top:-35%; height:38px; pointer-events:none; background:linear-gradient(transparent,rgba(0,245,160,.11),transparent); animation:kaliScan 6s linear infinite; }
+.kali-terminal .kali-sequence { animation:kaliLineIn .45s both; }
+.kali-terminal .kali-sequence:nth-child(2) { animation-delay:.18s; }
+.kali-terminal .kali-sequence:nth-child(3) { animation-delay:.36s; }
+.kali-terminal .kali-sequence:nth-child(4) { animation-delay:.54s; }
+.kali-terminal .kali-sequence:nth-child(5) { animation-delay:.72s; }
+@keyframes kaliDrift { 0%,100% { transform:translate3d(0,0,0) rotate(1deg); } 50% { transform:translate3d(8px,-12px,0) rotate(-1deg); } }
+@keyframes kaliGlow { from { filter:brightness(.94); } to { filter:brightness(1.16); } }
+@keyframes kaliBlink { 50% { opacity:.25; } }
+@keyframes kaliScan { from { top:-35%; } to { top:135%; } }
+@keyframes kaliLineIn { from { opacity:0; transform:translateX(-6px); } to { opacity:1; transform:translateX(0); } }
+
+/* ANIMATIONS */
+
+@keyframes developerFloat {
+  0%, 100% {
+    transform: translate3d(var(--mouse-x), var(--mouse-y), 0) scale(1);
+  }
+  50% {
+    transform: translate3d(var(--mouse-x), calc(var(--mouse-y) - 12px), 0) scale(1.015);
+  }
+}
+
+@keyframes hudFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes orbitFloat {
+  to {
+    transform: rotate(360deg) translateX(20px);
+  }
+}
+
+@keyframes glowPulse {
+  to {
+    opacity: .25;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes particleDrift {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: .3;
+  }
+  50% {
+    transform: translate(25px, -40px);
+    opacity: 1;
+  }
+}
+
+@keyframes typing {
+  0%, 100% { width: 0; }
+  50% { width: 220px; }
+}
+
+@keyframes progress {
+  to {
+    background: linear-gradient(
+      90deg,
+      #00f5a0 95%,
+      #ffffff15 95%
+    );
+  }
+}
+
+@keyframes lineMove {
+  to {
+    opacity: 1;
+    width: 95%;
+  }
+}
+
+/* SCANNING LIGHT */
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #00f5a077,
+    transparent
+  );
+  animation: scan 7s linear infinite;
+  opacity: .5;
+  z-index: 5;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  to { top: 100%; }
+}
+
+/* TECHNOLOGY STRIP */
+
+.tech-strip {
+  width: min(1100px, calc(100% - 50px));
+  margin: -40px auto 80px;
+  border-top: 1px solid #ffffff16;
+  border-bottom: 1px solid #ffffff16;
+  padding: 23px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.tech-label {
+  color: #73869d;
+  font: 11px "DM Mono", monospace;
+  white-space: nowrap;
+}
+
+.tech-list {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  color: #c2d0df;
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.tech-list span {
+  transition: .3s;
+}
+
+.tech-list span:hover {
+  color: var(--green);
+  transform: translateY(-4px);
+}
+
+/* RESPONSIVE TABLET */
+
+@media(max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 145px;
+    gap: 20px;
+  }
+
+  .content {
+    text-align: center;
+  }
+
+  h1, .description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .status, .buttons {
+    justify-content: center;
+  }
+
+  .visual {
+    height: 500px;
+    width: 100%;
+  }
+
+  .developer-art {
+    width: 110%;
+    left: -5%;
+  }
+
+  .tech-strip {
+    margin-top: 0;
+    flex-direction: column;
+  }
+}
+
+/* Reduced-motion preference is handled by the accessible motion toggle. */
+@media (prefers-reduced-motion: reduce) {
+  .project-slide.is-hovered { transition-duration:0.01ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+
+/* CLEARER, SLOW HOLOGRAM DRIFT */
+.visual .holo-code {
+  transform-origin: 50% 50%;
+  will-change: transform, filter;
+  animation:
+    codeEditorGlide 10s cubic-bezier(.45, 0, .55, 1) infinite,
+    holoGlow 5s ease-in-out infinite alternate;
+}
+
+.visual .holo-kali {
+  transform-origin: 50% 50%;
+  will-change: transform, filter;
+  animation:
+    kaliTerminalGlide 11.5s cubic-bezier(.45, 0, .55, 1) infinite,
+    kaliGlow 5.5s ease-in-out infinite alternate;
+}
+
+.visual .code-card {
+  will-change: transform;
+  animation: smallCardGlide 8.5s ease-in-out infinite;
+}
+
+.visual .hud-one {
+  will-change: transform;
+  animation: leftHudGlide 9.5s ease-in-out infinite;
+}
+
+.visual .hud-two {
+  will-change: transform;
+  animation: rightHudGlide 10.5s ease-in-out infinite;
+}
+
+/* Distances are intentionally noticeable, but still feel like gentle hovering. */
+@keyframes codeEditorGlide {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1deg); }
+  25%      { transform: translate3d(-15px, -13px, 0) rotate(.5deg); }
+  50%      { transform: translate3d(-23px, 4px, 0) rotate(1.2deg); }
+  75%      { transform: translate3d(-9px, 15px, 0) rotate(-.2deg); }
+}
+
+@keyframes kaliTerminalGlide {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(.8deg); }
+  25%      { transform: translate3d(15px, -12px, 0) rotate(-.5deg); }
+  50%      { transform: translate3d(23px, 13px, 0) rotate(-1.1deg); }
+  75%      { transform: translate3d(6px, 20px, 0) rotate(.3deg); }
+}
+
+@keyframes smallCardGlide {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0); }
+  35%      { transform: translate3d(12px, -10px, 0) rotate(1deg); }
+  70%      { transform: translate3d(-9px, 7px, 0) rotate(-.7deg); }
+}
+
+@keyframes leftHudGlide {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  30%      { transform: translate3d(-12px, -10px, 0); }
+  65%      { transform: translate3d(10px, 8px, 0); }
+}
+
+@keyframes rightHudGlide {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  35%      { transform: translate3d(13px, -11px, 0); }
+  70%      { transform: translate3d(-10px, 9px, 0); }
+}
+
+/* STATIC HERO ARTWORK: disable all positional gliding/hovering */
+.visual .developer-art,
+.visual .floating-orb,
+.visual .floating-particle,
+.visual .code-card,
+.visual .hud-one,
+.visual .hud-two {
+  animation: none !important;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Keep holograms anchored while retaining a subtle light pulse. */
+.visual .holo-code {
+  animation: holoGlow 5s ease-in-out infinite alternate !important;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+.visual .holo-kali {
+  animation: kaliGlow 5.5s ease-in-out infinite alternate !important;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Keep the LIVE DEVELOPMENT panel a fixed size while its text reveals. */
+.visual .hud-two {
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+  box-sizing: border-box;
+}
+
+.visual .hud-two .typing {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typingReveal 4s steps(28, end) infinite;
+}
+
+@keyframes typingReveal {
+  0%, 100% { clip-path: inset(0 100% 0 0); }
+  50%      { clip-path: inset(0 0 0 0); }
+}
+
+/* Decorative decryption-style animation inside the fixed green hologram. */
+.visual .decrypt-panel { min-height: 112px; }
+.decrypt-heading { display:flex; justify-content:space-between; align-items:center; gap:8px; letter-spacing:1.1px; }
+.decrypt-heading > span:first-child { color:#72ffbd; }
+.decrypt-live { color:#b7ffd9; font-size:8px; white-space:nowrap; }
+.decrypt-subtitle { margin:8px 0 9px !important; color:#82bca0 !important; font-size:8px; letter-spacing:.45px; }
+.decrypt-stream { display:flex; align-items:center; gap:6px; overflow:hidden; white-space:nowrap; color:#caffdf; font-size:11px; letter-spacing:1px; text-shadow:0 0 8px #00f5a088; }
+.decrypt-prefix { color:#54d99a !important; font-size:8px; flex:0 0 auto; }
+#decryptHash { display:inline-block; min-width:0; overflow:hidden; }
+.decrypt-meter { height:3px; margin-top:11px; overflow:hidden; background:#b7ffd922; border-radius:4px; }
+.decrypt-meter span { display:block; height:100%; width:68%; background:linear-gradient(90deg,#00b875,#b7ff75); box-shadow:0 0 8px #00f5a0; transition:width .22s linear; }
+.decrypt-footer { display:flex; justify-content:space-between; gap:8px; margin-top:7px; color:#83c9a5; font-size:7px; letter-spacing:.45px; }
+#decryptPercent { color:#caffdf; }
+
+@media (max-width: 600px) {
+  .visual .hud-two {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+  }
+  .visual .hud-two .typing {
+    width: 190px;
+  }
+}
+
+/* The hero's small scanline and text cursors may still animate internally;
+   they do not move the image or hologram panels from their positions. */
+
+.mini-art{background:radial-gradient(circle at 50% 43%,rgba(0,245,160,.1),transparent 60%),linear-gradient(155deg,#13242c,#071018 72%)}.mini-symbol{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font:700 70px 'JetBrains Mono',monospace;color:var(--green);letter-spacing:-7px;text-shadow:0 0 28px rgba(0,245,160,.25)}.mini-bars{position:absolute;bottom:29%;left:25%;right:25%;display:flex;gap:8px}.mini-bars i{height:4px;flex:1;background:rgba(0,245,160,.6);border-radius:4px}.mini-bars i:last-child{background:rgba(0,245,160,.15)}.mini-art .art-bottom{font-size:7px;letter-spacing:.6px}.mini-slide .slide-caption strong{font-size:10px}.mini-slide{position:relative}
+</style>
+
+<link rel="stylesheet" href="toolkit/toolkit.css?v=20261113-mobile">
+
+</head>
+
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="background"></div>
+<div class="grid"></div>
+
+<canvas id="particles"></canvas>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- FLOATING NAVIGATION -->
+<nav class="nav" aria-label="Primary">
+  <a class="nav-logo" href="#top" aria-label="Justin home">
+    <span class="mono-badge">J</span><span>Justin</span>
+  </a>
+  <ul class="nav-links" aria-label="Main links">
+    <li><a href="#top" class="active">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Loadout</a></li>
+    <li><a href="#learning">Learning</a></li>
+  </ul>
+  <a class="nav-cta" href="mailto:anmolsiwa30@gmail.com">Let's Talk
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+  </a>
+  <button class="nav-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#top">Home</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#skills">Loadout</a><a href="#learning">Learning</a><a href="#contact">Contact</a>
+  <a href="mailto:anmolsiwa30@gmail.com" style="color:var(--green)">Let's Talk</a>
+</div>
+
+<!-- HERO SECTION -->
+
+<main id="main">
+<div class="hero">
+
+  <!-- LEFT SIDE -->
+
+  <section class="content">
+
+    <div class="status">
+      <span class="status-dot"></span>
+      OPEN TO WORK · FULL-TIME &amp; FREELANCE
+    </div>
+
+    <h1>
+      <span class="hero-name">Anmol (Justin) Siwa <em><i aria-hidden="true">· </i>Web Developer &amp; Cybersecurity</em></span>
+      I BUILD.<br>
+      <span class="hero-break">I BREAK.</span><br>
+      <span class="hero-third-line">I MAKE IT <span class="hero-better">BETTER.</span></span>
+    </h1>
+
+    <div class="description">
+      <p>I build web stuff, explore cybersecurity, and occasionally find out how things break.</p>
+    </div>
+
+    <div class="buttons">
+      <a href="#projects" class="btn primary">
+        Explore My Work ↗
+      </a>
+
+      <a href="#contact" class="btn secondary">
+        Let's Talk
+      </a>
+    </div>
+
+
+  </section>
+
+  <!-- RIGHT SIDE: ANIMATED GRAPHIC SCENE -->
+
+  <section class="visual" aria-hidden="true">
+
+    <div class="scene-glow"></div>
+
+    <div class="scan-line"></div>
+
+    <!-- YOUR GENERATED DEVELOPER IMAGE -->
+
+    <img
+      src="./assets/justin-developer-workstation-1400.webp" width="1400" height="788"
+      srcset="./assets/justin-developer-workstation-960.webp 960w, ./assets/justin-developer-workstation-1400.webp 1400w"
+      sizes="(max-width: 900px) 100vw, 55vw"
+      fetchpriority="high" decoding="async"
+      class="developer-art"
+      alt="Illustrated developer working at a futuristic multi-monitor workstation"
+    >
+
+    <!-- FLOATING ORBS -->
+
+    <div class="floating-orb orb-one"></div>
+    <div class="floating-orb orb-two"></div>
+
+    <!-- HOLOGRAPHIC SYSTEM PANEL -->
+
+    <div class="hud hud-one" id="targetMachinePanel">
+      <span id="targetMachineHeading">● LOCAL LAB SIMULATION</span>
+      <p id="targetMachineStatus">Visual demonstration running...</p>
+      <div class="hud-bar" id="targetMachineProgress" role="progressbar" aria-label="Lab simulation progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
+    </div>
+
+    <!-- LIVE DEVELOPMENT PANEL -->
+
+    <div class="hud hud-two decrypt-panel" aria-label="Decorative password decryption animation">
+      <div class="decrypt-heading"><span>LOCAL LAB DEMO</span><span class="decrypt-live">● SIMULATION</span></div>
+      <p class="decrypt-subtitle">PASSWORD ANALYSIS / SIMULATION</p>
+      <div class="decrypt-stream" aria-live="off">
+        <span class="decrypt-prefix">HASH //</span>
+        <span id="decryptHash">a7F#9kL!2qP@8xR$</span>
+      </div>
+      <div class="decrypt-meter"><span id="decryptProgress"></span></div>
+      <div class="decrypt-footer"><span id="decryptStatus">ROTATING CANDIDATES</span><span id="decryptPercent">68.4%</span></div>
+    </div>
+
+    <!-- FLOATING CODE EDITOR HOLOGRAM: BUILT WITH HTML + CSS -->
+    <div class="holo-code" aria-label="Animated code editor hologram">
+      <div class="holo-top">
+        <div class="window-dots"><span></span><span></span><span></span></div>
+        <div class="holo-title">JUSTIN.DEV / EDITOR</div>
+        <div class="live-status"><span></span> LIVE</div>
+      </div>
+      <div class="holo-divider"></div>
+      <div class="editor-content">
+        <div class="code-row"><span class="line-number">01</span><code><span class="purple">const</span> <span class="blue">developer</span><span class="white"> = </span><span class="green">"Justin"</span>;</code></div>
+        <div class="code-row"><span class="line-number">02</span><code><span class="purple">function</span> <span class="blue">buildFuture</span><span class="white">() {</span></code></div>
+        <div class="code-row indent"><span class="line-number">03</span><code><span class="purple">return</span><span class="green"> "Ideas into reality"</span>;</code></div>
+        <div class="code-row"><span class="line-number">04</span><code><span class="white">}</span></code></div>
+        <div class="code-row"><span class="line-number">05</span><code><span class="purple">const</span> <span class="blue">future</span><span class="white"> = </span><span class="green">"Unlimited"</span>;</code></div>
+        <div class="code-row"><span class="line-number">06</span><code><span class="blue">buildFuture</span><span class="white">();</span> <span class="cursor">▋</span></code></div>
+      </div>
+      <div class="holo-divider"></div>
+      <div class="holo-footer"><span>● SYSTEM OPERATIONAL</span><span>JAVASCRIPT</span></div>
+      <div class="holo-scan"></div>
+    </div>
+
+    <!-- KALI LINUX TERMINAL HOLOGRAM: VISUAL DEMO, COMMANDS ARE NOT EXECUTED -->
+    <div class="holo-kali" aria-label="Animated Kali Linux terminal showing safe local system inspection commands">
+      <div class="kali-topbar">
+        <div class="kali-brand"><span class="kali-mark">K</span> KALI LINUX / TERMINAL</div>
+        <div class="kali-window-dots"><span></span><span></span><span></span></div>
+        <div class="kali-session"><i></i> LOCAL LAB</div>
+      </div>
+      <div class="kali-rule"></div>
+      <div class="kali-terminal" id="kaliTerminal">
+        <div class="kali-line kali-sequence"><span class="kali-prompt">┌──(justin㉿kali)-[~]</span></div>
+        <div class="kali-line kali-sequence"><span class="kali-prompt">└─$</span><span class="kali-command"> whoami</span></div>
+        <div class="kali-line kali-sequence"><span class="kali-output good">justin</span></div>
+        <div class="kali-line kali-sequence"><span class="kali-prompt">└─$</span><span class="kali-command"> ip -brief addr</span></div>
+        <div class="kali-line kali-sequence"><span class="kali-output info">lo     UNKNOWN  127.0.0.1/8</span></div>
+        <div class="kali-line kali-sequence"><span class="kali-prompt">└─$</span><span class="kali-command"> nmap -sV 127.0.0.1</span></div>
+        <div class="kali-line kali-sequence"><span class="kali-output">Starting Nmap · localhost scan</span></div>
+        <div class="kali-line kali-sequence"><span class="kali-output good">Scan complete · host is up</span></div>
+        <div class="kali-line"><span class="kali-prompt">└─$</span><span class="kali-cursor">▋</span></div>
+      </div>
+      <div class="kali-rule"></div>
+      <div class="kali-bottom"><span>● VISUAL DEMO</span><span>AUTHORIZED LAB ONLY</span></div>
+      <div class="kali-scan"></div>
+    </div>
+
+    <!-- PARTICLES -->
+
+    <div class="floating-particle particle-one"></div>
+    <div class="floating-particle particle-two"></div>
+    <div class="floating-particle particle-three"></div>
+    <div class="floating-particle particle-four"></div>
+
+  </section>
+
+</div>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="section-kicker">// A LITTLE ABOUT ME</div>
+  <div class="about-layout">
+    <div class="about-heading"><h2>Curious by nature.<br><span>Always building.</span></h2></div>
+    <div class="about-copy">
+      <p>Hey, I'm Justin. I work on web projects, experiment with different technologies, and spend a good amount of time exploring cybersecurity.</p>
+      <p>I enjoy building things that work, figuring out why they don't, and finding ways to make them better. Whether it's developing an application, testing a web service, or messing around in a security lab, I'm always up for a good technical challenge.</p>
+      <p>My background includes working as a computer instructor and later as an English teacher. Those experiences shaped the way I approach collaboration: communicate clearly, stay patient, and make complicated things easier to understand.</p>
+      <div class="traits-grid">
+        <article class="trait-card">
+          <div class="trait-top"><span class="trait-num">01</span><span class="trait-glyph">&lt;/&gt;</span></div>
+          <h3>BUILD</h3>
+          <p>Websites, apps &amp; automation</p>
+          <div class="trait-cmd"><b>$</b> make cool stuff</div>
+        </article>
+        <article class="trait-card">
+          <div class="trait-top"><span class="trait-num">02</span><span class="trait-glyph">⌖</span></div>
+          <h3>EXPLORE</h3>
+          <p>Linux, networking &amp; security</p>
+          <div class="trait-cmd"><b>$</b> nmap -sV localhost</div>
+        </article>
+        <article class="trait-card">
+          <div class="trait-top"><span class="trait-num">03</span><span class="trait-glyph">⚑</span></div>
+          <h3>PRACTISE</h3>
+          <p>Labs, CTFs &amp; continuous learning</p>
+          <div class="trait-cmd"><b>$</b> ./keep_learning.sh</div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <div class="cert-strip cert-strip-embedded">
+  <a class="cert-badge-image" href="https://www.credly.com/badges/56dfc04d-df11-4450-b498-1f8be8b4a363" target="_blank" rel="noopener noreferrer" aria-label="Open verified Cisco Introduction to Cybersecurity badge">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anmol (Justin) Siwa — Web Developer &amp; Cybersecurity Portfolio</title>
+<meta name="description" content="Portfolio of Anmol (Justin) Siwa, a web developer and cybersecurity learner. Live web apps, Python tools, browser security utilities and hands-on lab notes. Open to work.">
+<meta name="author" content="Anmol (Justin) Siwa">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://anmolsiwa.com.np/">
+<meta name="theme-color" content="#050a10">
+<meta name="color-scheme" content="dark">
+
+<!-- Icons -->
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="icon" href="./favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="manifest" href="./site.webmanifest">
+
+<!-- Social previews (LinkedIn, X, WhatsApp, Slack, Discord) -->
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Anmol (Justin) Siwa">
+<meta property="og:title" content="Anmol (Justin) Siwa — Web Developer &amp; Cybersecurity">
+<meta property="og:description" content="I build web apps, explore cybersecurity and make things work better. See my projects, tools and lab notes.">
+<meta property="og:url" content="https://anmolsiwa.com.np/">
+<meta property="og:image" content="https://anmolsiwa.com.np/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Anmol (Justin) Siwa — Web Developer and Cybersecurity portfolio">
+<meta property="og:locale" content="en_US">
+<meta property="profile:first_name" content="Anmol">
+<meta property="profile:last_name" content="Siwa">
+<meta property="profile:username" content="Brolomna">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Anmol (Justin) Siwa — Web Developer &amp; Cybersecurity">
+<meta name="twitter:description" content="I build web apps, explore cybersecurity and make things work better. See my projects, tools and lab notes.">
+<meta name="twitter:image" content="https://anmolsiwa.com.np/og-image.jpg">
+<meta name="twitter:image:alt" content="Anmol (Justin) Siwa — Web Developer and Cybersecurity portfolio">
+
+<!-- Structured data: helps Google show the name, profiles and site correctly -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfilePage",
+      "@id": "https://anmolsiwa.com.np/#profile",
+      "url": "https://anmolsiwa.com.np/",
+      "name": "Anmol (Justin) Siwa — Web Developer & Cybersecurity Portfolio",
+      "inLanguage": "en",
+      "isPartOf": { "@id": "https://anmolsiwa.com.np/#website" },
+      "mainEntity": { "@id": "https://anmolsiwa.com.np/#person" },
+      "primaryImageOfPage": "https://anmolsiwa.com.np/og-image.jpg",
+      "dateModified": "2026-11-19T00:00:00+05:45"
     },
     {
       "@type": "Person",
