@@ -1220,7 +1220,7 @@ h1 .hero-better {
         <div class="slide-art howlfall-art icon-card">
           <div class="howlfall-art-top"><span>01 / FEATURED PROJECT</span></div>
           <div class="howlfall-poster">
-            <img class="poster-bg" draggable="false" loading="lazy" decoding="async" src="./assets/howlfall-icon.webp" alt="" aria-hidden="true"><img class="poster-img" draggable="false" loading="lazy" decoding="async" src="./assets/howlfall-icon.webp" width="622" height="622" alt="Howlfall icon: a werewolf howling at the full moon over a moonlit village, above the Howlfall title">
+            <img class="poster-img" draggable="false" loading="lazy" decoding="async" src="./assets/howlfall-poster.webp" width="720" height="1279" alt="Howlfall poster: a werewolf howling at the full moon on a rocky ledge above a lit gothic village, with the Howlfall title">
           </div>
           <div class="slide-art-foot"><span>QR JOIN · MULTIPLAYER</span><span>01 - 10</span></div>
         </div>
@@ -1231,7 +1231,7 @@ h1 .hero-better {
         <div class="slide-art howlfall-art icon-card">
           <div class="howlfall-art-top"><span>02 / LIVE WEB APP</span></div>
           <div class="howlfall-poster">
-            <img class="poster-bg" draggable="false" loading="lazy" decoding="async" src="./assets/questchapter-icon.webp" alt="" aria-hidden="true"><img class="poster-img" draggable="false" loading="lazy" decoding="async" src="./assets/questchapter-icon.webp" width="544" height="544" alt="QuestChapter icon: a golden-framed fantasy valley with a hilltop castle at sunset, above the QuestChapter title">
+            <img class="poster-img" draggable="false" loading="lazy" decoding="async" src="./assets/questchapter-poster.webp" width="720" height="1279" alt="QuestChapter poster: a golden-framed storybook valley with a hilltop castle at sunrise on parchment, with the QuestChapter title">
           </div>
           <div class="slide-art-foot"><span>REAL-LIFE RPG · QUESTS · XP</span><span>02 - 10</span></div>
         </div>
@@ -2162,13 +2162,12 @@ a *, a:hover *, a:focus *, a:active * { text-decoration: none !important; }
 .project-slide.howlfall-slide.is-center .slide-caption strong {
   text-shadow:0 0 16px rgba(119,190,255,.28);
 }
-/* Icon cards (Howlfall, QuestChapter): the art fills the whole card.
-   A blurred, darkened copy of the icon is the backdrop; the crisp icon floats on top. */
+/* Poster cards (Howlfall, QuestChapter): the 9:16 poster fills the whole card. */
 .slide-art.icon-card { padding:0; }
 .icon-card .howlfall-poster { position:absolute; inset:0; margin:0; border:0; border-radius:inherit; box-shadow:none; background:#04070d; }
-.icon-card .poster-bg { position:absolute; inset:-15%; width:130%; height:130%; object-fit:cover; filter:blur(20px) saturate(1.35) brightness(.55); pointer-events:none; }
-.icon-card .howlfall-poster::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(3,6,12,.55) 0%,transparent 22%,transparent 72%,rgba(3,6,12,.7) 100%); pointer-events:none; }
-.icon-card .howlfall-poster .poster-img { inset:auto; left:50%; top:50%; width:86%; height:auto; aspect-ratio:1/1; object-fit:contain; transform:translate(-50%,-50%); filter:drop-shadow(0 16px 30px rgba(0,0,0,.6)); }
+.icon-card .howlfall-poster::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(3,6,12,.6) 0%,transparent 16%,transparent 80%,rgba(3,6,12,.7) 100%); pointer-events:none; }
+.icon-card .howlfall-poster .poster-img { object-fit:cover; object-position:center 55%; transition:transform .6s ease; }
+.project-slide.is-hovered .icon-card .poster-img { transform:scale(1.04); }
 .icon-card .howlfall-art-top,.icon-card .slide-art-foot { position:absolute; left:0; right:0; z-index:2; padding:15px 16px; color:rgba(235,242,250,.85); text-shadow:0 1px 6px rgba(0,0,0,.8); }
 .icon-card .howlfall-art-top { top:0; }
 .icon-card .slide-art-foot { bottom:0; }
