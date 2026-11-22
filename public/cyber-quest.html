@@ -59,7 +59,7 @@ button.hintbtn{color:var(--warn)}
     <button id="bclear">clear</button>
     <button id="breset">Restart game</button>
   </div>
-  <p class="note">Everything here is a made-up practice world. In real life, only test things you own or have clear permission to test. Good legal places to keep going: OverTheWire Bandit, TryHackMe free rooms, PortSwigger Web Security Academy.</p>
+  <p class="note">Everything here is a made-up practice world. In real life, only test things you own or have clear permission to test. Good legal places to keep going: Hack The Box, TryHackMe free rooms, PortSwigger Web Security Academy.</p>
 </div>
 <script>
 (function(){
@@ -114,7 +114,7 @@ function load(){try{S=JSON.parse(localStorage.getItem('cq')||'null')}catch(e){S=
 function save(){try{localStorage.setItem('cq',JSON.stringify(S))}catch(e){}}
 function print(t,c){var d=document.createElement('div');if(c)d.className=c;d.textContent=t;out.appendChild(d);out.scrollTop=out.scrollHeight}
 function dots(){var h='';for(var i=0;i<5;i++){h+='<div class="dot'+(S.done.indexOf(i)>-1?' done':(i===S.level?' cur':''))+'"></div>'}document.getElementById('dots').innerHTML=h;document.getElementById('lvl').textContent=Math.min(S.level+1,5);document.getElementById('hc').textContent=S.hints}
-function mission(){var m=document.getElementById('mission');if(S.level>4){m.innerHTML='<h2>🏆 All 5 levels cleared</h2>You finished Cyber Quest. Type restart to play again, or try a real beginner room on TryHackMe or OverTheWire Bandit.';return}
+function mission(){var m=document.getElementById('mission');if(S.level>4){m.innerHTML='<h2>🏆 All 5 levels cleared</h2>You finished Cyber Quest. Type restart to play again, or try a real beginner room on TryHackMe or Hack The Box.';return}
  var l=L[S.level];m.innerHTML='';var h=document.createElement('h2');h.textContent='Level '+(S.level+1)+': '+l.name;var p=document.createElement('div');p.textContent=l.mission;var q=document.createElement('div');q.style.color='#6fae94';q.style.marginTop='6px';q.textContent='Commands here: '+l.commands+'. Submit the flag with: flag FLAG{...}';m.appendChild(h);m.appendChild(p);m.appendChild(q)}
 var hintIdx=0;
 function startLevel(){hintIdx=0;cwd='/';unlocked=false;dots();mission();if(S.level>4)return;var l=L[S.level];print('--- Level '+(S.level+1)+': '+l.name+' ---','ok');print('Goal: find the flag, then type  flag FLAG{...}','dim');print('Stuck? Tap the Hint button or type help.','dim');ps.textContent='player@quest:'+(S.level===4?'/':'~')+'$'}
