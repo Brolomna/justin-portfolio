@@ -41,9 +41,10 @@ button.nextbtn{background:var(--g);color:#04120b;border-color:var(--g);font-weig
 <body>
 <div class="wrap">
   <h1>&gt; CYBER QUEST_</h1>
-  <p class="sub">A beginner hacking game. Five levels, a fake terminal, nothing real gets hacked.</p>
+  <p class="sub">A beginner hacking game with real Linux commands. Two tracks: Beginner 1 and Beginner 2. Fake terminal, nothing real gets hacked.</p>
   <div class="bar">
-    <div class="pill">Level <b id="lvl">1</b> / 5</div>
+    <div class="pill" id="trackpill">Beginner 1</div>
+    <div class="pill">Level <b id="lvl">1</b> / <span id="lvlof">5</span></div>
     <div class="dots" id="dots"></div>
     <div class="pill">Hints used: <b id="hc">0</b></div>
   </div>
@@ -68,6 +69,59 @@ var out=document.getElementById('out'),cmd=document.getElementById('cmd'),form=d
 function rot13(s){return s.replace(/[a-zA-Z]/g,function(c){var b=c<='Z'?65:97;return String.fromCharCode((c.charCodeAt(0)-b+13)%26+b)})}
 var B64MSG='Nice work. The flag is FLAG{BASE64_IS_NOT_SECRET}';
 var ROTPLAIN='the vault password is moonlight';
+var EM=[
+{from:'Acme IT Help <it@acme.com>',subj:'Planned maintenance on Saturday',link:'https://intranet.acme.com/news',body:'Hi team, the file server will be offline Saturday 2am to 4am. No action needed. Thanks, IT.'},
+{from:'Acme Security <alert@acme-secure1ty.com>',subj:'URGENT!! Your account will be deleted in 1 hour',link:'http://acme-secure1ty.com/login-verify',body:'Dear user, we detected a problem. Click the link NOW and enter your password to keep your account, or it will be deleted.'},
+{from:'Lunch Club <lunch@acme.com>',subj:'Pizza on Friday?',link:'(no link)',body:'Vote for the toppings by replying to this email. Pineapple allowed.'}];
+function emTxt(e){return 'From:    '+e.from+'\nSubject: '+e.subj+'\nLink:    '+e.link+'\n\n'+e.body}
+var AUTH=[
+'Nov 22 03:11:02 acme-box sshd[1011]: Failed password for root from 198.51.100.23 port 51122 ssh2',
+'Nov 22 03:11:19 acme-box sshd[1011]: Failed password for root from 198.51.100.23 port 51124 ssh2',
+'Nov 22 03:11:41 acme-box sshd[1011]: Failed password for root from 198.51.100.23 port 51128 ssh2',
+'Nov 22 03:12:05 acme-box sshd[1011]: Connection closed by 198.51.100.23 port 51128',
+'Nov 22 04:01:10 acme-box sshd[1044]: Accepted password for guest from 192.0.2.10 port 52001 ssh2',
+'Nov 22 04:01:44 acme-box sshd[1044]: pam_unix(sshd:session): session opened for user guest',
+'Nov 22 04:20:31 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41022 ssh2',
+'Nov 22 04:20:49 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41024 ssh2',
+'Nov 22 04:21:02 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41025 ssh2',
+'Nov 22 04:21:18 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41026 ssh2',
+'Nov 22 04:21:36 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41030 ssh2',
+'Nov 22 04:21:55 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41031 ssh2',
+'Nov 22 04:22:10 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41033 ssh2',
+'Nov 22 04:22:28 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41034 ssh2',
+'Nov 22 04:22:47 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41036 ssh2',
+'Nov 22 04:23:03 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41038 ssh2',
+'Nov 22 04:23:19 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41039 ssh2',
+'Nov 22 04:23:41 acme-box sshd[1102]: Failed password for admin from 203.0.113.7 port 41040 ssh2',
+'Nov 22 04:24:09 acme-box sshd[1102]: Accepted password for admin from 203.0.113.7 port 41040 ssh2',
+'Nov 22 04:24:10 acme-box sshd[1102]: pam_unix(sshd:session): session opened for user admin',
+'Nov 22 05:02:14 acme-box sshd[1150]: Accepted password for guest from 192.0.2.10 port 52210 ssh2',
+'Nov 22 05:02:15 acme-box sshd[1150]: pam_unix(sshd:session): session opened for user guest',
+'Nov 22 06:40:52 acme-box sshd[1188]: Failed password for root from 198.51.100.23 port 51200 ssh2',
+'Nov 22 06:41:10 acme-box sshd[1188]: Failed password for root from 198.51.100.23 port 51202 ssh2',
+'Nov 22 06:41:12 acme-box sshd[1188]: Connection closed by 198.51.100.23 port 51202',
+'Nov 22 07:55:00 acme-box sshd[1200]: Accepted password for guest from 192.0.2.10 port 53011 ssh2',
+'Nov 22 07:55:01 acme-box sshd[1200]: pam_unix(sshd:session): session opened for user guest'];
+var USERS=['root      system account, login locked','guest     lobby kiosk PC, no files','www       runs the website','backup    nightly backup job','m.siva    marketing','j.lama    customer support','r.doe     intern, left in July','admin     COMPROMISED Nov 22. Force a password reset now. flag: FLAG{GREP_FINDS_THE_TRUTH}','a.gurung  finance','s.rai     designer'].join('\n');
+var WORDS='123456\npassword\n123456789\nletmein\nqwerty\niloveyou\nadmin123\npassword1';
+var LOGINHTML='<html>\n<head><title>Acme Admin Login</title></head>\n<body>\n  <h1>Acme Admin Panel</h1>\n  <form>user: [______]  pass: [______]  [log in]</form>\n  <!-- TODO before launch: force every admin to change the default password. One of them still uses a password from the top-10 most common list! -->\n</body>\n</html>';
+var APPLOG='2026-11-20 09:00 app: started\n2026-11-20 09:01 app: guest login ok\n2026-11-20 09:02 vault: password hint encoded (base64) and stored in /home/admin/.hint\n2026-11-20 09:04 app: nightly backup done\n2026-11-20 09:31 app: guest login ok\n2026-11-20 10:12 app: health check ok';
+var FS5={'/':{d:{'home':1,'etc':1,'var':1},f:{'readme.txt':'Welcome to the training server. The flag is hidden somewhere in /home.'}},
+'/home':{d:{'admin':1,'guest':1},f:{}},
+'/home/guest':{d:{},f:{'todo.txt':'buy milk\nlearn linux'}},
+'/home/admin':{d:{},f:{'notes.txt':'Nothing to see here.'},h:{'.secret_flag':'FLAG{LS_DASH_A_FOR_THE_WIN}','.bash_history':'cd /home\nls -a'}},
+'/etc':{d:{},f:{'hosts':'127.0.0.1 localhost'}},
+'/var':{d:{},f:{'log.txt':'server started'}}};
+var FS6={'/':{d:{'srv':1},f:{'readme.txt':'An old backup lives somewhere under /srv. Admins love hiding secrets in dotfiles (files whose names start with a dot).'}},
+'/srv':{d:{'www':1,'backups':1},f:{}},
+'/srv/www':{d:{},f:{'index.html':'<h1>Acme Corp</h1>\n<p>Under construction.</p>'}},
+'/srv/backups':{d:{},f:{'notes.txt':'Moved everything important years ago. Nothing left here.'},h:{'.env.b64':btoa('the vault password is cobra77')}}};
+var FS7={'/':{d:{},f:{'readme.txt':'Someone broke into this server last night. The SSH log is auth.log. Find the IP that fails over and over and then gets in, work out which account they used, and look that account up in users.txt. The flag is on the compromised account.','auth.log':AUTH.join('\n'),'users.txt':USERS}}};
+var FS8={'/':{d:{},f:{'readme.txt':'This box runs the Acme admin panel. The devs never forced admins to change default passwords. wordlist.txt holds the 8 most common passwords in the world. Break in with: login admin <password>','login.html':LOGINHTML,'wordlist.txt':WORDS}}};
+var FS9={'/':{d:{'home':1,'var':1},f:{'readme.txt':'Final test. The flag is locked in the vault: unlock <password>. The admin hid the password somewhere on this box. Logs live in /var, personal files in /home.'}},
+'/home':{d:{'admin':1},f:{}},
+'/home/admin':{d:{},f:{'blog.txt':'Saturday was perfect. Took my dog Rex up the hill behind the house, he chased every chicken in the village. Best dog in the world.'},h:{'.hint':btoa('the vault password is the name of my dog, all lowercase')}},
+'/var':{d:{},f:{'app.log':APPLOG}}};
 var L=[
 {name:'View the source',flag:'FLAG{VIEW_SOURCE}',
  mission:'Websites are built from code you can read. Developers sometimes leave notes in it by mistake. The page below belongs to a fake company. Read its code and find the flag.',
@@ -76,53 +130,126 @@ var L=[
  hints:['Type ls to see what files exist.','Type cat index.html to print the code of the page.','Look for a line that starts with <!-- . That is a comment. Users never see it on the page, but it is in the code.'],
  win:'Real sites leak things this way all the time. In your own browser, right-click a page and choose View Page Source to do the same thing.'},
 {name:'Decode the message',flag:'FLAG{BASE64_IS_NOT_SECRET}',
- mission:'A message was intercepted. It looks like gibberish, but it is only encoded, not locked. Base64 is a way to write data using letters and numbers. Decode it.',
- commands:'ls, cat <file>, decode <text>',
+ mission:'A message was intercepted. It looks like gibberish, but it is only encoded, not locked. Base64 is a way to write data using letters and numbers. Decode it with the real Linux command.',
+ commands:"cat <file>, base64 -d <file>, echo '<text>' | base64 -d",
  files:{'message.txt':'__B64__'},
- hints:['Type cat message.txt to see the scrambled text.','There is a decode command. Try: decode followed by a space and the whole scrambled text.','Copy the text from message.txt (long press on phone). The decoded text contains the flag.'],
- win:'Base64 is NOT encryption. Anyone can undo it in one second. Never use it to hide passwords.'},
+ hints:["Type cat message.txt to see the scrambled text.","On real Linux: echo '<scrambled text>' | base64 -d  (here, base64 -d '<text>' also works).","Copy the text from message.txt (long press on phone). The decoded text contains the flag."],
+ win:"Base64 is NOT encryption. Anyone can undo it in one second. On a real machine: echo '<text>' | base64 -d or base64 -d message.txt. Never use it to hide passwords."},
 {name:'Spot the phish',flag:'FLAG{THINK_BEFORE_YOU_CLICK}',
- mission:'Your inbox has 3 emails. One is a phishing attack trying to steal a password. Look at each one, check the sender and the link, and report the fake.',
- commands:'inbox, open <number>, report <number>',
+ mission:'Your inbox has 3 emails, saved as files. One is a phishing attack trying to steal a password. Read each one, check the sender and the link, and report the fake.',
+ commands:'ls, cat <file>, report <number>',
  files:{},
- hints:['Type inbox to list the emails, then open 1, open 2 and open 3.','Look closely at the sender address and where the link really goes. Compare it with the real company name.','Phishing often adds urgency ("act now!") and uses a lookalike domain, like a number 1 instead of the letter l.'],
+ hints:['Type ls, then read each email: cat email1.txt, cat email2.txt, cat email3.txt.','Look closely at the sender address and where the link really goes. Compare it with the real company name.','Phishing often adds urgency ("act now!") and uses a lookalike domain, like a number 1 instead of the letter i. Report it with: report <number>'],
  win:'You checked the sender, the link and the pressure tactic. That is exactly what to do in real life.'},
 {name:'Crack the cipher',flag:'FLAG{ROT13_IS_NOT_A_LOCK}',
- mission:'A note was hidden with a very old trick: every letter is shifted 13 places (ROT13). It holds the password to a vault. Decode the note, then open the vault.',
- commands:'cat <file>, rot13 <text>, unlock <password>',
- files:{'note.txt':'__ROT__'},
- hints:['Type cat note.txt to read the scrambled note.','Use rot13 followed by the scrambled words to flip them back.','The last word of the decoded note is the password. Type unlock and then that word.'],
+ mission:'A note was hidden with a very old trick: every letter is shifted 13 places (ROT13). It holds the password to a vault. Decode the note with the real Linux command, then open the vault.',
+ commands:"cat <file>, cat <file> | tr 'A-Za-z' 'N-ZA-Mn-za-m', unlock <password>",
+ files:{'note.txt':'__ROT__'},unlock:'moonlight',
+ unlockWin:'Vault open! Inside: FLAG{ROT13_IS_NOT_A_LOCK}',
+ hints:['Type cat note.txt to read the scrambled note.',"Real Linux ROT13: cat note.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'",'The last word of the decoded note is the password. Type unlock and then that word.'],
  win:'Old ciphers like this are easy to break. Modern systems use strong math, and long unique passwords.'},
 {name:'The hidden file',flag:'FLAG{LS_DASH_A_FOR_THE_WIN}',
- mission:'Final level. You are inside a fake server. Some files are hidden on purpose. Explore the folders and find the secret flag file. On Linux, hidden files start with a dot.',
+ mission:'Last Beginner 1 level. You are inside a fake server. Some files are hidden on purpose. Explore the folders and find the secret flag file. On Linux, hidden files start with a dot.',
  commands:'ls, ls -a, cd <folder>, cd .., cat <file>, pwd',
- files:{},
+ fs:FS5,
  hints:['Start with ls and cd your way around. Use cd .. to go back up.','A normal ls does not show hidden files. Try ls -a inside the folders.','Look inside the home folder, then the admin folder, with ls -a.'],
- win:'You explored a system like a real security tester. That was the whole game. Nice work.'}
+ win:'You explored a system like a real security tester. Beginner 2 is next: multi-step missions.'},
+{name:'The hidden backup',flag:'FLAG{HIDDEN_AND_DECODED}',
+ mission:'Beginner 2 missions chain several steps. An old backup is somewhere under /srv, and something in it opens the vault. Find it, read it, get in. Every command here is a real Linux command.',
+ commands:'ls, ls -a, cd <folder>, cat <file>, base64 -d <file>, unlock <password>',
+ fs:FS6,unlock:'cobra77',
+ unlockWin:'Vault open! Inside: FLAG{HIDDEN_AND_DECODED}',
+ hints:['Explore with ls and cd. The readme says the backup is under /srv.','Hidden files start with a dot. In /srv/backups, use ls -a.','Decode the hidden file: base64 -d .env.b64 — then unlock the password you find.'],
+ win:'Hidden file, decoded secret, open vault. That is real security work in miniature: find, decode, use.'},
+{name:'Who broke in?',flag:'FLAG{GREP_FINDS_THE_TRUTH}',
+ mission:'Someone broke into this server last night. The SSH log (auth.log) is long, so do not read it line by line: search it. Find the IP that fails over and over and then gets in, work out which account was used, and look that account up in users.txt.',
+ commands:'ls, cat <file>, grep <text> <file>, cat <file> | grep <text>',
+ fs:FS7,
+ hints:['auth.log is long. Search it instead: grep Failed auth.log','One IP fails again and again, then gets in. Check: grep Accepted auth.log','Look up that account: grep admin users.txt'],
+ win:'grep is how real analysts read logs. Nobody scrolls a thousand lines by hand.'},
+{name:'The weak password',flag:'FLAG{WEAK_PASSWORDS_GET_IN}',
+ mission:'This box runs the Acme admin panel. Admins were told to change their default passwords. One of them did not. Read the files, then break in with: login admin <password>.',
+ commands:'ls, cat <file>, login <user> <password>',
+ fs:FS8,login:{user:'admin',pass:'letmein'},
+ loginWin:'Welcome, admin. Last login: yesterday, from an unknown network. Your flag: FLAG{WEAK_PASSWORDS_GET_IN}',
+ hints:['Read login.html and readme.txt first.','wordlist.txt holds the 8 most common passwords. Try them one by one: login admin <password>','Start at the top of wordlist.txt and work down. The right one is in the top half.'],
+ win:'Weak passwords are how most real break-ins start. Long and unique beats clever.'},
+{name:'The final vault',flag:'FLAG{YOU_THINK_LIKE_A_HACKER}',
+ mission:'The last flag sits in a vault, and the admin hid its password somewhere on this box. Chain everything you have learned: logs, hidden files, Base64, and one careless blog post.',
+ commands:'ls, ls -a, cd <folder>, cat <file>, grep <text> <file>, base64 -d <file>, unlock <password>',
+ fs:FS9,unlock:'rex',
+ unlockWin:'The vault clicks open. FLAG{YOU_THINK_LIKE_A_HACKER}',
+ hints:['Search the log for vault business: cd /var, then grep vault app.log','The log points to a hidden hint file. Find it with ls -a in /home/admin, then: base64 -d .hint','The blog mentions a dog. unlock <name of the dog, lowercase>'],
+ win:'You chained ls -a, grep, base64 and a vault. That was a real (tiny) investigation. You are ready for Hack The Box.'}
 ];
-var FS={'/':{d:{'home':1,'etc':1,'var':1},f:{'readme.txt':'Welcome to the training server. The flag is hidden somewhere in /home.'}},
-'/home':{d:{'admin':1,'guest':1},f:{}},
-'/home/guest':{d:{},f:{'todo.txt':'buy milk\nlearn linux'}},
-'/home/admin':{d:{},f:{'notes.txt':'Nothing to see here.'},h:{'.secret_flag':'FLAG{LS_DASH_A_FOR_THE_WIN}','.bash_history':'cd /home\nls -a'}},
-'/etc':{d:{},f:{'hosts':'127.0.0.1 localhost'}},
-'/var':{d:{},f:{'log.txt':'server started'}}};
-var EM=[
-{from:'Acme IT Help <it@acme.com>',subj:'Planned maintenance on Saturday',link:'https://intranet.acme.com/news',body:'Hi team, the file server will be offline Saturday 2am to 4am. No action needed. Thanks, IT.'},
-{from:'Acme Security <alert@acme-secure1ty.com>',subj:'URGENT!! Your account will be deleted in 1 hour',link:'http://acme-secure1ty.com/login-verify',body:'Dear user, we detected a problem. Click the link NOW and enter your password to keep your account, or it will be deleted.'},
-{from:'Lunch Club <lunch@acme.com>',subj:'Pizza on Friday?',link:'(no link)',body:'Vote for the toppings by replying to this email. Pineapple allowed.'}];
 var S,cur,cwd,unlocked,transId=0;
 function load(){try{S=JSON.parse(localStorage.getItem('cq')||'null')}catch(e){S=null}if(!S)S={level:0,done:[],hints:0}}
 function save(){try{localStorage.setItem('cq',JSON.stringify(S))}catch(e){}}
 function print(t,c){var d=document.createElement('div');if(c)d.className=c;d.textContent=t;out.appendChild(d);out.scrollTop=out.scrollHeight}
-function dots(){var h='';for(var i=0;i<5;i++){h+='<div class="dot'+(S.done.indexOf(i)>-1?' done':(i===S.level?' cur':''))+'"></div>'}document.getElementById('dots').innerHTML=h;document.getElementById('lvl').textContent=Math.min(S.level+1,5);document.getElementById('hc').textContent=S.hints}
-function mission(){var m=document.getElementById('mission');if(S.level>4){m.innerHTML='<h2>🏆 All 5 levels cleared</h2>You finished Cyber Quest. Type restart to play again, or try a real beginner room on TryHackMe or Hack The Box.';return}
- var l=L[S.level];m.innerHTML='';var h=document.createElement('h2');h.textContent='Level '+(S.level+1)+': '+l.name;var p=document.createElement('div');p.textContent=l.mission;var q=document.createElement('div');q.style.color='#6fae94';q.style.marginTop='6px';q.textContent='Commands here: '+l.commands+'. Submit the flag with: flag FLAG{...}';m.appendChild(h);m.appendChild(p);m.appendChild(q)}
+function trk(){if(S.level<=4)return{name:'Beginner 1',n:S.level+1,of:5,start:0};if(S.level<=8)return{name:'Beginner 2',n:S.level-4,of:4,start:5};return null}
+function dots(){var t=trk(),h='',i;if(t){for(i=0;i<t.of;i++){var g=t.start+i;h+='<div class="dot'+(S.done.indexOf(g)>-1?' done':(g===S.level?' cur':''))+'"></div>'}
+ document.getElementById('trackpill').textContent=t.name;document.getElementById('lvl').textContent=t.n;document.getElementById('lvlof').textContent=t.of}
+ else{for(i=0;i<9;i++)h+='<div class="dot done"></div>';document.getElementById('trackpill').textContent='Beginner 1 + 2 cleared';document.getElementById('lvl').textContent='9';document.getElementById('lvlof').textContent='9'}
+ document.getElementById('dots').innerHTML=h;document.getElementById('hc').textContent=S.hints}
+function mission(){var m=document.getElementById('mission');if(S.level>8){m.innerHTML='<h2>🏆 Cyber Quest cleared</h2>You finished Beginner 1 and Beginner 2. Type restart to play again, or try a real beginner room on TryHackMe or Hack The Box.';return}
+ var l=L[S.level],t=trk();m.innerHTML='';var h=document.createElement('h2');h.textContent=t.name+' · Level '+t.n+': '+l.name;var p=document.createElement('div');p.textContent=l.mission;var q=document.createElement('div');q.style.color='#6fae94';q.style.marginTop='6px';q.textContent='Commands here: '+l.commands+'. Submit the flag with: flag FLAG{...}';m.appendChild(h);m.appendChild(p);m.appendChild(q)}
 var hintIdx=0;
-function startLevel(){hintIdx=0;cwd='/';unlocked=false;dots();mission();if(S.level>4)return;var l=L[S.level];print('--- Level '+(S.level+1)+': '+l.name+' ---','ok');print('Goal: find the flag, then type  flag FLAG{...}','dim');print('Stuck? Tap the Hint button or type help.','dim');ps.textContent='player@quest:'+(S.level===4?'/':'~')+'$'}
-function files(){var l=L[S.level],f={};for(var k in l.files)f[k]=l.files[k];if(S.level===1)f['message.txt']=btoa(B64MSG);if(S.level===3)f['note.txt']=rot13(ROTPLAIN);return f}
-function hint(){if(S.level>4){print('No hints needed. You won!','dim');return}var l=L[S.level];if(hintIdx>=l.hints.length){print('No more hints. Re-read the mission above, you are close.','hint');return}print('Hint '+(hintIdx+1)+'/'+l.hints.length+': '+l.hints[hintIdx],'hint');hintIdx++;S.hints++;save();dots()}
-function win(){var l=L[S.level];print('FLAG ACCEPTED! '+l.win,'ok');if(S.done.indexOf(S.level)<0)S.done.push(S.level);S.level++;save();if(S.level>4){dots();mission();print('🏆 You cleared all 5 levels. Well done, hacker.','ok');return}var myT=++transId;cmd.disabled=true;var cd=document.createElement('div');cd.style.margin='10px 0';var b=document.createElement('button');b.className='nextbtn';b.textContent='Next Level ▶';b.onclick=function(){if(myT!==transId)return;out.innerHTML='';cmd.disabled=false;startLevel();cmd.focus()};cd.appendChild(b);out.appendChild(cd);out.scrollTop=out.scrollHeight}
-function ls5(path,all){var n=FS[path];var r=[];for(var d in n.d)r.push(d+'/');for(var f in n.f)r.push(f);if(all&&n.h)for(var h in n.h)r.push(h);return r.join('   ')||'(empty)'}
+function startLevel(){hintIdx=0;cwd='/';unlocked=false;dots();mission();if(S.level>8)return;var l=L[S.level],t=trk();
+ if(S.level===0)print('--- BEGINNER 1: the basic moves, one step at a time ---','dim');
+ if(S.level===5)print('--- BEGINNER 2: multi-step missions. Chain real commands with pipes, like a real shell ---','dim');
+ print('--- '+t.name+' Level '+t.n+': '+l.name+' ---','ok');print('Goal: find the flag, then type  flag FLAG{...}','dim');print('Stuck? Tap the Hint button or type help.','dim');ps.textContent='player@quest:'+(l.fs?'/':'~')+'$'}
+function flatFiles(l){var f={};for(var k in l.files)f[k]=l.files[k];if(S.level===1)f['message.txt']=btoa(B64MSG);if(S.level===3)f['note.txt']=rot13(ROTPLAIN);if(S.level===2){f['email1.txt']=emTxt(EM[0]);f['email2.txt']=emTxt(EM[1]);f['email3.txt']=emTxt(EM[2])}return f}
+function readFile(l,p){if(!p)return{err:'No file given'};
+ if(!l.fs){var f=flatFiles(l),nm=p.replace(/^\.\//,'');if(f[nm]!==undefined)return{ok:f[nm]};return{err:p+': no such file'}}
+ var rp=resolve(p);if(l.fs[rp])return{err:p+': is a directory'};
+ var parts=rp.split('/'),base=parts.pop(),par=l.fs[parts.join('/')||'/'];
+ if(!par)return{err:p+': no such file'};
+ if(par.f[base]!==undefined)return{ok:par.f[base]};
+ if(par.h&&par.h[base]!==undefined)return{ok:par.h[base]};
+ return{err:p+': no such file'}}
+function unq(s){s=(s||'').trim();if(s.length<2)return s;var a=s.charAt(0),b=s.charAt(s.length-1);
+ if((a==="'"&&b==="'")||(a==='"'&&b==='"')||(a==='‘'&&b==='’')||(a==='“'&&b==='”'))return s.slice(1,-1);return s}
+function tok(seg){return seg.match(/"[^"]*"|'[^']*'|“[^”]*”|‘[^’]*’|\S+/g)||[]}
+function pipeline(t){var l=L[S.level],segs=t.split('|'),text=null,err=null,i;
+ for(i=0;i<segs.length;i++){var seg=segs[i].trim();
+  if(!seg){err='Empty command in pipe.';break}
+  var redir=null,m=seg.match(/^(.*?)\s*<\s*(\S+)\s*$/);
+  if(m&&m[1].trim()){seg=m[1].trim();redir=m[2]}
+  var toks=tok(seg);if(!toks.length){err='Empty command in pipe.';break}
+  var c0=toks[0].toLowerCase(),args=toks.slice(1).map(unq);
+  if(c0==='echo'){text=args.join(' ')}
+  else if(c0==='cat'){var rc=readFile(l,args[0]);if(rc.err){err='cat: '+rc.err;break}text=rc.ok}
+  else if(c0==='grep'){var pat=null,file=null,ci=false,j;
+   for(j=0;j<args.length;j++){if(args[j]==='-i')ci=true;else if(pat===null)pat=args[j];else if(!file)file=args[j]}
+   if(redir&&!file)file=redir;
+   if(pat===null){err='Usage: grep <text> <file>';break}
+   var input=text;if(file){var rg=readFile(l,file);if(rg.err){err='grep: '+rg.err;break}input=rg.ok}
+   if(input===null){err='grep: nothing to search. Use grep <text> <file>';break}
+   var hits=input.split('\n').filter(function(x){return ci?x.toLowerCase().indexOf(pat.toLowerCase())>-1:x.indexOf(pat)>-1});
+   text=hits.length?hits.join('\n'):'(no matches)'}
+  else if(c0==='base64'){var dec=args[0]==='-d'||args[0]==='--decode',rest=dec?args.slice(1):args,src=text;
+   if(rest.length){var cand=rest.join(' '),rf=readFile(l,cand);src=(rf.ok!==undefined)?rf.ok:cand}
+   if(src===null){err="base64: nothing to work on. Try: cat message.txt | base64 -d";break}
+   if(dec){try{text=atob(src.replace(/\s+/g,''))}catch(e){err='That is not valid Base64. Copy the whole text.';break}}
+   else{try{text=btoa(src)}catch(e){err='base64: cannot encode that.';break}}}
+  else if(c0==='tr'){var s1=args[0],s2=args[1];
+   var good=(s1==='A-Za-z'&&s2==='N-ZA-Mn-za-m')||(s1==='N-ZA-Mn-za-m'&&s2==='A-Za-z');
+   var srcT=text;
+   if(redir){var rt=readFile(l,redir);if(rt.err){err='tr: '+rt.err;break}srcT=rt.ok}
+   else if(args.length>2)srcT=args.slice(2).join(' ');
+   if(!good){err="For ROT13 the sets are: tr 'A-Za-z' 'N-ZA-Mn-za-m'";break}
+   if(srcT===null){err="tr: nothing to translate. Try: cat note.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'";break}
+   text=rot13(srcT)}
+  else{err='Unknown command in pipe: '+c0;break}}
+ if(err){print(err,'bad');return}
+ if(text!==null)print(text,/FLAG\{/.test(text)?'ok':undefined)}
+function hint(){if(S.level>8){print('No hints needed. You won!','dim');return}var l=L[S.level];if(hintIdx>=l.hints.length){print('No more hints. Re-read the mission above, you are close.','hint');return}print('Hint '+(hintIdx+1)+'/'+l.hints.length+': '+l.hints[hintIdx],'hint');hintIdx++;S.hints++;save();dots()}
+function win(){var l=L[S.level];print('FLAG ACCEPTED! '+l.win,'ok');if(S.done.indexOf(S.level)<0)S.done.push(S.level);S.level++;save();
+ if(S.level>8){dots();mission();print('🏆 You cleared Beginner 1 and Beginner 2. Well done, hacker.','ok');return}
+ if(S.level===5)print('BEGINNER 1 COMPLETE! 🎉 Beginner 2 is waiting: multi-step missions with pipes, grep and hidden files.','ok');
+ var myT=++transId;cmd.disabled=true;var cd=document.createElement('div');cd.style.margin='10px 0';var b=document.createElement('button');b.className='nextbtn';b.textContent=S.level===5?'Start Beginner 2 ▶':'Next Level ▶';
+ b.onclick=function(){if(myT!==transId)return;out.innerHTML='';cmd.disabled=false;startLevel();cmd.focus()};cd.appendChild(b);out.appendChild(cd);out.scrollTop=out.scrollHeight}
+function lsNode(path,all){var n=L[S.level].fs[path];var r=[];for(var d in n.d)r.push(d+'/');for(var f in n.f)r.push(f);if(all&&n.h)for(var h in n.h)r.push(h);return r.join('   ')||'(empty)'}
 function resolve(p){if(p==='/')return'/';var parts=(p.charAt(0)==='/'?p:(cwd==='/'?'':cwd)+'/'+p).split('/'),o=[];for(var i=0;i<parts.length;i++){if(!parts[i]||parts[i]==='.')continue;if(parts[i]==='..')o.pop();else o.push(parts[i])}return'/'+o.join('/')}
 function run(line){
  var t=line.trim();if(!t)return;print(ps.textContent+' '+t,'u');
@@ -130,34 +257,34 @@ function run(line){
  if(c==='clear'){if(cmd.disabled)return;out.innerHTML='';return}
  if(c==='restart'||c==='reset'){transId++;cmd.disabled=false;S={level:0,done:[],hints:0};save();out.innerHTML='';startLevel();return}
  if(c==='hint'){hint();return}
- if(c==='help'){print('Commands: help, hint, clear, restart, flag <FLAG{...}>\nThis level: '+(S.level>4?'none':L[S.level].commands),'dim');return}
- if(S.level>4){print('Game complete. Type restart to play again.','dim');return}
- if(c==='flag'||c==='submit'){if(rest.toUpperCase()===L[S.level].flag){win()}else{print('Not the right flag. Flags look like FLAG{SOMETHING}. Keep looking.','bad')}return}
- var f=files();
- if(S.level===4){
-  if(c==='pwd'){print(cwd);return}
-  if(c==='ls'){var all=/^-\w*a/.test(rest);print(ls5(cwd,all));return}
-  if(c==='cd'){if(!rest||rest==='~'){cwd='/home/guest';ps.textContent='player@quest:'+cwd+'$';return}var p=resolve(rest);if(FS[p]){cwd=p;ps.textContent='player@quest:'+cwd+'$'}else print('cd: no such folder: '+rest,'bad');return}
-  if(c==='cat'){var n=FS[cwd],nm=rest.replace(/^\.\//,'');if(n.f[nm]!==undefined)print(n.f[nm]);else if(n.h&&n.h[nm]!==undefined)print(n.h[nm]);else print('cat: '+rest+': no such file','bad');return}
-  print('Unknown command: '+c+'. Type help.','bad');return}
- if(S.level===2){
-  if(c==='inbox'||c==='ls'){EM.forEach(function(e,i){print((i+1)+'. '+e.from+'  |  '+e.subj)});print('Use: open <number>   report <number>','dim');return}
-  if(c==='open'||c==='cat'){var e=EM[parseInt(rest,10)-1];if(!e){print('Pick 1, 2 or 3. Example: open 1','bad');return}print('From:    '+e.from+'\nSubject: '+e.subj+'\nLink:    '+e.link+'\n\n'+e.body);return}
-  if(c==='report'){var n=parseInt(rest,10);if(!EM[n-1]){print('Pick 1, 2 or 3. Example: report 2','bad');return}if(n===2){print('Correct! Email 2 is phishing. Sender domain acme-secure1ty.com uses a "1" instead of "i", the link goes to that fake domain, and it pushes you to panic.','ok');print('FLAG{THINK_BEFORE_YOU_CLICK}','ok')}else print('That one looks normal. Open it and check the sender and the link, then try another.','bad');return}
-  print('Unknown command: '+c+'. Type help.','bad');return}
- if(c==='ls'){print(Object.keys(f).join('   '));return}
- if(c==='cat'){var nm2=rest.replace(/^\.\//,'');if(f[nm2]!==undefined)print(f[nm2]);else print('cat: '+rest+': no such file','bad');return}
- if(S.level===1&&c==='decode'){var arg=rest.replace(/^base64\s+/i,'');try{print(atob(arg),'ok')}catch(e){print('That is not valid Base64. Copy the whole text from message.txt.','bad')}return}
- if(S.level===3&&c==='rot13'){if(!rest){print('Usage: rot13 <text>','bad');return}print(rot13(rest),'ok');return}
- if(S.level===3&&c==='unlock'){if(rest.toLowerCase()==='moonlight'){unlocked=true;print('Vault open! Inside: FLAG{ROT13_IS_NOT_A_LOCK}','ok')}else print('Wrong password. Decode the note first.','bad');return}
+ if(c==='help'){print('Commands: help, hint, clear, restart, flag <FLAG{...}>\nThis level: '+(S.level>8?'none':L[S.level].commands),'dim');return}
+ if(S.level>8){print('Game complete. Type restart to play again.','dim');return}
+ var l=L[S.level];
+ if(c==='flag'||c==='submit'){if(rest.toUpperCase()===l.flag){win()}else{print('Not the right flag. Flags look like FLAG{SOMETHING}. Keep looking.','bad')}return}
+ if(c==='decode'){print("decode is not a real Linux command. The real one is base64 -d. Try: cat message.txt | base64 -d",'bad');return}
+ if(c==='rot13'){print("rot13 is not a real command. On Linux: cat note.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'",'bad');return}
+ if(c==='open'||c==='inbox'){print(c+' is not how Linux reads files. The emails here are files: ls, then cat email1.txt','bad');return}
+ if(c==='report'&&S.level===2){var n=parseInt(rest,10);if(n<1||n>3){print('Pick 1, 2 or 3. Example: report 2','bad');return}
+  if(n===2){print('Correct! Email 2 is phishing. Sender domain acme-secure1ty.com uses a "1" instead of "i", the link goes to that fake domain, and it pushes you to panic.','ok');print('FLAG{THINK_BEFORE_YOU_CLICK}','ok')}else print('That one looks normal. Read it with cat email'+n+'.txt and check the sender and the link, then try another.','bad');return}
+ if(c==='unlock'&&l.unlock){if(rest.toLowerCase()===l.unlock){print(l.unlockWin,'ok')}else print('Wrong password. Keep looking.','bad');return}
+ if(c==='login'&&l.login){var p=rest.split(/\s+/);if(p[0]===l.login.user&&p[1]===l.login.pass){print(l.loginWin,'ok')}else if(p[0]===l.login.user){print('Login failed for '+l.login.user+'. Try another password from wordlist.txt.','bad')}else print('Usage: login '+l.login.user+' <password>','bad');return}
+ if(/^(echo|cat|grep|base64|tr)$/.test(c)){pipeline(t);return}
+ if(c==='ls'){var all=/^-\w*a/.test(rest);if(!l.fs){print(Object.keys(flatFiles(l)).join('   '));return}
+  var lp=null;for(var li=0;li<a.length;li++){if(li>0&&a[li].charAt(0)!=='-'){lp=a[li];break}}
+  if(lp){var rpl=resolve(lp);if(l.fs[rpl]){print(lsNode(rpl,all));return}print('ls: '+lp+': no such folder','bad');return}
+  print(lsNode(cwd,all));return}
+ if(c==='pwd'){print(l.fs?cwd:'/home/player');return}
+ if(c==='cd'){if(!l.fs){print('No folders in this level. Use ls and cat.','dim');return}
+  if(!rest||rest==='~'){cwd='/';ps.textContent='player@quest:'+cwd+'$';return}
+  var rp2=resolve(rest);if(l.fs[rp2]){cwd=rp2;ps.textContent='player@quest:'+cwd+'$'}else print('cd: no such folder: '+rest,'bad');return}
  print('Unknown command: '+c+'. Type help.','bad')}
 form.addEventListener('submit',function(e){e.preventDefault();var v=cmd.value;cmd.value='';run(v)});
 document.getElementById('bhint').onclick=function(){hint();cmd.focus()};
 document.getElementById('bhelp').onclick=function(){run('help')};
-document.getElementById('bls').onclick=function(){run(S.level===2?'inbox':'ls')};
+document.getElementById('bls').onclick=function(){run('ls')};
 document.getElementById('bclear').onclick=function(){run('clear')};
 document.getElementById('breset').onclick=function(){if(confirm('Restart from level 1?'))run('restart')};
-load();print('CYBER QUEST v1.0  (a safe, fake hacking world)','ok');if(S.level>0&&S.level<5)print('Welcome back. Progress was saved in this browser.','dim');startLevel();
+load();print('CYBER QUEST v2.0  (a safe, fake hacking world)','ok');if(S.level>0&&S.level<9)print('Welcome back. Progress was saved in this browser.','dim');startLevel();
 })();
 </script>
 </body>
