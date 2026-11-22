@@ -34,6 +34,7 @@ h1{margin:6px 0 2px;font-size:clamp(20px,4.5vw,30px);color:var(--g);letter-spaci
 button{background:var(--panel);color:var(--g);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer}
 button:hover{border-color:var(--g)}
 button.hintbtn{color:var(--warn)}
+button.nextbtn{background:var(--g);color:#04120b;border-color:var(--g);font-weight:bold;font-size:15px;padding:10px 18px}
 .note{margin-top:14px;font-size:12px;color:var(--dim);line-height:1.5}
 </style>
 </head>
@@ -120,13 +121,13 @@ var hintIdx=0;
 function startLevel(){hintIdx=0;cwd='/';unlocked=false;dots();mission();if(S.level>4)return;var l=L[S.level];print('--- Level '+(S.level+1)+': '+l.name+' ---','ok');print('Goal: find the flag, then type  flag FLAG{...}','dim');print('Stuck? Tap the Hint button or type help.','dim');ps.textContent='player@quest:'+(S.level===4?'/':'~')+'$'}
 function files(){var l=L[S.level],f={};for(var k in l.files)f[k]=l.files[k];if(S.level===1)f['message.txt']=btoa(B64MSG);if(S.level===3)f['note.txt']=rot13(ROTPLAIN);return f}
 function hint(){if(S.level>4){print('No hints needed. You won!','dim');return}var l=L[S.level];if(hintIdx>=l.hints.length){print('No more hints. Re-read the mission above, you are close.','hint');return}print('Hint '+(hintIdx+1)+'/'+l.hints.length+': '+l.hints[hintIdx],'hint');hintIdx++;S.hints++;save();dots()}
-function win(){var l=L[S.level];print('FLAG ACCEPTED! '+l.win,'ok');if(S.done.indexOf(S.level)<0)S.done.push(S.level);S.level++;save();if(S.level>4){dots();mission();print('🏆 You cleared all 5 levels. Well done, hacker.','ok');return}var myT=++transId;cmd.disabled=true;var cd=document.createElement('div');cd.className='hint';out.appendChild(cd);out.scrollTop=out.scrollHeight;var n=5;cd.textContent='Next level in '+n+'...';var iv=setInterval(function(){if(myT!==transId){clearInterval(iv);return}n--;if(n<=0){clearInterval(iv);if(myT!==transId)return;out.innerHTML='';cmd.disabled=false;startLevel();cmd.focus()}else cd.textContent='Next level in '+n+'...'},1000)}
+function win(){var l=L[S.level];print('FLAG ACCEPTED! '+l.win,'ok');if(S.done.indexOf(S.level)<0)S.done.push(S.level);S.level++;save();if(S.level>4){dots();mission();print('🏆 You cleared all 5 levels. Well done, hacker.','ok');return}var myT=++transId;cmd.disabled=true;var cd=document.createElement('div');cd.style.margin='10px 0';var b=document.createElement('button');b.className='nextbtn';b.textContent='Next Level ▶';b.onclick=function(){if(myT!==transId)return;out.innerHTML='';cmd.disabled=false;startLevel();cmd.focus()};cd.appendChild(b);out.appendChild(cd);out.scrollTop=out.scrollHeight}
 function ls5(path,all){var n=FS[path];var r=[];for(var d in n.d)r.push(d+'/');for(var f in n.f)r.push(f);if(all&&n.h)for(var h in n.h)r.push(h);return r.join('   ')||'(empty)'}
 function resolve(p){if(p==='/')return'/';var parts=(p.charAt(0)==='/'?p:(cwd==='/'?'':cwd)+'/'+p).split('/'),o=[];for(var i=0;i<parts.length;i++){if(!parts[i]||parts[i]==='.')continue;if(parts[i]==='..')o.pop();else o.push(parts[i])}return'/'+o.join('/')}
 function run(line){
  var t=line.trim();if(!t)return;print(ps.textContent+' '+t,'u');
  var a=t.split(/\s+/),c=a[0].toLowerCase(),rest=t.slice(a[0].length).trim();
- if(c==='clear'){out.innerHTML='';return}
+ if(c==='clear'){if(cmd.disabled)return;out.innerHTML='';return}
  if(c==='restart'||c==='reset'){transId++;cmd.disabled=false;S={level:0,done:[],hints:0};save();out.innerHTML='';startLevel();return}
  if(c==='hint'){hint();return}
  if(c==='help'){print('Commands: help, hint, clear, restart, flag <FLAG{...}>\nThis level: '+(S.level>4?'none':L[S.level].commands),'dim');return}
