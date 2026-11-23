@@ -83,7 +83,7 @@ export const steps = [
     hints: [
       'The manifest is a text file inside the new supplies directory.',
       'Print it with the file-reading command. You can give a path: directory name, a slash, then the file name.',
-      'From Downloads, type <code>cat supplies/manifest.txt</code>. (Or <code>cd supplies</code> first, then <code>cat manifest.txt</code>.)',
+      'Inside the supplies directory, type <code>cat manifest.txt</code>. From Downloads, type <code>cat supplies/manifest.txt</code>.',
     ],
   },
   {
@@ -131,9 +131,9 @@ export const steps = [
     done: (e) => e.type === 'cat' && e.files.some((f) => f.path.endsWith('/secret/note.txt')),
     success: () => 'Both parcels delivered.',
     hints: [
-      'A new directory appeared when you unlocked the parcel. Look inside it.',
-      'List the new directory, then print the file in it.',
-      'Type <code>cat secret/note.txt</code>.',
+      'A new directory called secret appeared when you unlocked the parcel. The message is a file inside it.',
+      'List what is inside secret, then print the file you find with the file-reading command.',
+      'Inside the secret directory, type <code>cat note.txt</code>. From Downloads, type <code>cat secret/note.txt</code>.',
     ],
   },
 ];

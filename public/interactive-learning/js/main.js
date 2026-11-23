@@ -233,7 +233,9 @@ function updateWander() {
   if (state.phase !== 'steps' || state.stepDone) return;
   const s = state.mission.steps[state.step];
   const cwd = state.view.cwd;
-  if (!s.expect || cwd === s.expect) { card.wander(null); return; }
+  // Being inside the expected directory is fine too, unless the step needs that exact place.
+  const inside = cwd.startsWith(s.expect + '/');
+  if (!s.expect || cwd === s.expect || (inside && !s.exact)) { card.wander(null); return; }
   const target = s.expect === state.machine.home ? '~' : '~' + s.expect.slice(state.machine.home.length);
   card.wander(`You're in <code>${esc(cwd)}</code>, which is fine! This step starts in <code>${esc(target)}</code>. To jump there, type <code>cd ${esc(target)}</code> (<code>~</code> means your home directory).`);
 }

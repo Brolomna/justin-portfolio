@@ -89,6 +89,7 @@ export const steps = [
   {
     id: 'ls-docs',
     mode: 'recall',
+    exact: true, // the listing must be of Documents itself
     title: 'A new place',
     body: ["You're inside Documents now.", 'But what does this location contain?'],
     expect: DOCS,
@@ -125,6 +126,7 @@ export const steps = [
   {
     id: 'cd-up',
     mode: 'learn',
+    exact: true, // cd .. has to start from Documents to land in home
     title: 'Go back',
     body: ["You've explored Documents.", 'But how do you get back to where you came from?'],
     command: {
