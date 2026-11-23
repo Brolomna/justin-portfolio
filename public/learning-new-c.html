@@ -5,7 +5,7 @@
 <meta name="description" content="Explore a living Linux filesystem through an interactive 3D terminal. Learn Linux by doing."><title>Terminal Academy — Exploring Linux</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js" crossorigin="anonymous"></script>
+
 <style>
 :root{color-scheme:dark;--bg:#05090b;--green:#72f2a6;--cyan:#76dff2;--amber:#e5c17b;--red:#ff747f;--text:#e7f0ec;--muted:#81918f;--mono:"DM Mono","SFMono-Regular",Consolas,monospace;--sans:"Manrope",Inter,system-ui,-apple-system,sans-serif}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:var(--bg);color:var(--text)}body{font-family:var(--sans);overflow:hidden}button,input{font:inherit}button{cursor:pointer;color:inherit}
@@ -131,7 +131,7 @@ function init3D(){if(!THREE||!THREE.WebGLRenderer){fallback();return}try{
  renderer.setAnimationLoop(function(){const t=performance.now()*.001;core.rotation.y=t*.12;core.rotation.x=Math.sin(t*.18)*.08;animated.forEach(function(o){o.position.y=o.userData.baseY+Math.sin(t*o.userData.speed+o.userData.phase)*o.userData.amount;o.rotation.y=Math.sin(t*.36+o.userData.phase)*.045;if(o.userData.pop){const age=(performance.now()-o.userData.birth)/480,scale=Math.min(1,Math.max(.001,1-Math.pow(1-Math.min(age,1),3)));o.scale.setScalar(scale);if(age>=1)o.userData.pop=false}});rings=rings.filter(function(r){const p=(performance.now()-r.userData.started)/r.userData.duration;if(p>=1){effects.remove(r);r.geometry.dispose();r.material.dispose();return false}r.scale.setScalar(.8+p*9);r.material.opacity=.86*(1-p);return true});
  if(travelState){const p=Math.min(1,(performance.now()-travelState.start)/travelState.duration);if(p<.5)camera.position.lerpVectors(travelState.home,travelState.close,ease(p*2));else{if(!travelState.mid){travelState.mid=true;travelState.callback()}camera.position.lerpVectors(travelState.close,travelState.home,ease((p-.5)*2))}camera.lookAt(0,0,0);if(p>=1){camera.position.copy(travelState.home);camera.lookAt(0,0,0);travelState=null;state.cameraMoving=false;$("command").disabled=!state.started||!$("welcome").classList.contains("hidden");if(!$("command").disabled)$("command").focus()}}renderer.render(scene,camera)});
  }catch(e){console.warn("3D renderer unavailable",e);fallback()}}
-function boot(){updatePrompt();renderLesson();init3D()}
+function boot(){updatePrompt();renderLesson();import("./interactive-learning/js/vendor/three-r162.module.min.js").then(function(threeModule){THREE=threeModule;init3D()}).catch(function(error){console.warn("Local Three.js module unavailable",error);fallback()})}
 boot();
 })();
 </script>
