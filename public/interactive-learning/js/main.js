@@ -7,6 +7,7 @@ import { createShell } from './fs/shell.js';
 import { pathChain } from './fs/path.js';
 import { createTerminal, esc } from './ui/terminal.js';
 import { createLessonCard } from './ui/lesson.js';
+import { createVoice, voiceKey } from './ui/voice.js';
 import { missions, byId, nextOf } from './lessons/missions.js';
 import { visibilityOf } from './world/visibility.js';
 
@@ -30,6 +31,19 @@ const state = {
 };
 
 let world = null;
+const voice = createVoice({
+  base: './interactive-learning/audio',
+  version: 'nicole-1', // bump when clips are re-recorded so browsers fetch the new ones
+  onChange: (on) => renderVoiceBtn(on),
+});
+const say = (m, part, suffix) => voice.play(voiceKey(m, part, suffix));
+
+function renderVoiceBtn(on = voice.enabled) {
+  const b = $('voiceBtn');
+  b.setAttribute('aria-pressed', String(on));
+  b.innerHTML = on ? '<span aria-hidden="true">🔊</span> Voice on' : '<span aria-hidden="true">🔇</span> Voice off';
+  b.title = on ? 'Turn the narrator off' : 'Turn the narrator on';
+}
 const lessonEl = $('lesson');
 const card = createLessonCard($('lessonBody'));
 const term = createTerminal({
@@ -209,6 +223,7 @@ function startMission(id) {
   hideMenu();
   state.phase = 'briefing';
   card.briefing(m, beginMission);
+  say(m, 'brief');
   try { history.replaceState(null, '', `#${m.id}`); } catch { /* ignore */ }
   updateInsets();
   term.focus();
@@ -227,6 +242,7 @@ function showStep() {
   state.stepDone = false;
   state.mistakes = 0;
   card.step(s, state.step, steps.length, steps.slice(0, state.step).filter((x) => x.remember).map((x) => x.remember));
+  say(state.mission, s.id);
   updateWander();
 }
 
@@ -246,11 +262,16 @@ function checkProgress(event, ok) {
   if (!m) return;
   if (state.phase === 'test') {
     if (m.parts && event.type === 'cat') {
-      m.parts.forEach((p, i) => { if (event.files.some((f) => f.path === p.path)) state.partsFound.add(i); });
+      m.parts.forEach((p, i) => {
+        if (state.partsFound.has(i) || !event.files.some((f) => f.path === p.path)) return;
+        state.partsFound.add(i);
+        if (!state.solved) say(m, `part${state.partsFound.size}`);
+      });
       card.parts(m, state.partsFound);
     }
     if (!state.solved && ok && m.done(event)) {
       state.solved = true;
+      say(m, 'success');
       world.finale();
       const next = nextOf(m.id);
       card.testSuccess(m, next, { onReset: () => startMission(m.id), onNext: next ? () => startMission(next.id) : null, onMenu: showMenu });
@@ -263,6 +284,7 @@ function checkProgress(event, ok) {
     state.stepDone = true;
     const last = state.step === m.steps.length - 1;
     card.success(s.success(event), s.remember, { last });
+    say(m, s.id, 'done');
     $('lessonBody').querySelector('[data-next]')?.addEventListener('click', () => { nextStep(); term.focus(); });
     if (last) world.finale();
     return;
@@ -278,6 +300,7 @@ function nextStep() {
     state.phase = 'finale';
     const next = nextOf(m.id);
     card.finale(m, next, { onNext: next ? () => startMission(next.id) : null, onMenu: showMenu, onRestart: () => startMission(m.id) });
+    say(m, 'finale');
     return;
   }
   state.step++;
@@ -302,6 +325,7 @@ function renderMenu() {
 
 function showMenu() {
   state.phase = 'menu';
+  voice.stop();
   $('intro').hidden = false;
   lessonEl.hidden = true;
   $('terminal').hidden = true;
@@ -352,6 +376,8 @@ async function boot() {
   new ResizeObserver(updateInsets).observe(lessonEl);
   $('restartBtn').addEventListener('click', () => startMission(state.mission.id));
   $('missionsBtn').addEventListener('click', showMenu);
+  renderVoiceBtn();
+  $('voiceBtn').addEventListener('click', () => { voice.toggle(); term.focus(); });
   $('lessonToggle').addEventListener('click', () => {
     const collapsed = lessonEl.classList.toggle('collapsed');
     $('lessonToggle').setAttribute('aria-expanded', String(!collapsed));

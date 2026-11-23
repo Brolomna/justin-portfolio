@@ -58,6 +58,12 @@ browser; no real shell is involved.
 - `js/vendor/three-r162.module.min.js` - Three.js r162 (MIT, see THREE-LICENSE.txt), loaded only on this page.
   r162 is the last release that still runs on WebGL 1 devices; do not upgrade past it without a WebGL 2 check.
 - Test URLs: `?reduced` forces reduced motion, `?view=2d` forces the 2D view, `?view=map` forces the text map.
+- Narration: `public/interactive-learning/audio/*.mp3`, pre-recorded with the open Kokoro TTS model
+  (Apache-2.0, voice `af_nicole`) and played by `js/ui/voice.js` (on by default, Voice button to turn off).
+  The spoken lines are the `say` / `sayDone` fields in `js/lessons/*.js`. After editing them, re-record with
+  `node scripts/voice-lines.mjs > /tmp/lines.json` then `python3 scripts/build-voice.py /tmp/lines.json --model model.onnx --voice af_nicole.bin`
+  (model + voice from huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX); only changed lines are re-recorded.
+  Bump `version` in `createVoice(...)` in `js/main.js` afterwards.
 
 ## Client-side mini projects
 

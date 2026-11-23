@@ -47,7 +47,7 @@ export function createLessonCard(root) {
       html(`
         ${meta(esc(m.label.toUpperCase()), m.kind === 'lesson' ? 'BRIEFING' : m.ultimate ? 'ULTIMATE TEST' : 'TEST', m.ultimate ? 'ultimate' : m.kind === 'lesson' ? 'learn' : 'explore')}
         <h2>${esc(m.storyTitle)}</h2>
-        <div class="lesson-text story">${m.story.map((p) => `<p>${esc(p)}</p>`).join('')}</div>
+        <div class="lesson-text story">${m.story.map((p) => `<p>${p}</p>`).join('')}</div>
         <div class="btn-row"><button class="primary-btn small" type="button" data-begin>${m.kind === 'lesson' ? 'Begin' : 'Start the test'} <span aria-hidden="true">↵</span></button></div>
         <p class="next-tip">or press Enter in the terminal</p>`);
       on('[data-begin]', onBegin);
@@ -63,10 +63,8 @@ export function createLessonCard(root) {
         ${c ? `<div class="cmd-card">
             <div class="cmd-row"><code class="cmd-name">${esc(c.cmd)}</code><span class="cmd-stands">${c.name}</span></div>
             <p>${c.what}</p>
-            ${c.format ? `<p class="cmd-format">Format: <code>${esc(c.format)}</code></p>` : ''}
-            <p class="analogy">${c.analogy}</p>
           </div>
-          <p class="task">Type <kbd>${esc(c.cmd)}</kbd> and press <kbd>Enter</kbd>.</p>` : ''}
+          <p class="task">Type it, then press <kbd>Enter</kbd>.</p>` : ''}
         <p class="wander" hidden></p>
         ${hintBlock(step.hints)}
         <div class="success" hidden></div>
@@ -101,9 +99,8 @@ export function createLessonCard(root) {
         <h2>${f.title}</h2>
         <div class="lesson-text"><p>${f.body}</p></div>
         <ul class="recap">${f.recap.map(([c, d]) => `<li><code>${esc(c)}</code><span>${esc(d)}</span></li>`).join('')}</ul>
-        ${next ? `<p class="lesson-text">Next up: <b>${esc(next.label)}: ${esc(next.title)}</b>. ${esc(next.subtitle)}</p>` : ''}
         <div class="btn-row">
-          ${next ? `<button class="primary-btn small" type="button" data-nextm>Start ${esc(next.label)}</button>` : ''}
+          ${next ? `<button class="primary-btn small" type="button" data-nextm>Next: ${esc(next.label)} · ${esc(next.title)}</button>` : ''}
           <button class="link-btn" type="button" data-menu>All missions</button>
           <button class="link-btn" type="button" data-restart>Restart</button>
         </div>`);

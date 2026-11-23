@@ -1,0 +1,217 @@
+{
+ "archives-brief": {
+  "hash": "014c849fd5852351",
+  "seconds": 12.2,
+  "text": "Welcome back. Two parcels arrived on this machine as zip files, and one of them is locked with a password. Let's open both."
+ },
+ "archives-extract": {
+  "hash": "1c0a461fd9040c64",
+  "seconds": 10.5,
+  "text": "Now unpack it. Type unzip, then the file name. If it asks whether to replace files, answer Y for yes."
+ },
+ "archives-extract-done": {
+  "hash": "36fd2e41cefb5d21",
+  "seconds": 5.8,
+  "text": "A new supplies folder appeared, and the zip file is still there too."
+ },
+ "archives-finale": {
+  "hash": "b2d60ade221f0fd1",
+  "seconds": 8.4,
+  "text": "Lesson two complete. You're ready for the tests. Start with test one, then take on the vault."
+ },
+ "archives-find": {
+  "hash": "cf376617209b7084",
+  "seconds": 4.5,
+  "text": "First, go to your Downloads folder and see what arrived."
+ },
+ "archives-find-done": {
+  "hash": "d28e4fa48ccb6077",
+  "seconds": 7.6,
+  "text": "Two zip files. A zip archive packs lots of files into one, like a parcel."
+ },
+ "archives-locked": {
+  "hash": "e2ce0f69f4af55c8",
+  "seconds": 15.0,
+  "text": "Go back to Downloads and unzip the locked parcel. When it asks for the password, type it and press Enter. You won't see it as you type. That's normal on Linux."
+ },
+ "archives-locked-done": {
+  "hash": "0a9f21b0229fd7a3",
+  "seconds": 7.4,
+  "text": "Unlocked. A wrong password would simply change nothing, so you can always try again."
+ },
+ "archives-manifest": {
+  "hash": "c93d7e352cb667b9",
+  "seconds": 3.7,
+  "text": "The parcel came with a manifest. Read it."
+ },
+ "archives-manifest-done": {
+  "hash": "7e79d0d091a71010",
+  "seconds": 7.8,
+  "text": "The second parcel is locked, and the password is on a hidden sticky note on your Desktop."
+ },
+ "archives-note": {
+  "hash": "aa409f3f8ba1a789",
+  "seconds": 5.8,
+  "text": "The locked parcel unpacked a new folder. Read what is inside."
+ },
+ "archives-note-done": {
+  "hash": "4a775fedcf909b5d",
+  "seconds": 7.2,
+  "text": "Both parcels delivered. You can now open any zip file, even a locked one."
+ },
+ "archives-peek": {
+  "hash": "ead80c14c569a5a2",
+  "seconds": 11.9,
+  "text": "Before opening a parcel, check what's inside. Type unzip, space, dash L, then the file name. Dash L means list."
+ },
+ "archives-peek-done": {
+  "hash": "cc1e55bc3857323a",
+  "seconds": 5.4,
+  "text": "Now you know what is inside, and nothing has been unpacked yet."
+ },
+ "archives-sticky": {
+  "hash": "2b3177dfcf01e4f9",
+  "seconds": 9.3,
+  "text": "Go to your Desktop and find the hidden sticky note. Remember, hidden files need L S dash A."
+ },
+ "archives-sticky-done": {
+  "hash": "6b6a37f4f9525e22",
+  "seconds": 3.4,
+  "text": "The password is lantern. Remember it."
+ },
+ "exploring-brief": {
+  "hash": "19c4636ba4c93818",
+  "seconds": 11.4,
+  "text": "Welcome, rookie. You've just entered an unfamiliar Linux machine, and the terminal is your only tool. Let's explore it together."
+ },
+ "exploring-cat": {
+  "hash": "f25d0e887ed9fa8c",
+  "seconds": 10.4,
+  "text": "Let's read the note. Type cat, then the file name: notes dot T X T. Cat prints what's inside a file."
+ },
+ "exploring-cat-done": {
+  "hash": "4a60c45ae95dc11a",
+  "seconds": 5.8,
+  "text": "That is what the note says. Press Escape whenever you want to close it."
+ },
+ "exploring-cat-message": {
+  "hash": "be5900a6ba00f6ce",
+  "seconds": 2.9,
+  "text": "There's a message in here. Read it."
+ },
+ "exploring-cat-message-done": {
+  "hash": "316a9ed608e54ed6",
+  "seconds": 8.7,
+  "text": "You found it. You just explored a Linux machine using nothing but the keyboard. Well done."
+ },
+ "exploring-cd": {
+  "hash": "d41e7516e335d7cf",
+  "seconds": 10.3,
+  "text": "Let's go inside Documents. Type C D, then a space, then Documents. C D means change directory."
+ },
+ "exploring-cd-done": {
+  "hash": "be0b93d18655a4f2",
+  "seconds": 6.5,
+  "text": "You're inside Documents now. Look at the prompt: it shows where you are."
+ },
+ "exploring-cd-hidden": {
+  "hash": "2faa42e49e514d23",
+  "seconds": 5.4,
+  "text": "You found a hidden folder. Go inside it. You already know how."
+ },
+ "exploring-cd-hidden-done": {
+  "hash": "0e58c9d6d5a82541",
+  "seconds": 6.1,
+  "text": "Hidden folders work like any other. The dot is just part of the name."
+ },
+ "exploring-cd-up": {
+  "hash": "6675d73ef3513f7c",
+  "seconds": 9.3,
+  "text": "Time to go back. Type C D, a space, and two dots. Two dots always mean one level up."
+ },
+ "exploring-cd-up-done": {
+  "hash": "b7ac609b447a7f29",
+  "seconds": 11.4,
+  "text": "You're back home. Keep climbing with C D dot dot and you'd reach the root, a single slash: the top of the whole machine."
+ },
+ "exploring-finale": {
+  "hash": "1411536c4afb70fa",
+  "seconds": 9.2,
+  "text": "Lesson one complete. Next, lesson two teaches you how to open zip files, even locked ones."
+ },
+ "exploring-ls": {
+  "hash": "9cb80e56a19b8649",
+  "seconds": 7.0,
+  "text": "Now, what's around you? Type L S, short for list, to see what's in this place."
+ },
+ "exploring-ls-a": {
+  "hash": "28b0cc32fbbdfffd",
+  "seconds": 9.2,
+  "text": "Something here is hidden. Type L S, space, dash A. The A means all, so hidden things show up too."
+ },
+ "exploring-ls-a-done": {
+  "hash": "30776541548a5ff8",
+  "seconds": 11.7,
+  "text": "There it is: dot hidden. Names that start with a dot are hidden from a normal listing. They're not locked, just out of sight."
+ },
+ "exploring-ls-docs": {
+  "hash": "bbf0d9adba10e4d2",
+  "seconds": 5.9,
+  "text": "You're somewhere new. What's in here? Use the command you already know."
+ },
+ "exploring-ls-docs-done": {
+  "hash": "f8f34c42f5f75246",
+  "seconds": 7.7,
+  "text": "A text file and another folder. L S always lists the place you are standing in."
+ },
+ "exploring-ls-done": {
+  "hash": "d95b27b2539c63ae",
+  "seconds": 6.1,
+  "text": "Three folders appeared. In Linux, folders are called directories."
+ },
+ "exploring-pwd": {
+  "hash": "3be35288fafc5224",
+  "seconds": 11.8,
+  "text": "First question: where are you? Type P W D. It stands for print working directory, and it tells you exactly where you are."
+ },
+ "exploring-pwd-done": {
+  "hash": "577dfbfc64f84ce6",
+  "seconds": 5.0,
+  "text": "That's your location. Every command you type runs from here."
+ },
+ "unfamiliar-brief": {
+  "hash": "1e384aa79998c1c9",
+  "seconds": 11.3,
+  "text": "This is your first test. A brand new machine, and no instructions. Somewhere inside is a hidden message. Find it."
+ },
+ "unfamiliar-success": {
+  "hash": "036b70b5d4d1aa69",
+  "seconds": 5.2,
+  "text": "Message found. You did it without a guide. Nicely done."
+ },
+ "vault-brief": {
+  "hash": "622c00b9d800cdfb",
+  "seconds": 22.8,
+  "text": "Agent, this is the ultimate test. A locked vault. Its password was split into three parts, and each part is hidden in a file you will not see with a normal listing. Follow the clues, find all three parts, and open the vault. Good luck."
+ },
+ "vault-part1": {
+  "hash": "fd31c19f1f747380",
+  "seconds": 2.6,
+  "text": "Part one found. Two to go."
+ },
+ "vault-part2": {
+  "hash": "a7de7f8efccb74ca",
+  "seconds": 2.9,
+  "text": "Part two found. One left."
+ },
+ "vault-part3": {
+  "hash": "e537afb05c221da6",
+  "seconds": 6.1,
+  "text": "Part three found. You have the whole password. Now open the vault."
+ },
+ "vault-success": {
+  "hash": "88adf89fe0434534",
+  "seconds": 7.2,
+  "text": "Vault open. Clearance granted. Go inside top secret and read everything."
+ }
+}

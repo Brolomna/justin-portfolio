@@ -278,3 +278,6 @@ button { font: inherit; }
   .mission-go { display: none; }
   .mission-title { font-size: 15.5px; }
 }
+.voice-btn[aria-pressed="true"] { color: var(--green); border-color: var(--line-strong); }
+.voice-btn[aria-pressed="false"] { color: var(--dim); }
+@media (max-width: 420px) { .voice-btn { font-size: 0; padding: 6px 9px; } .voice-btn span { font-size: 14px; } }
