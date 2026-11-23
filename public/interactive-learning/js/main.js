@@ -57,45 +57,85 @@ const term = createTerminal({
 // ------------------------------------------------------------------ world
 // Renderer order: WebGL 3D -> Canvas 2D (same world, drawn without the GPU) -> text map.
 // ?view=2d or ?view=map force a mode (for testing).
-async function createWorld() {
+// Three ways to draw the machine:
+//   '3d'  WebGL (needs a GPU-backed browser)
+//   '2d'  Canvas 2D: the same world drawn without WebGL; works in essentially every browser
+//   'map' a text map of discovered directories (last resort, also handy for screen readers)
+// The browser's best option is picked automatically; the View switch in the top bar
+// (or ?view=3d|2d|map) lets you compare them live.
+const views = { auto: null, current: null, webgl: false };
+
+async function buildWorld(mode, reason = 'forced') {
   const stage = $('stage');
-  const forced = params.get('view') || (params.has('no3d') ? '2d' : '');
-  let reason = forced ? 'forced' : '';
-  if (!forced) {
-    if (!supportsWebGL()) reason = 'no-webgl';
-    else {
-      try {
-        const { World } = await import('./world/world.js');
-        return new World(stage, { reducedMotion });
-      } catch (err) {
-        console.warn('WebGL view failed, using the 2D view instead:', err);
-        reason = 'failed';
-      }
-    }
+  stage.classList.remove('is-fallback');
+  if (mode === '3d') {
+    const { World } = await import('./world/world.js');
+    return new World(stage, { reducedMotion });
   }
-  if (forced !== 'map') {
-    try {
-      const { CanvasWorld } = await import('./world/canvas-world.js');
-      const w = new CanvasWorld(stage, { reducedMotion });
-      showViewChip(reason);
-      return w;
-    } catch (err) {
-      console.warn('2D view failed, using the map instead:', err);
-    }
+  if (mode === '2d') {
+    const { CanvasWorld } = await import('./world/canvas-world.js');
+    return new CanvasWorld(stage, { reducedMotion });
   }
   const { FallbackWorld } = await import('./world/fallback.js');
   stage.classList.add('is-fallback');
-  return new FallbackWorld(stage, reason || 'failed');
+  return new FallbackWorld(stage, reason);
 }
 
-function showViewChip(reason) {
-  const chip = document.createElement('span');
-  chip.className = 'view-chip';
-  chip.textContent = '2D view';
-  chip.title = reason === 'forced'
-    ? '2D view chosen for this visit.'
-    : 'Your browser is not offering WebGL, so the machine is drawn in 2D. Every command and effect still works.';
-  document.querySelector('.topic').appendChild(chip);
+/** Try modes in order until one starts. Returns { world, mode }. */
+async function startWorld(order, reason) {
+  for (const mode of order) {
+    if (mode === '3d' && !views.webgl) continue;
+    try { return { world: await buildWorld(mode, reason), mode }; } catch (err) { console.warn(`${mode} view failed:`, err); }
+  }
+  return { world: await buildWorld('map', 'failed'), mode: 'map' };
+}
+
+async function createWorld() {
+  views.webgl = supportsWebGL();
+  const auto = await startWorld(['3d', '2d', 'map'], views.webgl ? 'failed' : 'no-webgl');
+  views.auto = auto.mode;
+  const forced = params.get('view') || (params.has('no3d') ? '2d' : '');
+  if (['3d', '2d', 'map'].includes(forced) && forced !== auto.mode && !(forced === '3d' && !views.webgl)) {
+    auto.world.dispose();
+    const chosen = await startWorld([forced, '2d', 'map'], 'forced');
+    views.current = chosen.mode;
+    renderViewSwitch();
+    return chosen.world;
+  }
+  views.current = auto.mode;
+  renderViewSwitch();
+  return auto.world;
+}
+
+/** Swap the renderer live, keeping the mission, location and everything discovered. */
+async function switchView(mode) {
+  if (mode === views.current || (mode === '3d' && !views.webgl)) return;
+  world.dispose();
+  const next = await startWorld([mode, '2d', 'map'], 'forced');
+  world = next.world;
+  views.current = next.mode;
+  if (state.machine) world.load(state.machine, state.view);
+  updateInsets();
+  renderViewSwitch();
+  try {
+    const u = new URL(location.href);
+    if (next.mode === views.auto) u.searchParams.delete('view'); else u.searchParams.set('view', next.mode);
+    history.replaceState(null, '', u);
+  } catch { /* ignore */ }
+}
+
+function renderViewSwitch() {
+  const box = $('viewSwitch');
+  const names = { '3d': '3D', '2d': '2D', map: 'Map' };
+  const tips = {
+    '3d': views.webgl ? 'Full 3D (WebGL)' : 'Not available: this browser is not offering WebGL',
+    '2d': 'The same world drawn in 2D. Works in essentially every browser.',
+    map: 'A text map of what you have discovered. The last-resort view.',
+  };
+  box.innerHTML = `<span class="view-label">View</span>${['3d', '2d', 'map'].map((m) => `
+    <button type="button" data-view="${m}" aria-pressed="${m === views.current}" ${m === '3d' && !views.webgl ? 'disabled' : ''}
+      title="${tips[m]}${m === views.auto ? ' · picked automatically for this browser' : ''}">${names[m]}${m === views.auto ? '<i>auto</i>' : ''}</button>`).join('')}`;
+  box.querySelectorAll('[data-view]').forEach((b) => { b.onclick = () => { switchView(b.dataset.view); term.focus(); }; });
 }
 
 function supportsWebGL() {

@@ -285,3 +285,13 @@ button { font: inherit; }
 .topbar { z-index: 30; }
 .intro { padding-top: 72px; }
 .menu-card { max-height: calc(100dvh - 96px); }
+
+/* View switch: 3D / 2D / Map */
+.view-switch { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(5, 14, 20, 0.6); }
+.view-label { font: 500 10.5px var(--mono); color: var(--dim); padding: 0 6px 0 8px; letter-spacing: .5px; }
+.view-switch button { position: relative; cursor: pointer; border: 0; background: none; color: var(--muted); font: 600 11.5px var(--mono); padding: 5px 10px; border-radius: 999px; }
+.view-switch button:hover:not(:disabled) { color: var(--text); }
+.view-switch button[aria-pressed="true"] { color: #021008; background: var(--green); }
+.view-switch button:disabled { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
+.view-switch button i { font-style: normal; font-size: 8.5px; font-weight: 500; letter-spacing: .5px; margin-left: 4px; opacity: .75; text-transform: uppercase; }
+@media (max-width: 760px) { .view-label { display: none; } .view-switch button { padding: 5px 7px; font-size: 10.5px; } .view-switch button i { display: none; } }
