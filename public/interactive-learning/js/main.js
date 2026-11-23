@@ -38,24 +38,47 @@ const term = createTerminal({
 });
 
 // ------------------------------------------------------------------ world
+// Renderer order: WebGL 3D -> Canvas 2D (same world, drawn without the GPU) -> text map.
+// ?view=2d or ?view=map force a mode (for testing).
 async function createWorld() {
   const stage = $('stage');
-  let reason = 'forced';
-  if (!params.has('no3d')) {
+  const forced = params.get('view') || (params.has('no3d') ? '2d' : '');
+  let reason = forced ? 'forced' : '';
+  if (!forced) {
     if (!supportsWebGL()) reason = 'no-webgl';
     else {
       try {
         const { World } = await import('./world/world.js');
         return new World(stage, { reducedMotion });
       } catch (err) {
-        console.warn('3D unavailable, using the map view instead:', err);
+        console.warn('WebGL view failed, using the 2D view instead:', err);
         reason = 'failed';
       }
     }
   }
+  if (forced !== 'map') {
+    try {
+      const { CanvasWorld } = await import('./world/canvas-world.js');
+      const w = new CanvasWorld(stage, { reducedMotion });
+      showViewChip(reason);
+      return w;
+    } catch (err) {
+      console.warn('2D view failed, using the map instead:', err);
+    }
+  }
   const { FallbackWorld } = await import('./world/fallback.js');
   stage.classList.add('is-fallback');
-  return new FallbackWorld(stage, reason);
+  return new FallbackWorld(stage, reason || 'failed');
+}
+
+function showViewChip(reason) {
+  const chip = document.createElement('span');
+  chip.className = 'view-chip';
+  chip.textContent = '2D view';
+  chip.title = reason === 'forced'
+    ? '2D view chosen for this visit.'
+    : 'Your browser is not offering WebGL, so the machine is drawn in 2D. Every command and effect still works.';
+  document.querySelector('.topic').appendChild(chip);
 }
 
 function supportsWebGL() {

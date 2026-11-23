@@ -3,28 +3,16 @@
 // events emitted by the shell. Each command type has its own visual response.
 
 import * as THREE from '../vendor/three-r162.module.min.js';
-import { isHidden, fileKind, sortNames } from '../fs/filesystem.js';
+import { isHidden, fileKind } from '../fs/filesystem.js';
 import { pathChain, parentOf } from '../fs/path.js';
 import { visibilityOf } from './visibility.js';
+import {
+  HIDDEN_COLOR, ERROR_COLOR, BG, ease, easeOut, local, colorFor, inFocus, isHomeAncestor,
+  computeLayout, cameraView, travelPoints,
+} from './layout.js';
 
-const PALETTE = ['#00f5a0', '#00cfff', '#3be8c8', '#7fd6ff'];
-const HIDDEN_COLOR = '#a98bff';
-const ERROR_COLOR = '#ff5d6c';
-const BG = '#03070c';
-
-const ease = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
-const easeOut = (k) => 1 - Math.pow(1 - k, 3);
-const hashColor = (name) => {
-  let h = 0;
-  for (const ch of name) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return PALETTE[h % PALETTE.length];
-};
-
-// local (x right, y up, z back) offset around a point facing `heading` (radians; 0 = -Z)
-function local(p, heading, x, y, z) {
-  const s = Math.sin(heading), c = Math.cos(heading);
-  return new THREE.Vector3(p.x + x * c - z * s, p.y + y, p.z + x * s + z * c);
-}
+const v3 = (p) => new THREE.Vector3(p.x, p.y, p.z);
+const local3 = (...args) => v3(local(...args));
 
 // Text canvases are not power-of-two sized; skipping mipmaps keeps them sharp
 // and stops WebGL 1 devices from shrinking them.
@@ -247,57 +235,13 @@ export class World {
   }
 
   layout() {
-    const { fs, home } = this.machine;
-    const chain = new Set(pathChain(home));
     this.layoutInfo = new Map();
-    const place = (node, pos, heading, depth) => {
-      this.layoutInfo.set(node.path, { pos, heading, depth });
-      if (node.type !== 'dir') return;
-      const kids = sortNames([...node.children.keys()]).map((n) => node.children.get(n));
-      const dirs = kids.filter((k) => k.type === 'dir');
-      const files = kids.filter((k) => k.type === 'file');
-      const onChain = chain.has(node.path) && node.path !== home;
-      dirs.forEach((d, i) => {
-        if (onChain) {
-          if (!chain.has(d.path)) {
-            // directories beside the path to home (none in our machines, but stay sane)
-            const side = i % 2 ? 1 : -1;
-            place(d, local(pos, heading, side * 16, 0, -10), heading + side * 0.8, depth + 1);
-          } else place(d, local(pos, heading, 0, 0, -26), heading, depth + 1);
-          return;
-        }
-        const n = dirs.length;
-        const spread = Math.min(1.4, 0.5 * (n - 1));
-        const a = n === 1 ? 0 : -spread / 2 + (spread * i) / (n - 1);
-        const dist = [23, 19, 16, 14][Math.min(depth - this.homeDepth, 3)] ?? 14;
-        const h = heading + a;
-        place(d, local(pos, h, 0, 0, -dist), h, depth + 1);
-      });
-      const m = files.length;
-      // files float in a gentle arc just in front of the platform
-      const gap = 3.1;
-      files.forEach((f, i) => {
-        const x = m === 1 ? (dirs.length ? -3.2 : 0) : (i - (m - 1) / 2) * gap;
-        const fp = local(pos, heading, x, 1.9, -6.2 + Math.abs(x) * 0.18);
-        this.layoutInfo.set(f.path, { pos: fp, heading: heading + x * 0.03, depth: depth + 1 });
-      });
-    };
-    this.homeDepth = pathChain(home).length - 1;
-    place(fs.root, new THREE.Vector3(0, 0, 26 * this.homeDepth), 0, 0);
-  }
-
-  colorFor(node) {
-    if (node.path.split('/').some((p) => p && isHidden(p))) return HIDDEN_COLOR;
-    if (node.type === 'file') {
-      const k = fileKind(node.name);
-      return k === 'archive' ? '#ffb547' : k === 'log' ? '#7fd6ff' : '#c9fff0';
-    }
-    return hashColor(node.name);
+    for (const [path, info] of computeLayout(this.machine)) this.layoutInfo.set(path, { ...info, pos: v3(info.pos) });
   }
 
   buildObject(node) {
     const info = this.layoutInfo.get(node.path);
-    const color = this.colorFor(node);
+    const color = colorFor(node);
     const group = new THREE.Group();
     group.position.copy(info.pos);
     group.rotation.y = -info.heading;
@@ -306,7 +250,7 @@ export class World {
     const rec = { node, group, mats, color, pos: info.pos, heading: info.heading, state: 'none', level: 0 };
 
     if (node.type === 'dir') {
-      const isAncestor = pathChain(this.machine.home).includes(node.path) && node.path !== this.machine.home;
+      const isAncestor = isHomeAncestor(this.machine, node.path);
       const scale = isAncestor ? 0.62 : 1;
       group.scale.setScalar(scale);
       const base = new THREE.Mesh(this.shared.hexGeo, track(new THREE.MeshStandardMaterial({ color: '#0a1822', metalness: 0.55, roughness: 0.35, emissive: color, emissiveIntensity: 0.05 }), 0.92));
@@ -378,12 +322,6 @@ export class World {
   }
 
   // ------------------------------------------------------------- visibility
-  /** Near the learner: on the path to here, here, or anything inside here. */
-  inFocus(path, cwd) {
-    if (path === cwd || cwd.startsWith(path === '/' ? '/' : path + '/')) return true;
-    return path.startsWith(cwd === '/' ? '/' : cwd + '/');
-  }
-
   setLevel(rec, level) {
     rec.level = level;
     rec.group.visible = level > 0.001;
@@ -398,7 +336,7 @@ export class World {
       rec.state = next;
       const isCurrent = rec.node.path === view.cwd;
       if (rec.node.type === 'dir') { rec.label.visible = !isCurrent; rec.arch.visible = !isCurrent || rec.node.path === keepArch; }
-      const near = this.inFocus(rec.node.path, view.cwd);
+      const near = inFocus(rec.node.path, view.cwd);
       const to = next === 'shown' ? (near ? 1 : 0.26) : next === 'ghost' ? (near ? 0.09 : 0.04) : 0;
       rec.target = to;
       if (!animate) { this.setLevel(rec, to); continue; }
@@ -438,10 +376,7 @@ export class World {
     }, delay, () => { g.position.y = baseY; g.scale.setScalar(rec.node.type === 'dir' ? this.dirScale(rec) : 1); });
   }
 
-  dirScale(rec) {
-    const isAncestor = pathChain(this.machine.home).includes(rec.node.path) && rec.node.path !== this.machine.home;
-    return isAncestor ? 0.62 : 1;
-  }
+  dirScale(rec) { return isHomeAncestor(this.machine, rec.node.path) ? 0.62 : 1; }
 
   // ----------------------------------------------------------------- trail
   rebuildTrail(cwd) {
@@ -487,21 +422,8 @@ export class World {
 
   // ---------------------------------------------------------------- camera
   viewFor(path) {
-    const info = this.layoutInfo.get(path);
-    const v = this.viewScale || 1;
-    const node = this.machine.fs.get(path);
-    const hasFilesOnly = node && [...node.children.values()].every((c) => c.type === 'file');
-    // Inside a directory of files: stand close. Directories that lead elsewhere: an overview.
-    if (hasFilesOnly) {
-      return {
-        pos: local(info.pos, info.heading, 0, 6.2 + (v - 1) * 2.5, 7.6 + (v - 1) * 7),
-        target: local(info.pos, info.heading, 0, 1.2, -7),
-      };
-    }
-    return {
-      pos: local(info.pos, info.heading, 0, 8.8 + (v - 1) * 4, 9.5 + (v - 1) * 10),
-      target: local(info.pos, info.heading, 0, 0.6, -16),
-    };
+    const v = cameraView(this.machine, this.layoutInfo, path, this.viewScale || 1);
+    return { pos: v3(v.pos), target: v3(v.target) };
   }
 
   placeCamera(path, instant) {
@@ -519,19 +441,7 @@ export class World {
     const start = this.camera.position.clone();
     const startT = this.camTarget.clone();
     const end = this.viewFor(to);
-    const pts = [start];
-    if (direction === 'into') {
-      const d = this.layoutInfo.get(to);
-      pts.push(local(d.pos, d.heading, 0, 2.9, 8.5), local(d.pos, d.heading, 0, 2.8, 2.6));
-    } else if (direction === 'up') {
-      const d = this.layoutInfo.get(from);
-      pts.push(local(d.pos, d.heading, 0, 2.8, 2.6), local(d.pos, d.heading, 0, 3.6, 9));
-    } else {
-      const mid = start.clone().lerp(end.pos, 0.5);
-      mid.y += 10;
-      pts.push(mid);
-    }
-    pts.push(end.pos);
+    const pts = travelPoints(this.layoutInfo, from, to, direction, start, end.pos).map(v3);
     const curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
     const dur = (direction === 'jump' ? 2300 : 1900) * this.speed;
     this.cameraBusy = true;
@@ -720,7 +630,7 @@ export class World {
         this.ringPulse(here, '#00f5a0', { radius: 30, dur: 1600, width: 0.25 });
         this.flashRecord(cwdRec, '#ffffff', 1100);
         this.runTrailPulse('#d9fff0', 1500);
-        const at = local(here, this.layoutInfo.get(view.cwd).heading, 0, 4.4, -6.5);
+        const at = local3(here, this.layoutInfo.get(view.cwd).heading, 0, 4.4, -6.5);
         this.floatBanner(`📍 ${event.path}`, at);
         this.hereRing && this.tween(1400, (k) => { this.hereRing.material.opacity = 0.55 + 0.45 * Math.sin(Math.PI * k); });
         break;
@@ -771,9 +681,9 @@ export class World {
           const parent = this.layoutInfo.get(parentOf(event.target)) ? parentOf(event.target) : view.cwd;
           const info = this.layoutInfo.get(parent);
           if (event.cmd === 'cd' || event.cmd === 'ls') {
-            this.errorGhost(local(info.pos, info.heading, 2.5, 0, -15), info.heading + 0.15, 'dir');
+            this.errorGhost(local3(info.pos, info.heading, 2.5, 0, -15), info.heading + 0.15, 'dir');
           } else {
-            this.errorGhost(local(info.pos, info.heading, -1.5, 1.9, -5.2), info.heading, 'file');
+            this.errorGhost(local3(info.pos, info.heading, -1.5, 1.9, -5.2), info.heading, 'file');
           }
         } else if (event.target && this.objects.get(event.target)) {
           const rec = this.objects.get(event.target);

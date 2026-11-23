@@ -232,3 +232,4 @@ button { font: inherit; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 .fallback-note a { color: var(--green); }
+.view-chip { align-self: center; font: 600 10px var(--mono); letter-spacing: 1px; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(0, 207, 255, 0.4); border-radius: 6px; padding: 2px 7px; white-space: nowrap; cursor: help; }

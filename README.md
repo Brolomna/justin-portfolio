@@ -46,7 +46,8 @@ while in testing). Everything is simulated in the browser; no real shell is invo
   `visibility.js` is the shared "what has been discovered" rule.
 - `js/ui/` - terminal console and lesson card; `js/main.js` wires state -> shell -> world + lesson.
 - `js/vendor/three-r162.module.min.js` - Three.js r162 (MIT, see THREE-LICENSE.txt), loaded only on this page. r162 is the last release that still runs on WebGL 1 devices; do not upgrade past it without a WebGL 2 check.
-- Test URLs: `?reduced` forces reduced motion, `?no3d` forces the map fallback.
+- Renderers: WebGL 3D (`world/world.js`), then a Canvas 2D view of the same world for browsers without WebGL (`world/canvas-world.js`), then a text map (`world/fallback.js`). Both visual renderers share `world/layout.js`.
+- Test URLs: `?reduced` forces reduced motion, `?view=2d` forces the 2D view, `?view=map` forces the text map.
 
 ## Client-side mini projects
 
