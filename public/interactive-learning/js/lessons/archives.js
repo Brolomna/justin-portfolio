@@ -76,13 +76,14 @@ export const steps = [
     mode: 'recall',
     title: 'Read the manifest',
     body: ['The parcel came with a <b>manifest</b>.', 'Read it.'],
-    expect: DL,
-    done: (e) => e.type === 'cat' && e.files.some((f) => f.path === `${DL}/supplies/manifest.txt`),
+    // the manifest is wherever supplies.zip was extracted, and can be read from anywhere
+    expect: null,
+    done: (e) => e.type === 'cat' && e.files.some((f) => f.path.endsWith('/supplies/manifest.txt')),
     success: () => 'The second parcel is locked. Its password is on a <b>hidden</b> sticky note on your Desktop.',
     hints: [
       'The manifest is a text file inside the new supplies directory.',
       'Print it with the file-reading command. You can give a path: directory name, a slash, then the file name.',
-      'Type <code>cat supplies/manifest.txt</code>.',
+      'From Downloads, type <code>cat supplies/manifest.txt</code>. (Or <code>cd supplies</code> first, then <code>cat manifest.txt</code>.)',
     ],
   },
   {
@@ -126,8 +127,8 @@ export const steps = [
     mode: 'recall',
     title: "What's inside?",
     body: ['The locked parcel unpacked a new directory.', 'Read what was sent.'],
-    expect: DL,
-    done: (e) => e.type === 'cat' && e.files.some((f) => f.path === `${DL}/secret/note.txt`),
+    expect: null,
+    done: (e) => e.type === 'cat' && e.files.some((f) => f.path.endsWith('/secret/note.txt')),
     success: () => 'Both parcels delivered.',
     hints: [
       'A new directory appeared when you unlocked the parcel. Look inside it.',
