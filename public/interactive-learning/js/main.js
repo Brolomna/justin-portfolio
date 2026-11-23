@@ -247,12 +247,13 @@ function updateInsets() {
   const wide = window.innerWidth > 760;
   const lesson = lessonEl.hidden || lessonEl.classList.contains('collapsed') ? null : lessonEl.getBoundingClientRect();
   const termEl = $('terminal');
-  const termH = termEl.hidden ? 0 : termEl.getBoundingClientRect().height + 16;
-  world.setInsets({
-    left: wide && lesson ? lesson.right : 0,
-    top: wide ? 56 : (lesson ? lesson.bottom : 56),
-    bottom: termH,
-  });
+  const term = termEl.hidden ? null : termEl.getBoundingClientRect();
+  if (wide) {
+    // desktop: lesson card and terminal share the left column; the world gets the rest
+    world.setInsets({ left: Math.max(lesson ? lesson.right : 0, term ? term.right : 0) + 60, top: 56, bottom: 0 });
+  } else {
+    world.setInsets({ left: 0, top: lesson ? lesson.bottom : 56, bottom: term ? term.height + 16 : 0 });
+  }
 }
 
 // -------------------------------------------------------- screen readers
