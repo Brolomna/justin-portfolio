@@ -44,14 +44,30 @@ After deploying, submit `https://anmolsiwa.com.np/sitemap.xml` in Google Search 
 4. Test 2, The Vault (ultimate) - three password parts hidden in hidden files across the machine unlock
    `vault/top_secret.zip` (fictional "classified" joke files inside).
 
-Standalone page, not linked from the home page yet, `noindex` while in testing. Everything is simulated in the
+Linked from the home page (hero button + Learning section) and indexable. Everything is simulated in the
 browser; no real shell is involved.
 
+### Beta page (learning-new-c.html)
+
+`public/learning-new-c.html` is the test page for lessons before release (`noindex`, BETA badge). It is
+**generated**: run `node scripts/make-beta.mjs` after editing `interactive-learning.html`. It sets
+`<body data-channel="beta">`, which makes `main.js` also show missions marked `beta: true` in `missions.js`:
+
+5. Lesson 3, Files & Folders (`#files`) - `whoami`, `mkdir`, `touch`, `echo "..." > file`, `rm`, `rmdir`, `rm -r`.
+6. Lesson 4, Copy, Move & Rename (`#organize`) - `ls -l`, `mv`, renaming, `*` wildcards, `cp`, `cp -r`.
+7. Lesson 5, Reading & Searching (`#search`) - `head`, `tail -n`, `wc -l`, `grep`, pipes `|`, `find -name`, `history`.
+8. Lesson 6, Codes & Ciphers (`#ciphers`) - `base64` / `-d`, `sha256sum` / `-c`, `gpg -c` / `-d`.
+9. Test 3, The Mole (final exam) - grep the logs, decode, decrypt, then write the answer into `~/case/mole.txt`.
+
+To release a beta mission, delete its `beta: true` line. The shell also knows `hostname`, `date`, `echo`,
+`sort`, `>>`, `grep -r/-n/-v/-c`, `find -type`, `mkdir -p`, `rm -f`, globs `*`/`?` and up to 4-stage pipes.
+
 - `public/interactive-learning/js/fs/` - simulated filesystem (`filesystem.js`, with zip archives and extraction),
-  the story machines (`machines.js`), path resolver and the allowlisted command interpreter (`shell.js`).
+  the story machines (`machines.js`), path resolver, the allowlisted command interpreter (`shell.js`) with its
+  extra commands (`commands.js`), and Base64/SHA-256 (`codec.js`).
   Tests: `node tests/terminal-academy.mjs`.
 - `js/lessons/` - `missions.js` (the menu, in order), `exploring-linux.js` (Lesson 1 + Test 1 text),
-  `archives.js` (Lesson 2). Edit lesson text here.
+  `archives.js` (Lesson 2), `files.js`, `organize.js`, `search.js`, `ciphers.js` (Lessons 3-6). Edit lesson text here.
 - `js/world/` - `world.js` (WebGL 3D), `canvas-world.js` (Canvas 2D view for browsers without WebGL),
   `fallback.js` (text map); `layout.js` and `visibility.js` are shared so every view agrees.
 - `js/ui/` - terminal console (incl. password mode) and the mission card; `js/main.js` wires state -> shell -> world + card.

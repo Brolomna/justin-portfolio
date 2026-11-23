@@ -92,9 +92,11 @@ export function computeLayout(machine) {
     // directories fan out in an arc, neighbours alternating low and high so
     // long labels never sit side by side.
     const m = files.length;
+    // row spacing grows with the longest name so labels never overlap
+    const gap = Math.min(5, Math.max(3.1, Math.max(0, ...files.map((f) => f.name.length)) * 0.3));
     files.forEach((f, i) => {
       if (m <= 4) {
-        const x = m === 1 ? (dirs.length ? -3.2 : 0) : (i - (m - 1) / 2) * 3.1;
+        const x = m === 1 ? (dirs.length ? -3.2 : 0) : (i - (m - 1) / 2) * gap;
         out.set(f.path, { pos: local(pos, heading, x, 1.9, -6.2 + Math.abs(x) * 0.18), heading: heading + x * 0.03, depth: depth + 1 });
         return;
       }

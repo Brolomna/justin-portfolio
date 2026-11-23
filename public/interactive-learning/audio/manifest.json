@@ -79,6 +79,96 @@
   "seconds": 3.4,
   "text": "The password is lantern. Remember it."
  },
+ "ciphers-brief": {
+  "hash": "fa9212c6e6a6b9f2",
+  "seconds": 15.9,
+  "text": "Welcome to the cipher room. There is a coded message, a download to check, and a locked file. Along the way you will learn the difference between encoding, hashing and encryption."
+ },
+ "ciphers-decode": {
+  "hash": "61aba55f677bd324",
+  "seconds": 7.3,
+  "text": "Type base 64, dash D for decode, then message dot B 6 4."
+ },
+ "ciphers-decode-done": {
+  "hash": "705e7f6113a10877",
+  "seconds": 8.5,
+  "text": "The passphrase is moonlight. Remember: encoding is not secret. Anyone can decode it."
+ },
+ "ciphers-decrypt": {
+  "hash": "5f13efc75e17fe55",
+  "seconds": 21.0,
+  "text": "Go back home. Vault dot T X T dot G P G is encrypted. Type G P G, dash D for decrypt, then the file name. When it asks, type the passphrase you decoded. It stays hidden as you type."
+ },
+ "ciphers-decrypt-done": {
+  "hash": "f07b332e29328409",
+  "seconds": 12.9,
+  "text": "Decrypted. Unlike Base 64, this was impossible without the passphrase. That is the difference between encoding and encryption."
+ },
+ "ciphers-encode": {
+  "hash": "cba054a548d6b406",
+  "seconds": 8.2,
+  "text": "Now encode something yourself. Echo the word hello and pipe it into base 64."
+ },
+ "ciphers-encode-done": {
+  "hash": "c36a53ed8fc6607e",
+  "seconds": 10.0,
+  "text": "That is hello in Base 64. Every computer in the world would encode it exactly the same way."
+ },
+ "ciphers-encrypt": {
+  "hash": "b3e411d536c17081",
+  "seconds": 12.4,
+  "text": "Now lock your own diary. Type G P G, dash C, then diary dot T X T. Choose a passphrase, and type it twice."
+ },
+ "ciphers-encrypt-done": {
+  "hash": "48c31199ddd567fe",
+  "seconds": 12.1,
+  "text": "Your diary is locked in diary dot T X T dot G P G. But careful: the original, unlocked file is still there."
+ },
+ "ciphers-finale": {
+  "hash": "d3bb05595ec8ebb5",
+  "seconds": 15.1,
+  "text": "Lesson six complete. Encoding is for moving data, hashing is for checking it, and encryption is for keeping it secret. You are ready for the final exam."
+ },
+ "ciphers-hash": {
+  "hash": "16daa5c9b1dea7cd",
+  "seconds": 16.5,
+  "text": "Go to downloads. Before running anything you downloaded, check it. Type S H A 2 5 6 sum, then installer dot S H. It prints a fingerprint called a hash."
+ },
+ "ciphers-hash-done": {
+  "hash": "19f96b76b5b5a3eb",
+  "seconds": 9.5,
+  "text": "That long code is the file's fingerprint. Change a single letter in the file, and it changes completely."
+ },
+ "ciphers-look": {
+  "hash": "ddb60c3fc490e088",
+  "seconds": 5.0,
+  "text": "There is a message here. Read message dot B 6 4."
+ },
+ "ciphers-look-done": {
+  "hash": "48bf463f7e8590a2",
+  "seconds": 10.0,
+  "text": "It looks like gibberish, but it is Base 64. A way of writing any data with plain letters and numbers."
+ },
+ "ciphers-shred": {
+  "hash": "6a4cd08de5398489",
+  "seconds": 10.6,
+  "text": "Encryption is pointless if the original is still lying around. Delete the plain diary dot T X T."
+ },
+ "ciphers-shred-done": {
+  "hash": "5f0e632014f0d066",
+  "seconds": 5.4,
+  "text": "Only the encrypted copy is left. Your secrets are safe."
+ },
+ "ciphers-verify": {
+  "hash": "f6a054d19da3d8a3",
+  "seconds": 14.4,
+  "text": "Now check it against the official fingerprint. Type S H A 2 5 6 sum, dash C for check, then installer dot S H A 2 5 6."
+ },
+ "ciphers-verify-done": {
+  "hash": "12525fbeb3486b1d",
+  "seconds": 10.2,
+  "text": "O K. The file is exactly what its author published. If anyone had tampered with it, this would say failed."
+ },
  "exploring-brief": {
   "hash": "19c4636ba4c93818",
   "seconds": 11.4,
@@ -178,6 +268,306 @@
   "hash": "577dfbfc64f84ce6",
   "seconds": 5.0,
   "text": "That's your location. Every command you type runs from here."
+ },
+ "files-brief": {
+  "hash": "0830ea1754efcd54",
+  "seconds": 10.2,
+  "text": "Welcome to your new machine. The last owner left a mess behind. Let's make some space of your own, then clean up."
+ },
+ "files-cat-todo": {
+  "hash": "eb81227a9bb4f8a1",
+  "seconds": 3.1,
+  "text": "Make sure it worked. Read the file."
+ },
+ "files-cat-todo-done": {
+  "hash": "f1257228db835b94",
+  "seconds": 3.0,
+  "text": "Perfect. Your words are in the file."
+ },
+ "files-cd-proj": {
+  "hash": "2a89a94e20cb4a0b",
+  "seconds": 3.6,
+  "text": "Now go inside it. You already know how."
+ },
+ "files-cd-proj-done": {
+  "hash": "b59a7f5b1ea84d3d",
+  "seconds": 2.4,
+  "text": "You're in. It's empty, for now."
+ },
+ "files-echo": {
+  "hash": "1ab09e4a79f1303d",
+  "seconds": 17.5,
+  "text": "Echo prints text. The greater than sign sends that text into a file instead of the screen. Type echo, then buy milk in quotes, then greater than, then todo dot T X T."
+ },
+ "files-echo-done": {
+  "hash": "b2071d42c0870ede",
+  "seconds": 8.5,
+  "text": "Your note is saved. One greater than sign replaces a file. Two of them add to the end."
+ },
+ "files-finale": {
+  "hash": "9e30a5a683b814ea",
+  "seconds": 11.7,
+  "text": "Lesson three complete. You can create and delete files and folders. Next, you will learn to copy, move and rename them."
+ },
+ "files-mkdir": {
+  "hash": "cd151e221584a2b5",
+  "seconds": 10.8,
+  "text": "Let's make a folder of your own. Type M K D I R, short for make directory, then the name: projects."
+ },
+ "files-mkdir-done": {
+  "hash": "007450572c4c4f74",
+  "seconds": 5.1,
+  "text": "There it is. A brand new, empty folder called projects."
+ },
+ "files-rm": {
+  "hash": "24af4ec064d28291",
+  "seconds": 18.3,
+  "text": "Time to clean up. Go back home and remove the junk file. Type R M, short for remove, then junk dot T M P. Careful: Linux has no trash bin. Deleted means gone."
+ },
+ "files-rm-done": {
+  "hash": "8c13441a2def57c0",
+  "seconds": 5.1,
+  "text": "Gone for good. Always double check before you remove something."
+ },
+ "files-rm-r": {
+  "hash": "21c1a9d503c6c74b",
+  "seconds": 23.7,
+  "text": "Old stuff still has files inside, so rmdir would refuse. Type R M, space, dash R, then old underscore stuff. Dash R means everything inside, too. This is the most powerful delete there is, so use it with care."
+ },
+ "files-rm-r-done": {
+  "hash": "74144378ee17b8fb",
+  "seconds": 5.6,
+  "text": "Everything is cleaned up. Your machine is tidy, and it's yours."
+ },
+ "files-rmdir": {
+  "hash": "14a025f9e5bc674d",
+  "seconds": 16.5,
+  "text": "The empty box can go too. Type R M D I R, remove directory, then empty underscore box. It only works on empty folders, which makes it a safe choice."
+ },
+ "files-rmdir-done": {
+  "hash": "df7ef037c9c58869",
+  "seconds": 7.8,
+  "text": "Done. Rmdir refuses to delete a folder with things inside, so it can never surprise you."
+ },
+ "files-touch": {
+  "hash": "48489cac9ccbb56c",
+  "seconds": 9.1,
+  "text": "Time for a file. Type touch, then todo dot T X T. Touch creates an empty file."
+ },
+ "files-touch-done": {
+  "hash": "d0bbff0bdb7a664f",
+  "seconds": 5.2,
+  "text": "Your file exists. It's empty, so let's put something in it."
+ },
+ "files-whoami": {
+  "hash": "c64cfd886394b804",
+  "seconds": 6.9,
+  "text": "First, who does this machine think you are? Type who am I, all as one word."
+ },
+ "files-whoami-done": {
+  "hash": "7aef3c84dc521d30",
+  "seconds": 6.4,
+  "text": "You're logged in as rookie. Everything in your home folder belongs to you."
+ },
+ "mole-brief": {
+  "hash": "21190883195c5005",
+  "seconds": 18.7,
+  "text": "Final exam, analyst. Someone inside headquarters is leaking secrets at night. The logs, a coded message, and a locked staff list hold the answer. Find the mole, and file your report."
+ },
+ "mole-success": {
+  "hash": "5826d0d864b9eb64",
+  "seconds": 11.3,
+  "text": "Report filed. Felix Morrow, badge B 77. Case closed, analyst. You have completed every mission."
+ },
+ "organize-brief": {
+  "hash": "46276ae872223b65",
+  "seconds": 10.1,
+  "text": "Your Desktop is a mess of photos and documents. Time to organise it, and keep a backup while you are at it."
+ },
+ "organize-cp": {
+  "hash": "fdbb32e794367042",
+  "seconds": 15.5,
+  "text": "Always keep a backup of important work. Type C P, short for copy, then report dot T X T, then report underscore backup dot T X T."
+ },
+ "organize-cp-done": {
+  "hash": "3370c393d5553c3f",
+  "seconds": 3.2,
+  "text": "Now you have the original and a copy."
+ },
+ "organize-cp-r": {
+  "hash": "43859a8d6431ce73",
+  "seconds": 13.6,
+  "text": "To copy a whole folder, add dash R, just like when you deleted one. Type C P, dash R, photos, then photos underscore backup."
+ },
+ "organize-cp-r-done": {
+  "hash": "b71502dd54f12ab1",
+  "seconds": 7.9,
+  "text": "The whole folder was copied, photos and all. Your desk is organised and backed up."
+ },
+ "organize-finale": {
+  "hash": "c69a03d4d93448be",
+  "seconds": 14.7,
+  "text": "Lesson four complete. You can copy, move and rename files, even many at once. Next, you will learn to read and search through files like a detective."
+ },
+ "organize-glob": {
+  "hash": "e9ae16d68410b019",
+  "seconds": 21.6,
+  "text": "Moving photos one at a time is slow. The star is a wildcard: it matches any name. So star dot J P G means every J P G file here. Type M V, star dot J P G, photos slash."
+ },
+ "organize-glob-done": {
+  "hash": "44364447ed5daf0c",
+  "seconds": 6.8,
+  "text": "Every photo, moved with one command. Wildcards save a lot of typing."
+ },
+ "organize-look": {
+  "hash": "6ad2fb18a5f3c1ae",
+  "seconds": 3.8,
+  "text": "First, go to your Desktop and see what is there."
+ },
+ "organize-look-done": {
+  "hash": "90d142ec1f128cc1",
+  "seconds": 5.6,
+  "text": "Photos and documents, all mixed together. Let us sort them."
+ },
+ "organize-ls-l": {
+  "hash": "3769ddaa6c03686e",
+  "seconds": 12.8,
+  "text": "Want more detail? Type L S, space, dash L. The L means long: one file per line, with its size and the time it changed."
+ },
+ "organize-ls-l-done": {
+  "hash": "5fa0d4d7ea4b4f91",
+  "seconds": 5.2,
+  "text": "Now you can see how big each file is, and when it last changed."
+ },
+ "organize-mkdir-photos": {
+  "hash": "d6bb661b7cff5693",
+  "seconds": 4.7,
+  "text": "Make a folder called photos, right here on the Desktop."
+ },
+ "organize-mkdir-photos-done": {
+  "hash": "5d06f7a505983f8b",
+  "seconds": 2.7,
+  "text": "Now the photos have somewhere to go."
+ },
+ "organize-mv": {
+  "hash": "bdaaf3cad0d08186",
+  "seconds": 9.9,
+  "text": "Let us move a photo. Type M V, short for move, then beach dot J P G, then photos slash."
+ },
+ "organize-mv-done": {
+  "hash": "925e63c961d63e1b",
+  "seconds": 3.8,
+  "text": "Moved. It flew right into the photos folder."
+ },
+ "organize-rename": {
+  "hash": "d1f01dacc36a4c24",
+  "seconds": 18.3,
+  "text": "Linux has no rename command. Moving a file to a new name, in the same place, renames it. Type M V, report underscore draft dot T X T, then report dot T X T."
+ },
+ "organize-rename-done": {
+  "hash": "a16bc7eccf159faa",
+  "seconds": 2.5,
+  "text": "Renamed. Same file, new name."
+ },
+ "search-brief": {
+  "hash": "cbff9cdc299efed8",
+  "seconds": 10.5,
+  "text": "The website went down in the middle of the night, and it is your job to find out why. The answer is somewhere in the logs."
+ },
+ "search-finale": {
+  "hash": "a7da9ad23344633f",
+  "seconds": 13.4,
+  "text": "Lesson five complete. You can read, count and search through files like a detective. Next, the cipher room: secret codes and encryption."
+ },
+ "search-find": {
+  "hash": "fe143e9f7dd8492c",
+  "seconds": 17.3,
+  "text": "Settings files often end in dot conf. Find searches folders for files by name. Type find, then the tilde for home, then dash name, then star dot conf in quotes."
+ },
+ "search-find-done": {
+  "hash": "1e991d68a1f4ba5e",
+  "seconds": 9.4,
+  "text": "Found it, deep inside server slash settings. Find saves you from opening folder after folder."
+ },
+ "search-grep": {
+  "hash": "17b0776bcd096988",
+  "seconds": 11.6,
+  "text": "Grep is a search tool. It shows only the lines that contain your text. Type grep, ERROR in capitals, then app dot log."
+ },
+ "search-grep-done": {
+  "hash": "646915ad48e61d8f",
+  "seconds": 8.7,
+  "text": "Three errors, all about a full disk. One of them says: see backup settings. That is a clue."
+ },
+ "search-head": {
+  "hash": "bc639ff836ff524e",
+  "seconds": 8.7,
+  "text": "Logs can be huge. Head shows just the first ten lines. Type head, then app dot log."
+ },
+ "search-head-done": {
+  "hash": "a14f4a67b6e2e7e5",
+  "seconds": 6.6,
+  "text": "Everything looks normal at the start. Trouble usually shows up at the end."
+ },
+ "search-history": {
+  "hash": "7bd73b9e78773921",
+  "seconds": 11.1,
+  "text": "Finally, type history. It lists every command you have typed, in order. Great for remembering how you solved something."
+ },
+ "search-history-done": {
+  "hash": "5fbd6974a68626a2",
+  "seconds": 6.1,
+  "text": "Your whole investigation, step by step. Detective work, done."
+ },
+ "search-logs": {
+  "hash": "1301c3fe09e2c0bd",
+  "seconds": 3.6,
+  "text": "Go to the logs folder and see what is there."
+ },
+ "search-logs-done": {
+  "hash": "3b184ec3d5f5857a",
+  "seconds": 8.0,
+  "text": "App dot log is the website log. It is long, so reading all of it would take a while."
+ },
+ "search-pipe": {
+  "hash": "e4e845225b94827a",
+  "seconds": 21.9,
+  "text": "Commands can work together. The vertical bar is called a pipe: it sends one command's output into the next. Grep dash I ignores capital letters. Type grep dash I disk app dot log, then a pipe, then W C dash L."
+ },
+ "search-pipe-done": {
+  "hash": "6d8e5e0f58d4cf5e",
+  "seconds": 11.2,
+  "text": "Five lines. Grep found them and W C counted them. Pipes are one of the most powerful ideas in Linux."
+ },
+ "search-read-conf": {
+  "hash": "5e3b4b408dcd768a",
+  "seconds": 4.3,
+  "text": "Read the backup settings file. You know where it is now."
+ },
+ "search-read-conf-done": {
+  "hash": "0e38158334d7ec16",
+  "seconds": 7.1,
+  "text": "Backups every five minutes, kept forever. That filled the disk. Case closed."
+ },
+ "search-tail": {
+  "hash": "74ac26cc8bba651a",
+  "seconds": 11.0,
+  "text": "The newest lines are at the bottom. Tail shows the end of a file. Type tail, dash N, five, then app dot log."
+ },
+ "search-tail-done": {
+  "hash": "d81988299006b225",
+  "seconds": 4.4,
+  "text": "Errors at the very end. Something filled up the disk."
+ },
+ "search-wc": {
+  "hash": "7b1cae2aae683227",
+  "seconds": 9.7,
+  "text": "How long is this log? Type W C, short for word count, dash L for lines, then app dot log."
+ },
+ "search-wc-done": {
+  "hash": "894ded634bde8808",
+  "seconds": 6.6,
+  "text": "Forty two lines. Too many to read one by one. Let us search instead."
  },
  "unfamiliar-brief": {
   "hash": "1e384aa79998c1c9",

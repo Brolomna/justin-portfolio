@@ -8,7 +8,14 @@ import { pathChain } from './fs/path.js';
 import { createTerminal, esc } from './ui/terminal.js';
 import { createLessonCard } from './ui/lesson.js';
 import { createVoice, voiceKey } from './ui/voice.js';
-import { missions, byId, nextOf } from './lessons/missions.js';
+import { missions as allMissions } from './lessons/missions.js';
+
+// The beta page (learning-new-c.html, <body data-channel="beta">) also shows
+// missions marked beta: true, so new lessons can be tried before release.
+const BETA = document.body.dataset.channel === 'beta';
+const missions = allMissions.filter((m) => BETA || !m.beta);
+const byId = (id) => missions.find((m) => m.id === id);
+const nextOf = (id) => missions[missions.findIndex((m) => m.id === id) + 1] || null;
 import { visibilityOf } from './world/visibility.js';
 
 const $ = (id) => document.getElementById(id);
@@ -230,6 +237,11 @@ async function run(line) {
       for (const p of event.top) v.visited.add(p);
     }
   }
+  if (event.fsChange) {
+    // what you create, copy or move yourself is discovered; what you delete is gone
+    for (const r of event.fsChange.removed) { v.visited.delete(r.path); v.listed.delete(r.path); }
+    for (const c of event.fsChange.created) v.visited.add(c.path);
+  }
   term.setPrompt(state.shell.prompt());
 
   state.busy = true;
@@ -309,7 +321,7 @@ function checkProgress(event, ok) {
       });
       card.parts(m, state.partsFound);
     }
-    if (!state.solved && ok && m.done(event)) {
+    if (!state.solved && ok && m.done(event, state.machine.fs)) {
       state.solved = true;
       say(m, 'success');
       world.finale();
@@ -320,7 +332,7 @@ function checkProgress(event, ok) {
   }
   if (state.phase !== 'steps' || state.stepDone) return;
   const s = m.steps[state.step];
-  if (ok && s.done(event, state.view)) {
+  if (ok && s.done(event, state.view, state.machine.fs)) {
     state.stepDone = true;
     const last = state.step === m.steps.length - 1;
     card.success(s.success(event), s.remember, { last });
@@ -348,7 +360,11 @@ function nextStep() {
 }
 
 // ------------------------------------------------------------------- menu
+const WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
 function renderMenu() {
+  const count = (kind) => missions.filter((m) => m.kind === kind).length;
+  const nL = count('lesson'); const nT = count('test');
+  $('introLead').textContent = `${WORDS[nL] || nL} lesson${nL === 1 ? '' : 's'} teach the commands. ${WORDS[nT] || nT} test${nT === 1 ? '' : 's'} make you use them with no instructions. Start at the top, or jump to any mission.`;
   $('missionList').innerHTML = missions.map((m, i) => `
     <li><button class="mission kind-${m.kind}${m.ultimate ? ' ultimate' : ''}" type="button" data-mission="${m.id}">
       <span class="mission-num">${String(i + 1).padStart(2, '0')}</span>

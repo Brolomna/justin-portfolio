@@ -49,14 +49,14 @@ check('cd into a file', () => { const s = fresh(); s.run('cd Documents'); const 
 check('cat missing', () => assert.equal(text(fresh().run('cat missing.txt')), 'cat: missing.txt: No such file or directory'));
 check('cat a directory', () => assert.equal(text(fresh().run('cat Documents')), 'cat: Documents: Is a directory'));
 check('unknown command', () => { const r = fresh().run('lss'); assert.equal(text(r), 'bash: lss: command not found'); assert.equal(r.event.reason, 'unknown-command'); });
-check('real but unavailable command is not "not found"', () => assert.match(text(fresh().run('rm notes.txt')), /isn't available/));
-check('unsupported ls flag', () => assert.match(text(fresh().run('ls -l')), /-l option isn't available/));
+check('real but unavailable command is not "not found"', () => assert.match(text(fresh().run('nano notes.txt')), /isn't available/));
+check('unsupported ls flag', () => assert.match(text(fresh().run('ls -R')), /-R option isn't available/));
 check('cd too many args', () => assert.equal(text(fresh().run('cd a b')), 'bash: cd: too many arguments'));
 check('empty input', () => assert.equal(fresh().run('   ').event.type, 'noop'));
 check('long input rejected', () => assert.equal(fresh().run('x'.repeat(500)).ok, false));
-check('no chaining or eval of input', () => {
+check('no chaining, substitution or eval of input', () => {
   const s = fresh();
-  for (const bad of ['pwd; cd Documents', 'ls | cat', 'cat notes.txt > x', 'echo $(pwd)', 'ls && cd Documents', 'cat `x`']) {
+  for (const bad of ['pwd; cd Documents', 'ls && cd Documents', 'echo $(pwd)', 'cat `x`', 'cat < notes.txt', 'ls & cd Documents']) {
     const r = s.run(bad); assert.equal(r.ok, false); assert.match(text(r), /isn't available/);
   }
   assert.equal(s.cwd, '/home/rookie');
@@ -173,4 +173,134 @@ check('vault: full solve from the clues', () => {
   assert.match(text(v.run('cat top_secret/area_54_secrets.txt')), /snacks/);
 });
 
+// --- Lessons 3-6 commands --------------------------------------------------
+const sh2 = () => createShell(buildMachine(lessonMachine()));
+check('whoami / hostname', () => { const s = sh2(); assert.equal(text(s.run('whoami')), 'rookie'); assert.equal(text(s.run('hostname')), 'machine'); });
+check('mkdir, exists, -p', () => {
+  const s = sh2(); assert.equal(s.run('mkdir projects').event.type, 'mkdir');
+  assert.equal(text(s.run('mkdir projects')), "mkdir: cannot create directory 'projects': File exists");
+  assert.match(text(s.run('mkdir a/b')), /No such file or directory/);
+  assert.deepEqual(s.run('mkdir -p a/b/c').event.paths, ['/home/rookie/a', '/home/rookie/a/b', '/home/rookie/a/b/c']);
+});
+check('touch creates empty file, records the change', () => { const s = sh2(); const r = s.run('touch todo.txt'); assert.equal(r.event.fsChange.created[0].path, '/home/rookie/todo.txt'); assert.equal(text(s.run('cat todo.txt')), ''); });
+check('echo > and >>', () => { const s = sh2(); s.run('echo "buy milk" > todo.txt'); s.run('echo "call mom" >> todo.txt'); assert.equal(text(s.run('cat todo.txt')), 'buy milk\ncall mom'); });
+check('redirect event says where', () => { const r = sh2().run('echo hi > a.txt'); assert.equal(r.event.redirect.path, '/home/rookie/a.txt'); assert.ok(r.event.redirect.created); });
+check('rmdir only removes empty directories', () => {
+  const s = sh2(); s.run('mkdir -p a/b');
+  assert.equal(text(s.run('rmdir a')), "rmdir: failed to remove 'a': Directory not empty");
+  assert.equal(s.run('rmdir a/b').event.type, 'rmdir'); assert.equal(s.run('rmdir a').event.type, 'rmdir');
+});
+check('rm file, rm dir needs -r', () => {
+  const s = sh2(); s.run('touch x'); assert.equal(s.run('rm x').event.type, 'rm');
+  assert.equal(text(s.run('rm Desktop')), "rm: cannot remove 'Desktop': Is a directory");
+  assert.equal(s.run('rm -r Desktop').event.recursive, true); assert.ok(!/Desktop/.test(text(s.run('ls'))));
+});
+check('rm safety rails', () => {
+  const s = sh2();
+  assert.match(text(s.run('rm -r /')), /dangerous/); assert.match(text(s.run('rm -r ~')), /home directory/);
+  s.run('cd Documents'); assert.match(text(s.run('rm -r ../Documents')), /inside it/); assert.equal(s.run('ls').event.type, 'ls');
+});
+check('cp file, cp -r directory', () => {
+  const s = sh2(); s.run('cp Documents/notes.txt copy.txt'); assert.match(text(s.run('cat copy.txt')), /more than it appears/);
+  assert.match(text(s.run('cp Documents backup')), /omitting directory/);
+  s.run('cp -r Documents backup'); assert.equal(text(s.run('ls backup')), 'notes.txt  project');
+});
+check('mv renames and moves', () => {
+  const s = sh2(); s.run('touch a.txt'); const r = s.run('mv a.txt b.txt'); assert.ok(r.event.moves[0].rename);
+  s.run('mv b.txt Documents/'); assert.equal(text(s.run('ls Documents')), 'b.txt  notes.txt  project');
+  assert.match(text(s.run('mv Documents Documents/project')), /subdirectory of itself/);
+});
+check('wildcards expand like bash', () => {
+  const s = sh2(); s.run('touch a.jpg b.jpg c.txt'); s.run('mkdir pics'); s.run('mv *.jpg pics/');
+  assert.equal(text(s.run('ls pics')), 'a.jpg  b.jpg'); assert.match(text(s.run('ls *.png')), /cannot access '\*\.png'/);
+  assert.equal(text(s.run('echo "*.txt"')), '*.txt');
+});
+check('head / tail / wc', () => {
+  const s = sh2(); s.run('cd Documents');
+  assert.equal(text(s.run('head -n 1 notes.txt')), 'This machine contains more than it appears.');
+  assert.equal(text(s.run('tail -1 notes.txt')), 'Keep exploring.');
+  assert.equal(text(s.run('wc -l notes.txt')), '2 notes.txt');
+});
+check('grep, -i, -n, -c, -r', () => {
+  const s = sh2();
+  assert.equal(text(s.run('grep keep Documents/notes.txt')), '');
+  assert.equal(text(s.run('grep -i keep Documents/notes.txt')), 'Keep exploring.');
+  assert.equal(text(s.run('grep -n Keep Documents/notes.txt')), '2:Keep exploring.');
+  assert.equal(text(s.run('grep -c machine Documents/notes.txt')), '1');
+  assert.equal(s.run('grep -r machine .').event.matches, 3);
+});
+check('pipes', () => {
+  const s = sh2();
+  assert.equal(text(s.run('ls | wc -l')), '3');
+  assert.equal(text(s.run('cat Documents/notes.txt | grep -i keep | wc -l')), '1');
+  assert.match(text(s.run('cd .. | ls')), /can't be used in a pipe/);
+  assert.match(text(s.run('ls | touch x')), /can't be used in a pipe/);
+});
+check('find -name / -type', () => {
+  const s = sh2(); assert.match(text(s.run('find . -name "*.txt"')), /\.\/Documents\/notes\.txt/);
+  assert.equal(text(s.run('find . -type d -name project')), './Documents/project');
+});
+check('history keeps commands, not passwords', () => {
+  const s = createShell(buildMachine(archivesMachine())); s.run('cd Downloads'); s.run('unzip locked.zip'); s.run('lantern');
+  const h = text(s.run('history')); assert.match(h, /unzip locked\.zip/); assert.ok(!/lantern/.test(h));
+});
+check('base64 encode / decode match GNU', () => {
+  const s = sh2(); assert.equal(text(s.run('echo hello | base64')), 'aGVsbG8K');
+  assert.equal(text(s.run('echo aGVsbG8K | base64 -d')), 'hello'); assert.equal(text(s.run('echo "%%%" | base64 -d')), 'base64: invalid input');
+});
+check('sha256sum matches the real hash', () => assert.equal(text(sh2().run('echo hello | sha256sum')), '5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03  -'));
+check('sha256sum -c verifies a list', () => {
+  const s = sh2(); s.run('cd Documents'); s.run('sha256sum notes.txt > sums.txt');
+  assert.equal(text(s.run('sha256sum -c sums.txt')), 'notes.txt: OK');
+  s.run('echo tampered >> notes.txt'); assert.match(text(s.run('sha256sum -c sums.txt')), /notes\.txt: FAILED/);
+});
+check('gpg -c then gpg -d', () => {
+  const s = sh2(); s.run('echo "top secret" > plan.txt');
+  assert.equal(s.run('gpg -c plan.txt').event.type, 'gpg-prompt'); assert.equal(s.awaiting.secret, true);
+  s.run('pa55'); assert.equal(s.awaiting.label, 'Repeat passphrase: '); const r = s.run('pa55'); assert.equal(r.event.type, 'gpg-encrypt');
+  assert.ok(!/top secret/.test(text(s.run('cat plan.txt.gpg'))));
+  s.run('gpg -d plan.txt.gpg'); assert.match(text(s.run('nope')), /Bad session key/);
+  s.run('gpg -d plan.txt.gpg'); assert.match(text(s.run('pa55')), /top secret/);
+  s.run('gpg -o out.txt -d plan.txt.gpg'); s.run('pa55'); assert.equal(text(s.run('cat out.txt')), 'top secret');
+});
+check('gpg mismatched passphrases encrypt nothing', () => { const s = sh2(); s.run('gpg -c Documents/notes.txt'); s.run('a'); assert.match(text(s.run('b')), /do not match/); assert.ok(!/gpg/.test(text(s.run('ls Documents')))); });
+check('ls -l shows sizes and times', () => assert.match(text(sh2().run('ls -l Documents')), /^total \d+\n-rw-r--r--\s+1 rookie rookie\s+\d+ Nov 20 09:14 notes\.txt/));
+
+
+// ---------------------------------------------------------------- beta lessons 3–6 + Test 3
+// Walk every guided step with its intended commands: each step must complete on
+// exactly the last command of its script, never earlier.
+{
+  const { missions } = await import('../public/interactive-learning/js/lessons/missions.js');
+  const scripts = {
+    files: [['whoami'], ['mkdir projects'], ['cd projects'], ['touch todo.txt'], ['echo "buy milk" > todo.txt'], ['cat todo.txt'], ['cd ..', 'rm junk.tmp'], ['rmdir empty_box'], ['rm -r old_stuff']],
+    organize: [['cd Desktop', 'ls'], ['ls -l'], ['mkdir photos'], ['mv beach.jpg photos/'], ['mv *.jpg photos/'], ['mv report_draft.txt report.txt'], ['cp report.txt report_backup.txt'], ['cp -r photos photos_backup']],
+    search: [['cd logs', 'ls'], ['head app.log'], ['tail -n 5 app.log'], ['wc -l app.log'], ['grep ERROR app.log'], ['grep -i disk app.log | wc -l'], ['find ~ -name "*.conf"'], ['cat ~/server/settings/backup.conf'], ['history']],
+    ciphers: [['cat message.b64'], ['base64 -d message.b64'], ['echo hello | base64'], ['cd downloads', 'sha256sum installer.sh'], ['sha256sum -c installer.sha256'], ['cd ~', 'gpg -d vault.txt.gpg', 'moonlight'], ['gpg -c diary.txt', 'secret1', 'secret1'], ['rm diary.txt']],
+  };
+  for (const [id, script] of Object.entries(scripts)) {
+    const m = missions.find((x) => x.id === id);
+    check(`${id}: script covers every step`, () => assert.equal(script.length, m.steps.length));
+    const machine = buildMachine(m.machine()); const s = createShell(machine);
+    script.forEach((cmds, i) => check(`${id} step ${i + 1} (${m.steps[i].id})`, () => {
+      cmds.forEach((c, k) => {
+        const r = s.run(c);
+        const hit = !!m.steps[i].done(r.event, null, machine.fs);
+        assert.equal(hit, k === cmds.length - 1, `"${c}" → ${JSON.stringify(r.event).slice(0, 160)} ${text(r).slice(0, 200)}`);
+      });
+    }));
+  }
+  const mole = missions.find((x) => x.id === 'mole');
+  check('mole: full solve', () => {
+    const machine = buildMachine(mole.machine()); const s = createShell(machine);
+    const t = (c) => text(s.run(c));
+    assert.match(t('grep 03: logs/door.log'), /B-77/);
+    assert.match(t('grep -i attachment logs/email.log'), /msg\.b64/);
+    assert.match(t('base64 -d inbox/msg.b64'), /nightjar/);
+    s.run('gpg -d archive/staff.txt.gpg'); assert.match(text(s.run('nightjar')), /B-77\s+Felix Morrow/);
+    s.run('mkdir case');
+    assert.ok(!mole.done(s.run('echo "Dana Price" > case/mole.txt').event, machine.fs));
+    assert.ok(mole.done(s.run('echo "Felix Morrow" > case/mole.txt').event, machine.fs));
+  });
+}
 console.log(`\n${count} checks passed`);

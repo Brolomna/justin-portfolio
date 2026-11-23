@@ -265,6 +265,42 @@ export class World {
     this.rebuildTrail(view.cwd);
   }
 
+  /** Files/directories were created, removed, copied or moved: show it happening. */
+  applyChanges(change, view) {
+    const oldPos = new Map();
+    for (const r of change.removed) { const rec = this.objects.get(r.path); if (rec) oldPos.set(r.path, rec.group.position.clone()); }
+    for (const c of change.created) { const src = c.from && this.objects.get(c.from); if (src) oldPos.set(c.from, src.group.position.clone()); }
+    for (const r of change.removed) {
+      const rec = this.objects.get(r.path);
+      if (!rec) continue;
+      this.objects.delete(r.path);
+      const g = rec.group;
+      if (r.moved || rec.state !== 'shown') { this.worldGroup.remove(g); this.disposeTree(g); continue; }
+      // deleted: an orange flash, then it shrinks away
+      this.ringPulse(g.position, '#ff8a5c', { radius: 5, dur: 800, width: 0.3 });
+      const s0 = g.scale.x; const lv = rec.level;
+      this.tween(700, (k) => { this.setLevel(rec, lv * (1 - k)); g.scale.setScalar(s0 * (1 - 0.7 * k)); }, 0, () => { this.worldGroup.remove(g); this.disposeTree(g); });
+    }
+    this.grow(view);
+    for (const c of change.created) {
+      const rec = this.objects.get(c.path);
+      if (!rec) continue;
+      const start = c.from && oldPos.get(c.from);
+      if (start) {
+        // copied or moved: it travels from where the original was
+        rec.noMaterialize = true;
+        const end = rec.pos.clone();
+        rec.group.position.copy(start);
+        rec.flying = true;
+        this.tween(950, (k) => rec.group.position.lerpVectors(start, end, ease(k)), 0, () => { rec.group.position.copy(end); rec.flying = false; });
+      } else {
+        this.ringPulse(rec.pos, '#00f5a0', { radius: 4, dur: 800, width: 0.3 });
+      }
+    }
+    for (const m of change.modified) this.flashRecord(this.objects.get(m), '#ffffff', 700);
+    this.applyVisibility(view, { animate: true });
+  }
+
   buildObject(node) {
     const info = this.layoutInfo.get(node.path);
     const color = colorFor(node);
@@ -377,7 +413,7 @@ export class World {
       const to = next === 'shown' ? (near ? 1 : 0.26) : next === 'ghost' ? (near ? 0.09 : 0.04) : 0;
       rec.target = to;
       if (!animate) { this.setLevel(rec, to); continue; }
-      if (next === 'shown' && (cur === 'none' || cur === 'ghost')) {
+      if (next === 'shown' && (cur === 'none' || cur === 'ghost') && !rec.noMaterialize) {
         const hidden = reveal === 'hidden' && isHidden(rec.node.name);
         this.materialize(rec, (i++) * 120, hidden, to);
       } else if (Math.abs(rec.level - to) > 0.005) {
@@ -583,7 +619,7 @@ export class World {
   }
 
   // ---------------------------------------------------------------- hologram
-  openHologram(path, content) {
+  openHologram(path, content, tag = 'cat') {
     this.closeHologram(true);
     const rec = this.objects.get(path);
     const lines = [];
@@ -605,7 +641,7 @@ export class World {
     ctx.fillStyle = 'rgba(255,255,255,0.05)'; ctx.fillRect(2, 2, W - 4, head);
     ctx.font = '600 30px "JetBrains Mono", ui-monospace, monospace';
     ctx.fillStyle = color; ctx.fillText(`▤ ${path.split('/').pop()}`, pad * 0.7, 54);
-    ctx.fillStyle = 'rgba(201,255,240,0.5)'; ctx.textAlign = 'right'; ctx.fillText('cat', W - pad * 0.7, 54); ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(201,255,240,0.5)'; ctx.textAlign = 'right'; ctx.fillText(tag, W - pad * 0.7, 54); ctx.textAlign = 'left';
     ctx.font = '400 34px "JetBrains Mono", ui-monospace, monospace';
     ctx.fillStyle = '#eafff8';
     lines.forEach((l, i) => ctx.fillText(l, pad, head + pad + i * lh));
@@ -661,8 +697,27 @@ export class World {
     const cwdRec = this.objects.get(view.cwd);
     const here = this.layoutInfo.get(view.cwd).pos;
     if (event.type !== 'noop' && event.type !== 'clear') this.closeHologram();
+    if (event.fsChange && event.type !== 'unzip') this.applyChanges(event.fsChange, view);
 
     switch (event.type) {
+      case 'gpg-encrypt': {
+        const rec = this.objects.get(event.out);
+        if (rec) { this.flashRecord(rec, '#ffc45c', 1200); this.ringPulse(rec.pos, '#ffc45c', { radius: 8, dur: 1200, width: 0.3, segments: 6 }); }
+        this.floatBanner('🔒 encrypted', (rec ? rec.pos : here).clone().add(new THREE.Vector3(0, 2.4, 0)), '#ffd98a', 2600);
+        break;
+      }
+      case 'gpg-decrypt': {
+        this.ringPulse(here, '#ffc45c', { radius: 8, dur: 1000, width: 0.2 });
+        if (!event.out) this.openHologram(event.path, event.content, 'gpg -d');
+        break;
+      }
+      case 'grep': case 'find': case 'head': case 'tail': case 'wc': case 'sort': case 'base64': case 'sha256sum': case 'history': case 'echo': case 'whoami': case 'hostname': case 'date': {
+        // reading and searching: a quick cyan scan where you are, matching files light up
+        this.ringPulse(here, '#00cfff', { radius: 10, dur: 900, width: 0.15 });
+        for (const f of [...(event.files || []), ...(event.found || [])].slice(0, 12)) this.flashRecord(this.objects.get(f), '#00cfff', 800);
+        if (event.type === 'whoami') this.floatBanner(`👤 ${event.user}`, local3(here, this.layoutInfo.get(view.cwd).heading, 0, 4.4, -6.5), '#baffe6', 3000);
+        break;
+      }
       case 'pwd': {
         this.ringPulse(here, '#00f5a0', { radius: 30, dur: 1600, width: 0.25 });
         this.flashRecord(cwdRec, '#ffffff', 1100);
@@ -741,7 +796,7 @@ export class World {
       }
       case 'cat': {
         for (const f of event.files.slice(0, -1)) this.flashRecord(this.objects.get(f.path), '#ffffff', 600);
-        this.openHologram(event.path, event.content);
+        if (event.path && !event.redirect) this.openHologram(event.path, event.content);
         break;
       }
       case 'error': {

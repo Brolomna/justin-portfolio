@@ -116,13 +116,43 @@ export class CanvasWorld {
     this.layout = computeLayout(this.machine);
     for (const node of this.machine.fs.all()) {
       const rec = this.objects.get(node.path);
-      if (!rec) { this.addRec(node); continue; }
+      if (!rec || rec.dying) { if (rec?.dying) continue; this.addRec(node); continue; }
       const info = this.layout.get(node.path);
       const from = copy(rec.pos);
       rec.heading = info.heading;
       if (Math.hypot(from.x - info.pos.x, from.z - info.pos.z) > 0.01) this.tween(900, (k) => { rec.pos = lerp3(from, info.pos, ease(k)); }, 0, () => { rec.pos = info.pos; });
     }
     this.trail = pathChain(view.cwd);
+  }
+
+  /** Files/directories were created, removed, copied or moved: show it happening. */
+  applyChanges(change, view) {
+    const oldPos = new Map();
+    for (const r of change.removed) { const rec = this.objects.get(r.path); if (rec) oldPos.set(r.path, copy(rec.pos)); }
+    for (const c of change.created) { const src = c.from && this.objects.get(c.from); if (src) oldPos.set(c.from, copy(src.pos)); }
+    for (const r of change.removed) {
+      const rec = this.objects.get(r.path);
+      if (!rec) continue;
+      if (r.moved || rec.state !== 'shown') { this.objects.delete(r.path); continue; }
+      rec.dying = true;
+      this.ring(rec.pos, '#ff8a5c', { radius: 5, dur: 800, width: 2 });
+      const lv = rec.level;
+      this.tween(700, (k) => { rec.level = lv * (1 - k); rec.grow = 1 - 0.7 * k; }, 0, () => this.objects.delete(r.path));
+    }
+    this.grow(view);
+    for (const c of change.created) {
+      const rec = this.objects.get(c.path);
+      if (!rec) continue;
+      const start = c.from && oldPos.get(c.from);
+      if (start) {
+        rec.noMaterialize = true;
+        const end = copy(rec.pos);
+        rec.pos = copy(start);
+        this.tween(950, (k) => { rec.pos = lerp3(start, end, ease(k)); }, 0, () => { rec.pos = end; });
+      } else this.ring(rec.pos, '#00f5a0', { radius: 4, dur: 800, width: 2 });
+    }
+    for (const m of change.modified) this.flash(this.objects.get(m), 'white', 700);
+    this.applyVisibility(view);
   }
 
   banner(text, at, color = [186, 255, 230], ms = 3400) {
@@ -139,6 +169,7 @@ export class CanvasWorld {
   applyVisibility(view, { animate = true, reveal = null, keepArch = null } = {}) {
     let i = 0;
     for (const rec of this.objects.values()) {
+      if (rec.dying) continue;
       const next = visibilityOf(rec.node, view, this.machine.home);
       const cur = rec.state;
       rec.state = next;
@@ -149,7 +180,7 @@ export class CanvasWorld {
       const to = next === 'shown' ? (near ? 1 : 0.26) : next === 'ghost' ? (near ? 0.1 : 0.05) : 0;
       rec.target = to;
       if (!animate) { rec.level = to; continue; }
-      if (next === 'shown' && (cur === 'none' || cur === 'ghost')) {
+      if (next === 'shown' && (cur === 'none' || cur === 'ghost') && !rec.noMaterialize) {
         const flicker = reveal === 'hidden' && isHidden(rec.node.name);
         const from = rec.level;
         this.tween(flicker ? 1300 : 800, (k) => {
@@ -226,9 +257,9 @@ export class CanvasWorld {
   }
 
   // ------------------------------------------------------------- hologram
-  openHologram(path, content) {
+  openHologram(path, content, tag = 'cat') {
     const rec = this.objects.get(path);
-    this.holo = { name: path.split('/').pop(), lines: wrap(content, 46), color: rec ? rec.color : rgb('#c9fff0'), k: 0 };
+    this.holo = { tag, name: path.split('/').pop(), lines: wrap(content, 46), color: rec ? rec.color : rgb('#c9fff0'), k: 0 };
     const h = this.holo;
     if (rec) {
       rec.flying = 1;
@@ -253,7 +284,25 @@ export class CanvasWorld {
     this.view = view;
     const here = this.layout.get(view.cwd);
     if (event.type !== 'noop' && event.type !== 'clear') this.closeHologram();
+    if (event.fsChange && event.type !== 'unzip') this.applyChanges(event.fsChange, view);
     switch (event.type) {
+      case 'gpg-encrypt': {
+        const rec = this.objects.get(event.out);
+        if (rec) { this.flash(rec, '#ffc45c', 1200); this.ring(rec.pos, '#ffc45c', { radius: 8, dur: 1200, width: 2.5, sides: 6 }); }
+        this.banner('🔒 encrypted', { ...(rec ? rec.pos : here.pos), y: (rec ? rec.pos.y : 0) + 2.4 }, [255, 217, 138], 2600);
+        break;
+      }
+      case 'gpg-decrypt': {
+        this.ring(here.pos, '#ffc45c', { radius: 8, dur: 1000 });
+        if (!event.out) this.openHologram(event.path, event.content, 'gpg -d');
+        break;
+      }
+      case 'grep': case 'find': case 'head': case 'tail': case 'wc': case 'sort': case 'base64': case 'sha256sum': case 'history': case 'echo': case 'whoami': case 'hostname': case 'date': {
+        this.ring(here.pos, '#00cfff', { radius: 10, dur: 900, width: 1.5 });
+        for (const f of [...(event.files || []), ...(event.found || [])].slice(0, 12)) this.flash(this.objects.get(f), '#00cfff', 800);
+        if (event.type === 'whoami') this.banner(`👤 ${event.user}`, local(here.pos, here.heading, 0, 4.4, -6.5), [186, 255, 230], 3000);
+        break;
+      }
       case 'pwd': {
         this.ring(here.pos, '#00f5a0', { radius: 30, dur: 1600, width: 2 });
         this.flash(this.objects.get(view.cwd), 'white', 1100);
@@ -322,7 +371,7 @@ export class CanvasWorld {
       }
       case 'cat': {
         for (const f of event.files.slice(0, -1)) this.flash(this.objects.get(f.path), 'white', 600);
-        this.openHologram(event.path, event.content);
+        if (event.path && !event.redirect) this.openHologram(event.path, event.content);
         break;
       }
       case 'error': {
@@ -703,7 +752,7 @@ export class CanvasWorld {
     ctx.font = `600 ${px}px "JetBrains Mono", ui-monospace, monospace`;
     ctx.textBaseline = 'middle';
     ctx.fillStyle = rgba(h.color, 1); ctx.fillText(`▤ ${h.name}`, x + px * 1.2, y + head / 2 - 2);
-    ctx.fillStyle = 'rgba(201,255,240,0.5)'; ctx.textAlign = 'right'; ctx.fillText('cat', x + w - px * 1.2, y + head / 2 - 2); ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(201,255,240,0.5)'; ctx.textAlign = 'right'; ctx.fillText(h.tag || 'cat', x + w - px * 1.2, y + head / 2 - 2); ctx.textAlign = 'left';
     ctx.font = `400 ${px}px "JetBrains Mono", ui-monospace, monospace`;
     ctx.fillStyle = '#eafff8';
     h.lines.forEach((l, i) => ctx.fillText(l, x + px * 1.4, y + head + px * 0.6 + i * lh + lh / 2));
