@@ -91,9 +91,8 @@ export const missions = [
     successSay: 'Vault open. Clearance granted. Go inside top secret and read everything.',
     known: [...LESSON1_COMMANDS, ...LESSON2_COMMANDS],
   },
-  // ---- beta: only shown on the test page (learning-new-c.html) ----
   {
-    id: 'files', kind: 'lesson', beta: true,
+    id: 'files', kind: 'lesson',
     label: 'Lesson 3',
     title: 'Files & Folders',
     subtitle: 'Create, write and delete files and directories.',
@@ -103,7 +102,7 @@ export const missions = [
     machine: filesMachine, steps: files.steps, finale: files.finale,
   },
   {
-    id: 'organize', kind: 'lesson', beta: true,
+    id: 'organize', kind: 'lesson',
     label: 'Lesson 4',
     title: 'Copy, Move & Rename',
     subtitle: 'Tidy up with mv, cp and wildcards.',
@@ -113,7 +112,7 @@ export const missions = [
     machine: organizeMachine, steps: organize.steps, finale: organize.finale,
   },
   {
-    id: 'search', kind: 'lesson', beta: true,
+    id: 'search', kind: 'lesson',
     label: 'Lesson 5',
     title: 'Reading & Searching',
     subtitle: 'Search inside files and find them anywhere.',
@@ -123,7 +122,7 @@ export const missions = [
     machine: searchMachine, steps: search.steps, finale: search.finale,
   },
   {
-    id: 'ciphers', kind: 'lesson', beta: true,
+    id: 'ciphers', kind: 'lesson',
     label: 'Lesson 6',
     title: 'Codes & Ciphers',
     subtitle: 'Encode, decode, verify, encrypt and decrypt.',
@@ -133,7 +132,7 @@ export const missions = [
     machine: ciphersMachine, steps: ciphers.steps, finale: ciphers.finale,
   },
   {
-    id: 'mole', kind: 'test', beta: true, ultimate: true,
+    id: 'mole', kind: 'test', ultimate: true,
     label: 'Test 3 · Final Exam',
     title: 'The Mole',
     subtitle: 'Search, decode, decrypt. Name the leaker.',

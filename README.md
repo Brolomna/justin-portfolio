@@ -36,7 +36,7 @@ After deploying, submit `https://anmolsiwa.com.np/sitemap.xml` in Google Search 
 ## Terminal Academy (interactive-learning.html)
 
 `public/interactive-learning.html` - learn Linux by typing commands into a simulated terminal and watching a
-3D (or 2D) filesystem respond. Opens on a mission menu (deep links: `#exploring`, `#archives`, `#unfamiliar`, `#vault`):
+3D (or 2D) filesystem respond. Opens on a mission menu (deep links: `#exploring`, `#archives`, `#unfamiliar`, `#vault`, `#files`, `#organize`, `#search`, `#ciphers`, `#mole`):
 
 1. Lesson 1, Exploring Linux - `pwd`, `ls`, `ls -a`, `cd`, `cd ..` (all the way up to `/`), `cat`.
 2. Lesson 2, Unpacking Archives - `unzip -l`, `unzip`, and password-protected zips (interactive, hidden prompt).
@@ -51,7 +51,8 @@ browser; no real shell is involved.
 
 `public/learning-new-c.html` is the test page for lessons before release (`noindex`, BETA badge). It is
 **generated**: run `node scripts/make-beta.mjs` after editing `interactive-learning.html`. It sets
-`<body data-channel="beta">`, which makes `main.js` also show missions marked `beta: true` in `missions.js`:
+`<body data-channel="beta">`, which makes `main.js` also show missions marked `beta: true` in `missions.js`
+(none right now: all of these are released):
 
 5. Lesson 3, Files & Folders (`#files`) - `whoami`, `mkdir`, `touch`, `echo "..." > file`, `rm`, `rmdir`, `rm -r`.
 6. Lesson 4, Copy, Move & Rename (`#organize`) - `ls -l`, `mv`, renaming, `*` wildcards, `cp`, `cp -r`.
@@ -59,7 +60,7 @@ browser; no real shell is involved.
 8. Lesson 6, Codes & Ciphers (`#ciphers`) - `base64` / `-d`, `sha256sum` / `-c`, `gpg -c` / `-d`.
 9. Test 3, The Mole (final exam) - grep the logs, decode, decrypt, then write the answer into `~/case/mole.txt`.
 
-To release a beta mission, delete its `beta: true` line. The shell also knows `hostname`, `date`, `echo`,
+To try a new mission before release, add `beta: true` to it; delete that to release it. The shell also knows `hostname`, `date`, `echo`,
 `sort`, `>>`, `grep -r/-n/-v/-c`, `find -type`, `mkdir -p`, `rm -f`, globs `*`/`?` and up to 4-stage pipes.
 
 - `public/interactive-learning/js/fs/` - simulated filesystem (`filesystem.js`, with zip archives and extraction),
