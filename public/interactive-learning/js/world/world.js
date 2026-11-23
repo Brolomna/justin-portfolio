@@ -8,8 +8,15 @@ import { pathChain, parentOf } from '../fs/path.js';
 import { visibilityOf } from './visibility.js';
 import {
   HIDDEN_COLOR, ERROR_COLOR, BG, ease, easeOut, local, colorFor, inFocus, isHomeAncestor,
-  computeLayout, cameraView, travelPoints,
+  computeLayout, cameraView, travelPoints, FOLDER, FOLDER_PAPERS, folderBackOutline, folderFrontOutline,
 } from './layout.js';
+
+function shapeOf(points) {
+  const s = new THREE.Shape();
+  points.forEach(([x, y], i) => (i ? s.lineTo(x, y) : s.moveTo(x, y)));
+  s.closePath();
+  return s;
+}
 
 const v3 = (p) => new THREE.Vector3(p.x, p.y, p.z);
 const local3 = (...args) => v3(local(...args));
@@ -87,16 +94,22 @@ export class World {
       glow: radialTexture(),
       hexGeo: new THREE.CylinderGeometry(3.4, 3.6, 0.32, 6, 1),
       ringGeo: new THREE.RingGeometry(2.6, 3.05, 6, 1),
-      torusGeo: new THREE.TorusGeometry(2.1, 0.07, 10, 72),
-      discGeo: new THREE.CircleGeometry(2.03, 48),
-      pillarGeo: new THREE.BoxGeometry(0.16, 4.6, 0.16),
-      lintelGeo: new THREE.BoxGeometry(5.2, 0.16, 0.16),
+      folderBackGeo: new THREE.ExtrudeGeometry(shapeOf(folderBackOutline()), { depth: 0.1, bevelEnabled: false }),
+      folderFrontGeo: new THREE.ExtrudeGeometry(shapeOf(folderFrontOutline()), { depth: 0.08, bevelEnabled: false }),
+      folderGlowGeo: new THREE.PlaneGeometry(FOLDER.w * 0.95, FOLDER.h * 1.05),
       docGeo: new THREE.BoxGeometry(1.2, 1.5, 0.06),
       lineGeo: new THREE.PlaneGeometry(0.8, 0.07),
       cubeGeo: new THREE.BoxGeometry(1, 1, 1),
       bandGeo: new THREE.BoxGeometry(1.06, 0.12, 1.06),
     };
     this.shared.hexEdges = new THREE.EdgesGeometry(this.shared.hexGeo);
+    this.shared.folderBackEdges = new THREE.EdgesGeometry(this.shared.folderBackGeo, 20);
+    this.shared.folderFrontEdges = new THREE.EdgesGeometry(this.shared.folderFrontGeo, 20);
+    this.shared.paperGeos = FOLDER_PAPERS.map(([x0, x1, y1]) => {
+      const g = new THREE.PlaneGeometry(x1 - x0, y1);
+      g.translate((x0 + x1) / 2, y1 / 2, 0);
+      return g;
+    });
     this.shared.docEdges = new THREE.EdgesGeometry(this.shared.docGeo);
     this.shared.cubeEdges = new THREE.EdgesGeometry(this.shared.cubeGeo);
 
@@ -225,7 +238,7 @@ export class World {
 
   disposeTree(obj) {
     obj.traverse((o) => {
-      if (o.geometry && !Object.values(this.shared).includes(o.geometry)) o.geometry.dispose();
+      if (o.geometry && !Object.values(this.shared).flat().includes(o.geometry)) o.geometry.dispose();
       const mats = Array.isArray(o.material) ? o.material : o.material ? [o.material] : [];
       for (const m of mats) {
         if (m.map && m.map !== this.shared.glow && m.map !== this.streamTex) m.map.dispose();
@@ -262,26 +275,31 @@ export class World {
       ring.rotation.x = -Math.PI / 2; ring.position.y = 0.18;
       group.add(ring);
       rec.ring = ring;
-      // portal arch at the back edge, facing the parent
-      const arch = new THREE.Group();
-      arch.position.set(0, 2.75, 2.5);
-      const torus = new THREE.Mesh(this.shared.torusGeo, track(new THREE.MeshBasicMaterial({ color }), 0.95));
-      arch.add(torus);
-      const disc = new THREE.Mesh(this.shared.discGeo, track(new THREE.MeshBasicMaterial({ color, map: this.shared.glow, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false }), 0.16));
-      arch.add(disc);
-      for (const x of [-2.6, 2.6]) {
-        const p = new THREE.Mesh(this.shared.pillarGeo, track(new THREE.MeshStandardMaterial({ color: '#0d2230', emissive: color, emissiveIntensity: 0.35 }), 0.95));
-        p.position.set(x, -0.45, 0);
-        arch.add(p);
-      }
-      const lintel = new THREE.Mesh(this.shared.lintelGeo, track(new THREE.MeshStandardMaterial({ color: '#0d2230', emissive: color, emissiveIntensity: 0.5 }), 0.95));
-      lintel.position.set(0, 1.85, 0);
-      arch.add(lintel);
-      group.add(arch);
-      rec.torus = torus; rec.disc = disc; rec.arch = arch;
+      // a holographic folder at the back edge, facing the parent directory
+      const folder = new THREE.Group();
+      folder.position.set(0, FOLDER.y, FOLDER.z);
+      const glass = (intensity, base) => track(new THREE.MeshStandardMaterial({ color: '#0b1d28', emissive: color, emissiveIntensity: intensity, metalness: 0.35, roughness: 0.3, side: THREE.DoubleSide, depthWrite: false }), base);
+      folder.add(new THREE.Mesh(this.shared.folderBackGeo, glass(0.16, 0.82)));
+      folder.add(new THREE.LineSegments(this.shared.folderBackEdges, track(new THREE.LineBasicMaterial({ color }), 0.95)));
+      const glow = new THREE.Mesh(this.shared.folderGlowGeo, track(new THREE.MeshBasicMaterial({ color, map: this.shared.glow, blending: THREE.AdditiveBlending, depthWrite: false }), 0.22));
+      glow.position.set(0, FOLDER.h * 0.55, 0.12);
+      folder.add(glow);
+      FOLDER_PAPERS.forEach(([, , , z], i) => {
+        const paper = new THREE.Mesh(this.shared.paperGeos[i], track(new THREE.MeshBasicMaterial({ color: i ? '#e9fff7' : color, side: THREE.DoubleSide, depthWrite: false }), i ? 0.2 : 0.14));
+        paper.position.z = z;
+        folder.add(paper);
+      });
+      const flap = new THREE.Group();          // hinge along the bottom edge
+      flap.position.z = FOLDER.flapGap;
+      flap.rotation.x = FOLDER.closed;
+      flap.add(new THREE.Mesh(this.shared.folderFrontGeo, glass(0.24, 0.9)));
+      flap.add(new THREE.LineSegments(this.shared.folderFrontEdges, track(new THREE.LineBasicMaterial({ color }), 0.95)));
+      folder.add(flap);
+      group.add(folder);
+      rec.arch = folder; rec.flap = flap; rec.glowPlane = glow; rec.openAmt = 0;
       const name = node.path === '/' ? '/' : `${node.name}/`;
       const label = makeLabel(name, color, { size: isAncestor ? 40 : 48 });
-      label.position.set(0, 5.6, 2.5);
+      label.position.set(0, FOLDER.y + FOLDER.h + FOLDER.tabH + 0.95, FOLDER.z);
       track(label.material, 1);
       group.add(label);
       rec.label = label;
@@ -347,6 +365,11 @@ export class World {
         this.fadeTo(rec, to, 700);
       }
     }
+  }
+
+  setArchAlpha(rec, k) {
+    rec.arch.traverse((o) => { if (o.material) o.material.opacity = o.material.userData.base * rec.level * k; });
+    rec.label.material.opacity = rec.label.material.userData.base * rec.level * k;
   }
 
   fadeArch(rec) {
@@ -532,9 +555,9 @@ export class World {
     const a = new THREE.LineSegments(geo, mat);
     group.add(a);
     if (kind === 'dir') {
-      const t = new THREE.Mesh(this.shared.torusGeo, new THREE.MeshBasicMaterial({ color: ERROR_COLOR, transparent: true, opacity: 0.7, wireframe: true }));
-      t.position.set(0, 2.75, 2.5);
-      group.add(t);
+      const f = new THREE.LineSegments(this.shared.folderBackEdges, new THREE.LineBasicMaterial({ color: ERROR_COLOR, transparent: true, opacity: 0.8 }));
+      f.position.set(0, FOLDER.y, FOLDER.z);
+      group.add(f);
     }
     this.fxGroup.add(group);
     this.tween(1500, (k) => {
@@ -657,16 +680,25 @@ export class World {
       case 'cd': {
         if (event.direction === 'stay') { this.ringPulse(here, '#00f5a0', { radius: 6, dur: 600 }); break; }
         const dest = this.objects.get(event.to);
-        if (dest?.disc) {
-          dest.spin = 1;
-          this.tween(900, (k) => { dest.disc.material.opacity = dest.disc.material.userData.base * dest.level + 0.7 * Math.sin(Math.PI * Math.min(1, k * 1.3)); });
+        if (dest?.flap && event.direction !== 'up') {
+          this.tween(750, (k) => { dest.openAmt = easeOut(k); dest.glowPlane.material.opacity = dest.glowPlane.material.userData.base * dest.level + 0.55 * Math.sin(Math.PI * Math.min(1, k * 1.2)); });
           this.flashRecord(dest, '#ffffff', 900);
+        }
+        const left = this.objects.get(event.from);
+        if (event.direction === 'up' && left?.flap) {
+          // the folder you step out of reappears once you're clear of it, closing behind you
+          left.openAmt = 1;
+          this.setArchAlpha(left, 0);
+          this.tween(1700, (k) => { left.openAmt = 1 - ease(k); });
+          this.tween(900, (k) => this.setArchAlpha(left, k), 800);
         }
         if (event.direction === 'up') this.runTrailPulse('#00f5a0', 900);
         this.applyVisibility(view, { animate: true, keepArch: event.direction === 'into' ? event.to : null });
         this.rebuildTrail(view.cwd);
+        // the folder opens, then dissolves around you as the camera arrives
+        if (event.direction === 'into' && dest?.arch) this.tween(10, () => {}, 700, () => this.fadeArch(dest));
         await this.travel(event.from, event.to, event.direction);
-        if (dest) { dest.spin = 0; if (dest.arch) this.fadeArch(dest); }
+        if (dest) dest.openAmt = 0;
         this.ringPulse(this.layoutInfo.get(view.cwd).pos, '#00f5a0', { radius: 7, dur: 900 });
         break;
       }
@@ -725,7 +757,7 @@ export class World {
     }
     for (const rec of this.objects.values()) {
       if (!rec.group.visible) continue;
-      if (rec.torus) rec.torus.rotation.z += (rec.spin ? 0.12 : 0.004) * (this.reduced ? 0.2 : 1);
+      if (rec.flap) rec.flap.rotation.x = FOLDER.closed + (FOLDER.open - FOLDER.closed) * rec.openAmt + (this.reduced ? 0 : Math.sin(t * 0.8 + rec.node.path.length) * 0.015);
       if (rec.body && !rec.flying && !this.reduced) {
         rec.group.position.y = rec.pos.y + Math.sin(t * 1.1 + rec.phase) * 0.12;
         rec.body.rotation.y = (fileKind(rec.node.name) === 'archive' ? 0.6 : 0) + Math.sin(t * 0.5 + rec.phase) * 0.18;
@@ -746,7 +778,7 @@ export class World {
     window.removeEventListener('resize', this.onResize);
     this.clearWorld();
     this.disposeTree(this.scene);
-    for (const v of Object.values(this.shared)) v.dispose?.();
+    for (const v of Object.values(this.shared).flat()) v.dispose?.();
     this.renderer.dispose();
     this.renderer.domElement.remove();
   }
