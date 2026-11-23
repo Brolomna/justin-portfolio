@@ -1,8 +1,9 @@
-// The compact lesson card. Renders one step at a time; hints are revealed one
-// level per click and never automatically.
+// The compact lesson card. Renders a mission's briefing, one step at a time,
+// a test's objective, and finales. Hints are revealed one level per click and
+// never automatically.
 //
-// Lesson text in exploring-linux.js is authored HTML (trusted, static). Anything
-// that came from the learner's typing is escaped before it reaches the DOM.
+// Lesson text in lessons/*.js is authored HTML (trusted, static). Anything that
+// came from the learner's typing is escaped before it reaches the DOM.
 
 import { esc } from './terminal.js';
 
@@ -11,6 +12,7 @@ export function createLessonCard(root) {
   let hints = [];
 
   const html = (s) => { root.innerHTML = s; };
+  const on = (sel, fn) => { const el = root.querySelector(sel); if (el) el.onclick = fn; };
 
   function hintBlock(list) {
     hints = list;
@@ -29,7 +31,7 @@ export function createLessonCard(root) {
     const btn = root.querySelector('[data-hint]');
     btn.classList.remove('nudge');
     if (hintLevel >= hints.length) btn.hidden = true;
-    else btn.textContent = hintLevel === hints.length - 1 ? 'Show me the command' : 'Another hint';
+    else btn.textContent = hintLevel === hints.length - 1 ? 'Last hint' : 'Another hint';
   });
 
   function toolkit(learned) {
@@ -37,12 +39,25 @@ export function createLessonCard(root) {
     return `<div class="toolkit" aria-label="Commands you have learned"><span>Learned</span>${learned.map(([c, m]) => `<code title="${esc(m)}">${esc(c)}</code>`).join('')}</div>`;
   }
 
+  const meta = (left, tag, cls) => `<div class="lesson-meta"><span class="step-num">${left}</span><span class="step-tag ${cls}">${tag}</span></div>`;
+
   return {
+    /** The mission's story, before step 1 / before the objective. */
+    briefing(m, onBegin) {
+      html(`
+        ${meta(esc(m.label.toUpperCase()), m.kind === 'lesson' ? 'BRIEFING' : m.ultimate ? 'ULTIMATE TEST' : 'TEST', m.ultimate ? 'ultimate' : m.kind === 'lesson' ? 'learn' : 'explore')}
+        <h2>${esc(m.storyTitle)}</h2>
+        <div class="lesson-text story">${m.story.map((p) => `<p>${esc(p)}</p>`).join('')}</div>
+        <div class="btn-row"><button class="primary-btn small" type="button" data-begin>${m.kind === 'lesson' ? 'Begin' : 'Start the test'} <span aria-hidden="true">↵</span></button></div>
+        <p class="next-tip">or press Enter in the terminal</p>`);
+      on('[data-begin]', onBegin);
+    },
+
     step(step, index, total, learned) {
       const c = step.command;
       const tag = step.mode === 'learn' ? 'NEW COMMAND' : 'REMEMBER';
       html(`
-        <div class="lesson-meta"><span class="step-num">${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}</span><span class="step-tag ${step.mode}">${tag}</span></div>
+        ${meta(`${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, tag, step.mode)}
         <h2>${step.title}</h2>
         <div class="lesson-text">${step.body.map((p) => `<p>${p}</p>`).join('')}</div>
         ${c ? `<div class="cmd-card">
@@ -78,35 +93,58 @@ export function createLessonCard(root) {
 
     nudge() { root.querySelector('[data-hint]')?.classList.add('nudge'); },
 
-    finale(f, onPractice, onRestart) {
+    /** End of a lesson. */
+    finale(m, next, { onNext, onMenu, onRestart }) {
+      const f = m.finale;
       html(`
-        <div class="lesson-meta"><span class="step-num">TOPIC 01</span><span class="step-tag done">COMPLETE</span></div>
+        ${meta(esc(m.label.toUpperCase()), 'COMPLETE', 'done')}
         <h2>${f.title}</h2>
         <div class="lesson-text"><p>${f.body}</p></div>
-        <ul class="recap">${f.recap.map(([c, m]) => `<li><code>${esc(c)}</code><span>${esc(m)}</span></li>`).join('')}</ul>
-        <p class="lesson-text">Ready for a machine you have never seen, with no instructions?</p>
-        <div class="btn-row"><button class="primary-btn small" type="button" data-practice>Try the practice machine</button><button class="link-btn" type="button" data-restart>Restart lesson</button></div>`);
-      root.querySelector('[data-practice]').onclick = onPractice;
-      root.querySelector('[data-restart]').onclick = onRestart;
+        <ul class="recap">${f.recap.map(([c, d]) => `<li><code>${esc(c)}</code><span>${esc(d)}</span></li>`).join('')}</ul>
+        ${next ? `<p class="lesson-text">Next up: <b>${esc(next.label)}: ${esc(next.title)}</b>. ${esc(next.subtitle)}</p>` : ''}
+        <div class="btn-row">
+          ${next ? `<button class="primary-btn small" type="button" data-nextm>Start ${esc(next.label)}</button>` : ''}
+          <button class="link-btn" type="button" data-menu>All missions</button>
+          <button class="link-btn" type="button" data-restart>Restart</button>
+        </div>`);
+      on('[data-nextm]', onNext); on('[data-menu]', onMenu); on('[data-restart]', onRestart);
     },
 
-    practice(p, onReset) {
+    /** A test: one objective, optional password-part tracker, concept-only hints. */
+    test(m, onReset) {
       html(`
-        <div class="lesson-meta"><span class="step-num">PRACTICE</span><span class="step-tag explore">ON YOUR OWN</span></div>
-        <h2>${p.title}</h2>
-        <div class="lesson-text"><p>${p.objective}</p></div>
-        ${hintBlock(p.hints)}
+        ${meta(esc(m.label.toUpperCase()), 'ON YOUR OWN', m.ultimate ? 'ultimate' : 'explore')}
+        <h2>${esc(m.title)}</h2>
+        <div class="lesson-text"><p>${m.objective}</p></div>
+        ${m.parts ? `<div class="parts" aria-live="polite"><span class="parts-label">Password</span><div class="parts-slots">${m.parts.map((_, i) => `<span class="part" data-part="${i}">part ${i + 1}</span>`).join('<i>-</i>')}</div></div>` : ''}
+        ${hintBlock(m.hints)}
         <div class="success" hidden></div>
         <div class="btn-row"><button class="link-btn" type="button" data-reset>Reset this machine</button></div>`);
-      root.querySelector('[data-reset]').onclick = onReset;
+      on('[data-reset]', onReset);
     },
 
-    practiceSuccess(text, onReset) {
+    /** Mark password parts as found (indexes into mission.parts). */
+    parts(m, found) {
+      m.parts.forEach((p, i) => {
+        const el = root.querySelector(`[data-part="${i}"]`);
+        if (!el || !found.has(i) || el.classList.contains('found')) return;
+        el.classList.add('found');
+        el.textContent = p.value;
+      });
+    },
+
+    testSuccess(m, next, { onReset, onNext, onMenu }) {
       const box = root.querySelector('.success');
       root.querySelector('.hints')?.remove();
       box.hidden = false;
-      box.innerHTML = `<p class="witness">${text}</p><div class="btn-row"><button class="primary-btn small" type="button" data-again>Explore a fresh copy</button></div>`;
-      box.querySelector('[data-again]').onclick = onReset;
+      box.classList.toggle('ultimate', !!m.ultimate);
+      box.innerHTML = `<p class="witness">${m.success}</p>
+        <div class="btn-row">
+          ${next ? `<button class="primary-btn small" type="button" data-nextm>Next: ${esc(next.label)}</button>` : ''}
+          <button class="link-btn" type="button" data-menu>All missions</button>
+          <button class="link-btn" type="button" data-again>Explore a fresh copy</button>
+        </div>`;
+      on('[data-again]', onReset); on('[data-nextm]', onNext); on('[data-menu]', onMenu);
     },
   };
 }

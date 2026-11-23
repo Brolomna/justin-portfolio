@@ -88,12 +88,19 @@ export function computeLayout(machine) {
       const h = heading + a;
       place(d, local(pos, h, 0, 0, -dist), h, depth + 1);
     });
-    // files float in a gentle arc just in front of the platform
+    // files float in front of the platform. Up to 4 share one row; bigger
+    // directories fan out in an arc, neighbours alternating low and high so
+    // long labels never sit side by side.
     const m = files.length;
-    const gap = 3.1;
     files.forEach((f, i) => {
-      const x = m === 1 ? (dirs.length ? -3.2 : 0) : (i - (m - 1) / 2) * gap;
-      out.set(f.path, { pos: local(pos, heading, x, 1.9, -6.2 + Math.abs(x) * 0.18), heading: heading + x * 0.03, depth: depth + 1 });
+      if (m <= 4) {
+        const x = m === 1 ? (dirs.length ? -3.2 : 0) : (i - (m - 1) / 2) * 3.1;
+        out.set(f.path, { pos: local(pos, heading, x, 1.9, -6.2 + Math.abs(x) * 0.18), heading: heading + x * 0.03, depth: depth + 1 });
+        return;
+      }
+      const a = -0.95 + (1.9 * i) / (m - 1);
+      const r = 8.5;
+      out.set(f.path, { pos: local(pos, heading, Math.sin(a) * r, i % 2 ? 4.6 : 1.7, -Math.cos(a) * r - 0.5), heading: heading + a * 0.6, depth: depth + 1 });
     });
   };
   place(fs.root, { x: 0, y: 0, z: 26 * homeDepth }, 0, 0);

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Terminal Academy · 01 Exploring Linux | Anmol (Justin) Siwa</title>
+<title>Terminal Academy: Learn Linux by Exploring | Anmol (Justin) Siwa</title>
 <meta name="description" content="Learn Linux terminal navigation by exploring a living 3D computer. Type pwd, ls, cd and cat and watch the machine respond. Runs entirely in your browser.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#03070c">
@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./interactive-learning/css/academy.css?v=3">
+<link rel="stylesheet" href="./interactive-learning/css/academy.css?v=10">
 </head>
 <body>
 <a class="skip-link" href="#termInput">Skip to the terminal</a>
@@ -22,10 +22,10 @@
 
 <header class="topbar">
   <a class="back" href="./#learning">← Portfolio</a>
-  <div class="topic"><span class="topic-num">01</span><span class="topic-title">Exploring Linux</span><span class="topic-sub">Learn to navigate a computer without a mouse.</span></div>
+  <div class="topic"><span class="topic-num" id="topicNum">Terminal Academy</span><span class="topic-title" id="topicTitle">Missions</span><span class="topic-sub" id="topicSub">Learn Linux by exploring a living machine.</span></div>
   <div class="topbar-actions">
-    <button class="ghost-btn" id="restartBtn" type="button" hidden>Restart<span class="wide-only"> lesson</span></button>
-    <button class="ghost-btn" id="practiceBtn" type="button" hidden>Practice<span class="wide-only"> machine</span></button>
+    <button class="ghost-btn" id="missionsBtn" type="button" hidden>Missions</button>
+    <button class="ghost-btn" id="restartBtn" type="button" hidden>Restart</button>
   </div>
 </header>
 
@@ -50,19 +50,16 @@
 </section>
 
 <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle">
-  <div class="intro-card">
-    <p class="intro-kicker">TERMINAL ACADEMY · TOPIC 01</p>
-    <h1 id="introTitle">The Forgotten Machine</h1>
-    <div class="intro-story" id="introStory"></div>
-    <div class="intro-actions">
-      <button class="primary-btn" id="enterBtn" type="button">Enter the machine</button>
-      <button class="link-btn" id="skipBtn" type="button">I know the basics: go to the practice machine</button>
-    </div>
-    <p class="intro-foot">Best on a computer with a keyboard. Everything is simulated in your browser.</p>
+  <div class="intro-card menu-card">
+    <p class="intro-kicker">TERMINAL ACADEMY</p>
+    <h1 id="introTitle">Learn Linux by exploring a living machine.</h1>
+    <p class="intro-lead">Two lessons teach the commands. Two tests make you use them with no instructions. Start at the top, or jump to any mission.</p>
+    <ol class="mission-list" id="missionList"></ol>
+    <p class="intro-foot">Best on a computer with a keyboard. Everything is simulated in your browser. Nothing runs on a real server.</p>
   </div>
 </div>
 
 <noscript><p class="noscript">This lesson needs JavaScript to run the simulated terminal.</p></noscript>
-<script type="module" src="./interactive-learning/js/main.js?v=3"></script>
+<script type="module" src="./interactive-learning/js/main.js?v=11"></script>
 </body>
 </html>

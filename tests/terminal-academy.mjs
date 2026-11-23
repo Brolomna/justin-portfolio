@@ -1,7 +1,8 @@
 // Unit tests for the Terminal Academy filesystem + command interpreter.
 // Run: node tests/terminal-academy.mjs
 import assert from 'node:assert/strict';
-import { buildMachine, lessonMachine, practiceMachine, PRACTICE_TARGET } from '../public/interactive-learning/js/fs/filesystem.js';
+import { buildMachine } from '../public/interactive-learning/js/fs/filesystem.js';
+import { lessonMachine, practiceMachine, archivesMachine, vaultMachine, PRACTICE_TARGET, VAULT_PASSWORD, VAULT_ARCHIVE } from '../public/interactive-learning/js/fs/machines.js';
 import { resolvePath, displayPath, pathChain, parentOf } from '../public/interactive-learning/js/fs/path.js';
 import { createShell, tokenize } from '../public/interactive-learning/js/fs/shell.js';
 
@@ -94,6 +95,69 @@ check('practice target needs ls -a', () => {
 check('machines are independent copies', () => {
   const a = buildMachine(lessonMachine()), b = buildMachine(lessonMachine());
   assert.notEqual(a.fs.root, b.fs.root);
+});
+
+// --- root: you can climb all the way to / and it only holds /home ---------
+check('cd .. climbs to /home then /', () => {
+  const s = fresh(); s.run('cd ..'); assert.equal(s.cwd, '/home'); s.run('cd ..'); assert.equal(s.cwd, '/');
+  assert.equal(text(s.run('pwd')), '/'); assert.equal(text(s.run('ls -a')), '.  ..  home');
+});
+check('every machine root holds only home', () => {
+  for (const m of [lessonMachine, practiceMachine, archivesMachine, vaultMachine]) assert.deepEqual([...buildMachine(m()).fs.root.children.keys()], ['home']);
+});
+
+// --- unzip ---------------------------------------------------------------
+const arc = () => { const s = createShell(buildMachine(archivesMachine())); s.run('cd Downloads'); return s; };
+check('unzip -l lists without extracting', () => { const s = arc(); const r = s.run('unzip -l supplies.zip'); assert.match(text(r), /supplies\/manifest\.txt/); assert.equal(r.event.type, 'unzip-list'); assert.equal(text(s.run('ls')), 'locked.zip  supplies.zip'); });
+check('unzip extracts into the current directory', () => { const s = arc(); const r = s.run('unzip supplies.zip'); assert.deepEqual(r.event.top, ['/home/rookie/Downloads/supplies']); assert.equal(text(s.run('ls supplies')), 'manifest.txt  map.txt'); });
+check('unzip extracts where you are, not where the zip is', () => { const s = createShell(buildMachine(archivesMachine())); s.run('unzip Downloads/supplies.zip'); assert.equal(text(s.run('ls')), 'Desktop  Downloads  supplies  welcome.txt'); });
+check('unzip does not overwrite', () => { const s = arc(); s.run('unzip supplies.zip'); assert.equal(s.run('unzip supplies.zip').event.reason, 'exists'); });
+check('password prompt then correct password', () => {
+  const s = arc(); const r = s.run('unzip locked.zip');
+  assert.equal(r.event.type, 'unzip-prompt'); assert.equal(s.awaiting.label, '[locked.zip] secret/note.txt password: ');
+  const r2 = s.run('lantern'); assert.equal(r2.event.type, 'unzip'); assert.equal(s.awaiting, null);
+  assert.match(text(s.run('cat secret/note.txt')), /unlocked/);
+});
+check('wrong password skips and changes nothing', () => {
+  const s = arc(); s.run('unzip locked.zip'); const r = s.run('LANTERN');
+  assert.equal(r.ok, false); assert.equal(r.event.reason, 'bad-password'); assert.match(text(r), /incorrect password/);
+  assert.equal(text(s.run('ls')), 'locked.zip  supplies.zip');
+});
+check('password text is not treated as a command', () => { const s = arc(); s.run('unzip locked.zip'); const r = s.run('cd ..'); assert.equal(r.event.reason, 'bad-password'); assert.equal(s.cwd, '/home/rookie/Downloads'); });
+check('cancel a password prompt', () => { const s = arc(); s.run('unzip locked.zip'); assert.ok(s.cancel()); assert.equal(s.awaiting, null); assert.equal(s.run('pwd').event.type, 'pwd'); });
+check('unzip -P', () => { const s = arc(); assert.equal(s.run('unzip -P lantern locked.zip').event.type, 'unzip'); });
+check('unzip a text file', () => assert.equal(arc().run('unzip ../welcome.txt').event.reason, 'not-zip'));
+check('unzip missing', () => assert.match(text(arc().run('unzip nope.zip')), /cannot find or open nope\.zip/));
+check('unzip with no file', () => assert.match(text(arc().run('unzip')), /usage/));
+check('cat on a zip shows bytes, not contents', () => assert.match(text(arc().run('cat supplies.zip')), /^PK/));
+check('the lesson 1 zip is a real archive now', () => { const s = fresh(); s.run('cd Downloads'); assert.equal(s.run('unzip old_file.zip').event.type, 'unzip'); });
+
+// --- The Vault: solvable only by following the clues ----------------------
+check('vault: fragments are hidden from plain ls', () => {
+  const v = createShell(buildMachine(vaultMachine()));
+  assert.ok(!/part1/.test(text(v.run('ls reports/archive'))));
+  assert.ok(!/cache/.test(text(v.run('ls tools/scanner'))));
+  assert.ok(!/part3/.test(text(v.run('ls personal/photos'))));
+  assert.ok(!/diary/.test(text(v.run('ls personal'))));
+});
+check('vault: full solve from the clues', () => {
+  const v = createShell(buildMachine(vaultMachine()));
+  assert.match(text(v.run('cat briefing.txt')), /Start with the mail/);
+  assert.match(text(v.run('cat mail/inbox/msg_001.txt')), /old reports/);
+  v.run('cd reports/archive'); assert.match(text(v.run('ls -a')), /\.part1\.txt/);
+  const p1 = text(v.run('cat .part1.txt')).match(/^ {4}(\S+)$/m)[1];
+  v.run('cd ~/tools/scanner'); assert.match(text(v.run('ls -a')), /\.cache/);
+  const p2 = text(v.run('cat .cache/part2.txt')).match(/^ {4}(\S+)$/m)[1];
+  v.run('cd ~/personal/photos'); assert.match(text(v.run('ls -a')), /\.part3\.txt/);
+  const p3 = text(v.run('cat .part3.txt')).match(/^ {4}(\S+)$/m)[1];
+  const pw = `${p1}-${p2}-${p3}`;
+  assert.equal(pw, VAULT_PASSWORD);
+  v.run('cd ~/vault');
+  assert.equal(v.run('unzip top_secret.zip').event.type, 'unzip-prompt');
+  const r = v.run(pw);
+  assert.equal(r.event.type, 'unzip'); assert.equal(r.event.path, VAULT_ARCHIVE);
+  assert.match(text(v.run('ls top_secret')), /nuclear_launch_codes\.txt/);
+  assert.match(text(v.run('cat top_secret/area_54_secrets.txt')), /snacks/);
 });
 
 console.log(`\n${count} checks passed`);

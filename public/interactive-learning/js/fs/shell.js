@@ -3,14 +3,14 @@
 // commands below exist. Every command works against the real simulated tree,
 // so `cd Documents` works because Documents exists, not because the string matched.
 
-import { isHidden, sortNames, fileKind } from './filesystem.js';
+import { isHidden, sortNames, fileKind, archiveListing } from './filesystem.js';
 import { resolvePath, parentOf, displayPath } from './path.js';
 
 export const MAX_INPUT = 200;
 
 // Real Linux commands that this training machine does not offer (yet). Saying
 // "command not found" for these would teach something false.
-const NOT_YET = new Set(['mkdir', 'rm', 'rmdir', 'touch', 'mv', 'cp', 'nano', 'vim', 'vi', 'less', 'more',
+const NOT_YET = new Set(['zip', 'tar', 'gzip', 'gunzip', 'mkdir', 'rm', 'rmdir', 'touch', 'mv', 'cp', 'nano', 'vim', 'vi', 'less', 'more',
   'head', 'tail', 'echo', 'grep', 'find', 'chmod', 'chown', 'sudo', 'su', 'whoami', 'man', 'tree', 'file',
   'ln', 'stat', 'history', 'exit']);
 
@@ -126,7 +126,82 @@ export function createShell(machine) {
     clear() {
       return { out: [], event: { type: 'clear' } };
     },
+
+    // unzip [-l] [-P password] FILE  — list or extract a zip archive into the current directory.
+    unzip(args) {
+      let list = false, password = null, file = null;
+      for (let i = 0; i < args.length; i++) {
+        const a = args[i];
+        if (a === '-l') list = true;
+        else if (a === '-P') {
+          if (i + 1 >= args.length) return fail('unzip', 'usage', null, 'unzip: -P needs a password after it');
+          password = args[++i];
+        } else if (a.startsWith('-') && a.length > 1) {
+          return fail('unzip', 'unavailable', null, `unzip: the ${a} option isn't available on this training machine yet (try unzip -l FILE or unzip FILE)`);
+        } else if (file === null) file = a;
+        else return fail('unzip', 'usage', null, 'unzip: this training machine unzips one archive at a time');
+      }
+      if (file === null) return fail('unzip', 'usage', null, 'UnZip: usage: unzip [-l] [-P password] file.zip');
+      const { path, node } = lookup(file);
+      if (!node || node.type !== 'file') {
+        return fail('unzip', 'not-found', path, `unzip:  cannot find or open ${file}, ${file}.zip or ${file}.ZIP.`);
+      }
+      if (!node.archive) {
+        return { out: [line(`Archive:  ${file}`), err(`  End-of-central-directory signature not found. ${file} is not a zip file.`)], ok: false, event: { type: 'error', cmd: 'unzip', reason: 'not-zip', target: path } };
+      }
+      const listing = archiveListing(node.archive.entries);
+      if (list) return listArchive(file, path, listing);
+      if (node.archive.password && password === null) {
+        // Real unzip asks for the password interactively and does not echo it.
+        const first = listing.find((e) => !e.dir)?.name ?? '';
+        pending = { file, path, node, listing, cwdAtStart: cwd, label: `[${file}] ${first} password: ` };
+        return { out: [line(`Archive:  ${file}`)], event: { type: 'unzip-prompt', path } };
+      }
+      return extract(file, path, node, listing, password);
+    },
   };
+
+  let pending = null;
+
+  function listArchive(file, path, listing) {
+    const out = [line(`Archive:  ${file}`), line('  Length      Date    Time    Name'), line('---------  ---------- -----   ----')];
+    let total = 0, count = 0;
+    for (const e of listing) {
+      total += e.size; if (!e.dir) count++;
+      out.push([{ t: `${String(e.size).padStart(9)}  2026-11-20 09:14   ` }, { t: e.name, c: e.dir ? 'dir' : 'file' }]);
+    }
+    out.push(line('---------                     -------'));
+    out.push(line(`${String(total).padStart(9)}                     ${count} file${count === 1 ? '' : 's'}`));
+    return { out, event: { type: 'unzip-list', path, entries: listing.map((e) => e.name) } };
+  }
+
+  function extract(file, path, node, listing, password) {
+    if (node.archive.password && password !== node.archive.password) {
+      const first = listing.find((e) => !e.dir)?.name ?? '';
+      return { out: [line(`Archive:  ${file}`), err(`   skipping: ${first}  incorrect password`)], ok: false, event: { type: 'error', cmd: 'unzip', reason: 'bad-password', target: path } };
+    }
+    const here = fs.get(cwd);
+    const clash = Object.keys(node.archive.entries).find((n) => here.children.has(n));
+    if (clash) {
+      return fail('unzip', 'exists', `${cwd === '/' ? '' : cwd}/${clash}`, `unzip: ${clash} is already here (this training machine doesn't overwrite files)`);
+    }
+    const added = fs.addTree(cwd, node.archive.entries);
+    const out = [line(`Archive:  ${file}`)];
+    for (const e of listing) out.push([{ t: e.dir ? '   creating: ' : '  inflating: ' }, { t: e.name, c: e.dir ? 'dir' : 'file' }]);
+    const top = added.filter((p) => parentOf(p) === cwd);
+    return { out, event: { type: 'unzip', path, dir: cwd, added, top, protected: !!node.archive.password } };
+  }
+
+  /** Answer an interactive password prompt. */
+  function answer(text) {
+    const p = pending;
+    pending = null;
+    cwd = p.cwdAtStart;
+    const res = extract(p.file, p.path, p.node, p.listing, text);
+    // the "Archive:" line was already printed when the prompt appeared
+    if (res.out[0]?.[0]?.t?.startsWith('Archive:')) res.out.shift();
+    return res;
+  }
 
   function fail(cmd, reason, target, message) {
     return { out: [err(message)], ok: false, event: { type: 'error', cmd, reason, target } };
@@ -134,6 +209,10 @@ export function createShell(machine) {
 
   function run(rawLine) {
     const text = String(rawLine ?? '');
+    if (pending) {
+      const res = answer(text);
+      return { ok: res.ok !== false, out: res.out, event: { ...res.event, command: 'unzip (password)' } };
+    }
     if (text.length > MAX_INPUT) return fail('', 'usage', null, `bash: input is longer than ${MAX_INPUT} characters`);
     const op = text.match(/[;|&<>`]|\$\(/);
     if (op) return { ok: false, out: [err(`bash: '${op[0]}' (chaining, pipes and redirection) isn't available on this training machine. Run one command at a time.`)], event: { type: 'error', cmd: '', reason: 'usage', target: null, command: text.trim() } };
@@ -150,6 +229,14 @@ export function createShell(machine) {
 
   return {
     run,
+    /** While unzip waits for a password: { label } (the prompt to show), else null. */
+    get awaiting() { return pending ? { label: pending.label } : null; },
+    /** Ctrl+C / Escape during a password prompt. */
+    cancel() {
+      if (!pending) return null;
+      pending = null;
+      return { ok: false, out: [line('^C')], event: { type: 'noop', command: '^C' } };
+    },
     get cwd() { return cwd; },
     prompt: () => ({ user: machine.user, host: machine.host, dir: displayPath(cwd, home) }),
   };

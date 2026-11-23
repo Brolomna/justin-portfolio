@@ -135,7 +135,7 @@ export const steps = [
     },
     expect: DOCS,
     done: (e) => e.type === 'cd' && e.direction === 'up' && e.to === HOME,
-    success: () => 'You climbed one level up, back to <code>/home/rookie</code>. The prompt shows <code>~</code> again, and the glowing trail shrank by one step.',
+    success: () => 'You climbed one level up, back to <code>/home/rookie</code>. The prompt shows <code>~</code> again, and the glowing trail shrank by one step. Keep climbing with <code>cd ..</code> and you reach <code>/home</code>, then <code>/</code>: the <b>root</b>, the top of the whole filesystem. (<code>cd ~</code> brings you home.)',
     remember: ['cd ..', 'go up one level'],
     hints: [
       'You want to return to the directory that contains Documents.',

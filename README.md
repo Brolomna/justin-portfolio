@@ -35,18 +35,28 @@ After deploying, submit `https://anmolsiwa.com.np/sitemap.xml` in Google Search 
 
 ## Terminal Academy (interactive-learning.html)
 
-`public/interactive-learning.html` - Topic 01 "Exploring Linux": a 3D filesystem you explore by typing
-`pwd`, `ls`, `ls -a`, `cd`, `cd ..` and `cat`. Standalone page (not linked from the home page yet, `noindex`
-while in testing). Everything is simulated in the browser; no real shell is involved.
+`public/interactive-learning.html` - learn Linux by typing commands into a simulated terminal and watching a
+3D (or 2D) filesystem respond. Opens on a mission menu (deep links: `#exploring`, `#archives`, `#unfamiliar`, `#vault`):
 
-- `public/interactive-learning/js/fs/` - simulated filesystem, path resolver and allowlisted command
-  interpreter (pure JS, the single source of truth). Tests: `node tests/terminal-academy.mjs`.
-- `js/lessons/exploring-linux.js` - the nine guided steps, hints and the practice objective (edit text here).
-- `js/world/world.js` - Three.js scene that reacts to command events; `fallback.js` is the no-WebGL map;
-  `visibility.js` is the shared "what has been discovered" rule.
-- `js/ui/` - terminal console and lesson card; `js/main.js` wires state -> shell -> world + lesson.
-- `js/vendor/three-r162.module.min.js` - Three.js r162 (MIT, see THREE-LICENSE.txt), loaded only on this page. r162 is the last release that still runs on WebGL 1 devices; do not upgrade past it without a WebGL 2 check.
-- Renderers: WebGL 3D (`world/world.js`), then a Canvas 2D view of the same world for browsers without WebGL (`world/canvas-world.js`), then a text map (`world/fallback.js`). Both visual renderers share `world/layout.js`.
+1. Lesson 1, Exploring Linux - `pwd`, `ls`, `ls -a`, `cd`, `cd ..` (all the way up to `/`), `cat`.
+2. Lesson 2, Unpacking Archives - `unzip -l`, `unzip`, and password-protected zips (interactive, hidden prompt).
+3. Test 1, An Unfamiliar Machine - no instructions; find the hidden message.
+4. Test 2, The Vault (ultimate) - three password parts hidden in hidden files across the machine unlock
+   `vault/top_secret.zip` (fictional "classified" joke files inside).
+
+Standalone page, not linked from the home page yet, `noindex` while in testing. Everything is simulated in the
+browser; no real shell is involved.
+
+- `public/interactive-learning/js/fs/` - simulated filesystem (`filesystem.js`, with zip archives and extraction),
+  the story machines (`machines.js`), path resolver and the allowlisted command interpreter (`shell.js`).
+  Tests: `node tests/terminal-academy.mjs`.
+- `js/lessons/` - `missions.js` (the menu, in order), `exploring-linux.js` (Lesson 1 + Test 1 text),
+  `archives.js` (Lesson 2). Edit lesson text here.
+- `js/world/` - `world.js` (WebGL 3D), `canvas-world.js` (Canvas 2D view for browsers without WebGL),
+  `fallback.js` (text map); `layout.js` and `visibility.js` are shared so every view agrees.
+- `js/ui/` - terminal console (incl. password mode) and the mission card; `js/main.js` wires state -> shell -> world + card.
+- `js/vendor/three-r162.module.min.js` - Three.js r162 (MIT, see THREE-LICENSE.txt), loaded only on this page.
+  r162 is the last release that still runs on WebGL 1 devices; do not upgrade past it without a WebGL 2 check.
 - Test URLs: `?reduced` forces reduced motion, `?view=2d` forces the 2D view, `?view=map` forces the text map.
 
 ## Client-side mini projects

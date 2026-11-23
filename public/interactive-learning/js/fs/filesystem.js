@@ -1,22 +1,41 @@
 // Simulated filesystem. Pure data + lookups: no DOM, no rendering, no real OS access.
 // A machine spec describes the tree with plain objects: an object is a directory,
-// a string is a text file's contents.
+// a string is a text file's contents, and zip(...) is a .zip archive.
 
 export const isHidden = (name) => name.startsWith('.');
+
+const ZIP = Symbol('zip');
+
+/** A zip archive in a machine spec. `entries` uses the same spec format as a directory. */
+export function zip(entries, { password = null } = {}) {
+  return { [ZIP]: true, entries, password };
+}
+
+// What `cat` shows for an archive: compressed bytes, not text (like a real terminal).
+function archiveBytes(name) {
+  let h = 7;
+  for (const ch of name) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const junk = '\u00a7\u00d2\u00fe\u00b4\u2592\u00d8\u00a4\u00e5\u0091\u00b6\u00a5\u00f0\u00ff\u00e8';
+  let out = 'PK\u0003\u0004\u0014\u0000\u0008\u0000 ';
+  for (let i = 0; i < 18; i++) { h = (h * 1103515245 + 12345) >>> 0; out += junk[h % junk.length]; }
+  return out;
+}
 
 /** Build an immutable-shaped tree of nodes from a nested spec. */
 export function createFilesystem(spec) {
   const root = { name: '/', type: 'dir', path: '/', parent: null, children: new Map() };
   const index = new Map([['/', root]]);
 
-  const add = (parent, name, value) => {
+  const add = (parent, name, value, added) => {
     const path = parent.path === '/' ? `/${name}` : `${parent.path}/${name}`;
-    const node = typeof value === 'string'
-      ? { name, type: 'file', path, parent, content: value }
-      : { name, type: 'dir', path, parent, children: new Map() };
+    let node;
+    if (typeof value === 'string') node = { name, type: 'file', path, parent, content: value };
+    else if (value && value[ZIP]) node = { name, type: 'file', path, parent, content: archiveBytes(name), archive: value };
+    else node = { name, type: 'dir', path, parent, children: new Map() };
     parent.children.set(name, node);
     index.set(path, node);
-    if (node.type === 'dir') for (const [n, v] of Object.entries(value)) add(node, n, v);
+    added?.push(path);
+    if (node.type === 'dir') for (const [n, v] of Object.entries(value)) add(node, n, v, added);
   };
   for (const [n, v] of Object.entries(spec)) add(root, n, v);
 
@@ -25,6 +44,14 @@ export function createFilesystem(spec) {
     get: (path) => index.get(path) || null,
     /** Every node, parents before children (stable order for layout). */
     all: () => [...index.values()],
+    /** Add a spec under an existing directory (used by unzip). Returns every new path. */
+    addTree(dirPath, entries) {
+      const dir = index.get(dirPath);
+      if (!dir || dir.type !== 'dir') throw new Error(`not a directory: ${dirPath}`);
+      const added = [];
+      for (const [n, v] of Object.entries(entries)) add(dir, n, v, added);
+      return added;
+    },
   };
 }
 
@@ -41,86 +68,17 @@ export function fileKind(name) {
   return 'text';
 }
 
-// ---------------------------------------------------------------------------
-// Machines
-// ---------------------------------------------------------------------------
-
-// The lesson machine (Topic 01 story: "The Forgotten Machine").
-export function lessonMachine() {
-  return {
-    id: 'lesson',
-    user: 'rookie',
-    host: 'machine',
-    home: '/home/rookie',
-    start: '/home/rookie',
-    tree: {
-      home: {
-        rookie: {
-          Desktop: {
-            'welcome.txt': 'Welcome to the machine.\nEverything you see here is a file or a directory.',
-          },
-          Documents: {
-            'notes.txt': 'This machine contains more than it appears.\nKeep exploring.',
-            project: {
-              'clue.txt': 'Not every name shows up the first time you look.\nNames that start with a dot like to stay out of sight.',
-            },
-          },
-          Downloads: {
-            'old_file.zip': 'PK\u0003\u0004\u0014\u0000\u0008\u0000 §Òþ´old_file/\u0000ÿè ▒▒Ø¤',
-          },
-          '.hidden': {
-            'message.txt': 'You found me.\n\nThis machine was never empty.\nYou simply needed to learn how to explore it.',
-          },
-        },
-      },
-    },
-  };
-}
-
-// The independent-practice machine: a different user, different layout, different names.
-export const PRACTICE_TARGET = '/home/operator/projects/radio/.archive/transmission.txt';
-
-export function practiceMachine() {
-  return {
-    id: 'practice',
-    user: 'operator',
-    host: 'relay',
-    home: '/home/operator',
-    start: '/home/operator',
-    target: PRACTICE_TARGET,
-    tree: {
-      home: {
-        operator: {
-          'readme.txt': 'Relay station log-in successful.\nThe radio team kept their work in projects.',
-          logs: {
-            'system.log': '[04:12] relay boot ok\n[04:13] antenna array online\n[04:20] transmission archived by operator',
-            'access.log': '[04:11] operator logged in\n[04:19] operator opened projects/radio',
-          },
-          backups: {
-            'site_backup.zip': 'PK\u0003\u0004\u0014\u0000\u0000\u0000 å\u0091backup/\u0000▒¶¥ð',
-            '.old': {
-              'readme.txt': 'Nothing in here but old backups.\nThe archive was never stored with the backups.',
-            },
-          },
-          projects: {
-            'todo.txt': '- recalibrate antenna\n- archive the last transmission\n- tell nobody where',
-            radio: {
-              'frequencies.txt': '121.5 MHz  emergency\n243.0 MHz  military\n\nThe last transmission was archived right here,\nwhere a normal listing will never show it.',
-              '.archive': {
-                'transmission.txt': 'TRANSMISSION 07 // RECOVERED\n\nIf you are reading this, you no longer need a guide.\nYou found your location, listed what was there,\nlooked for what was hidden, and opened it.\n\nThe machine is yours to explore.',
-              },
-            },
-          },
-          '.config': {
-            'settings.txt': 'theme=dark\nprompt=minimal\nbeacon=off',
-          },
-        },
-      },
-    },
-  };
-}
-
 /** Attach a filesystem to a machine spec. Each call builds a fresh, independent tree. */
 export function buildMachine(spec) {
   return { ...spec, fs: createFilesystem(spec.tree) };
+}
+
+/** Flatten an archive's entries into ['dir/', 'dir/file.txt', ...] in listing order. */
+export function archiveListing(entries, prefix = '') {
+  const out = [];
+  for (const [n, v] of Object.entries(entries)) {
+    if (typeof v === 'string' || (v && v[ZIP])) out.push({ name: prefix + n, size: typeof v === 'string' ? v.length : 64, dir: false });
+    else { out.push({ name: `${prefix}${n}/`, size: 0, dir: true }); out.push(...archiveListing(v, `${prefix}${n}/`)); }
+  }
+  return out;
 }

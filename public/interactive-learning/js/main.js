@@ -1,13 +1,13 @@
 // Terminal Academy — wiring. One authoritative state object:
-//   command → shell (simulated FS) → output + event → view state → 3D world + lesson
-// The world and the lesson only ever read state; only this file changes it.
+//   command → shell (simulated FS) → output + event → view state → world + mission card
+// The world and the card only ever read state; only this file changes it.
 
-import { buildMachine, lessonMachine, practiceMachine, sortNames } from './fs/filesystem.js';
+import { buildMachine, sortNames } from './fs/filesystem.js';
 import { createShell } from './fs/shell.js';
 import { pathChain } from './fs/path.js';
 import { createTerminal, esc } from './ui/terminal.js';
 import { createLessonCard } from './ui/lesson.js';
-import { topic, steps, finale, practice } from './lessons/exploring-linux.js';
+import { missions, byId, nextOf } from './lessons/missions.js';
 import { visibilityOf } from './world/visibility.js';
 
 const $ = (id) => document.getElementById(id);
@@ -15,16 +15,18 @@ const params = new URLSearchParams(location.search);
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches || params.has('reduced');
 
 const state = {
-  mode: 'lesson',          // 'lesson' | 'finale' | 'practice'
+  mission: null,           // the mission object from lessons/missions.js
+  phase: 'menu',           // 'menu' | 'briefing' | 'steps' | 'finale' | 'test'
   machine: null,
   shell: null,
   view: null,              // { cwd, visited:Set, listed:Map }
   step: 0,
   stepDone: false,
   mistakes: 0,
+  solved: false,
+  partsFound: new Set(),
   busy: false,
   queue: [],
-  practiceSolved: false,
 };
 
 let world = null;
@@ -35,6 +37,7 @@ const term = createTerminal({
   promptEl: $('termPrompt'), idEl: $('termId'),
   onSubmit: (line) => submit(line),
   onEscape: () => world?.closeHologram(),
+  onInterrupt: () => interrupt(),
 });
 
 // ------------------------------------------------------------------ world
@@ -97,6 +100,7 @@ function loadMachine(spec) {
     visited: new Set(pathChain(state.machine.start)),
     listed: new Map(),
   };
+  term.setPasswordMode(null);
   term.clear();
   term.resetHistory();
   term.setPrompt(state.shell.prompt());
@@ -106,9 +110,11 @@ function loadMachine(spec) {
 
 // ---------------------------------------------------------------- commands
 function submit(line) {
-  if (!line.trim()) {
-    // Enter on an empty line continues the lesson once a step is complete
-    if (state.mode === 'lesson' && state.stepDone) nextStep();
+  const awaiting = state.shell?.awaiting;
+  if (!awaiting && !line.trim()) {
+    // Enter on an empty line moves the mission card along
+    if (state.phase === 'briefing') beginMission();
+    else if (state.phase === 'steps' && state.stepDone) nextStep();
     else term.echo(term.prompt, '', []);
     return;
   }
@@ -116,13 +122,30 @@ function submit(line) {
   run(line);
 }
 
+function interrupt() {
+  const res = state.shell?.cancel();
+  if (res) {
+    term.echoSecret(state.lastSecretLabel || '', res.out, false);
+    term.setPasswordMode(null);
+  } else {
+    term.echo(term.prompt, '^C', []);
+  }
+}
+
+function knownCommands() {
+  const m = state.mission;
+  if (!m) return [];
+  if (m.kind === 'test') return m.known;
+  const upto = state.phase === 'steps' ? state.step + (state.stepDone ? 1 : 0) : m.steps.length;
+  return m.steps.slice(0, upto).filter((s) => s.remember).map((s) => s.remember[0]);
+}
+
 async function run(line) {
   const shownPrompt = term.prompt;
+  const secretLabel = state.shell.awaiting?.label;
 
-  if (line.trim() === 'help') {
-    const known = state.mode === 'practice' || state.mode === 'finale'
-      ? finale.recap.map(([c]) => c)
-      : learnedCommands().map(([c]) => c);
+  if (!secretLabel && line.trim() === 'help') {
+    const known = knownCommands();
     term.echo(shownPrompt, line, [[{ t: known.length ? `Commands you have learned: ${known.join(', ')}` : "You haven't learned any commands yet. Follow the lesson card.", c: 'content' }]]);
     return;
   }
@@ -130,7 +153,13 @@ async function run(line) {
   const res = state.shell.run(line);
   const { event } = res;
   if (event.type === 'clear') term.clear();
+  else if (secretLabel) term.echoSecret(secretLabel, res.out, res.ok);
   else term.echo(shownPrompt, line, res.out, res.ok);
+
+  // a program (unzip) is now waiting for a password, or has stopped waiting
+  const awaiting = state.shell.awaiting;
+  state.lastSecretLabel = awaiting?.label || null;
+  term.setPasswordMode(awaiting ? awaiting.label : null);
 
   // update the single source of truth
   const v = state.view;
@@ -141,6 +170,9 @@ async function run(line) {
     } else if (event.type === 'ls' && !event.file) {
       const prev = v.listed.get(event.path) || { visible: false, hidden: false };
       v.listed.set(event.path, { visible: true, hidden: prev.hidden || event.all });
+    } else if (event.type === 'unzip') {
+      // unzip printed what it created, so the learner has "seen" those entries
+      for (const p of event.top) v.visited.add(p);
     }
   }
   term.setPrompt(state.shell.prompt());
@@ -149,17 +181,47 @@ async function run(line) {
   try { await world.react(event, v); } catch (err) { console.error(err); }
   state.busy = false;
   describeWorld();
-  checkLesson(event, res.ok);
+  checkProgress(event, res.ok);
   if (state.queue.length) run(state.queue.shift());
 }
 
-// ------------------------------------------------------------------ lesson
-function learnedCommands() {
-  const upto = state.mode === 'lesson' ? state.step + (state.stepDone ? 1 : 0) : steps.length;
-  return steps.slice(0, upto).filter((s) => s.remember).map((s) => s.remember);
+// ---------------------------------------------------------------- missions
+function setTopic(m) {
+  $('topicNum').textContent = m ? m.label : 'Terminal Academy';
+  $('topicTitle').textContent = m ? m.title : 'Missions';
+  $('topicSub').textContent = m ? m.subtitle : 'Learn Linux by exploring a living machine.';
+  $('restartBtn').hidden = !m;
+  $('missionsBtn').hidden = !m;
+}
+
+function startMission(id) {
+  const m = byId(id) || missions[0];
+  state.mission = m;
+  state.step = 0;
+  state.stepDone = false;
+  state.mistakes = 0;
+  state.solved = false;
+  state.partsFound = new Set();
+  state.queue.length = 0;
+  loadMachine(m.machine());
+  setTopic(m);
+  hideMenu();
+  state.phase = 'briefing';
+  card.briefing(m, beginMission);
+  try { history.replaceState(null, '', `#${m.id}`); } catch { /* ignore */ }
+  updateInsets();
+  term.focus();
+}
+
+function beginMission() {
+  const m = state.mission;
+  if (m.kind === 'lesson') { state.phase = 'steps'; showStep(); }
+  else { state.phase = 'test'; card.test(m, () => startMission(m.id)); if (m.parts) card.parts(m, state.partsFound); }
+  term.focus();
 }
 
 function showStep() {
+  const steps = state.mission.steps;
   const s = steps[state.step];
   state.stepDone = false;
   state.mistakes = 0;
@@ -168,78 +230,87 @@ function showStep() {
 }
 
 function updateWander() {
-  if (state.mode !== 'lesson' || state.stepDone) return;
-  const s = steps[state.step];
+  if (state.phase !== 'steps' || state.stepDone) return;
+  const s = state.mission.steps[state.step];
   const cwd = state.view.cwd;
   if (!s.expect || cwd === s.expect) { card.wander(null); return; }
   const target = s.expect === state.machine.home ? '~' : '~' + s.expect.slice(state.machine.home.length);
-  card.wander(`You've wandered to <code>${esc(cwd)}</code>, which is fine! This step starts in <code>${esc(target)}</code>. To jump there, type <code>cd ${esc(target)}</code> (<code>~</code> means your home directory).`);
+  card.wander(`You're in <code>${esc(cwd)}</code>, which is fine! This step starts in <code>${esc(target)}</code>. To jump there, type <code>cd ${esc(target)}</code> (<code>~</code> means your home directory).`);
 }
 
-function checkLesson(event, ok) {
-  if (state.mode === 'practice') {
-    if (!state.practiceSolved && event.type === 'cat' && event.files.some((f) => f.path === state.machine.target)) {
-      state.practiceSolved = true;
+function checkProgress(event, ok) {
+  const m = state.mission;
+  if (!m) return;
+  if (state.phase === 'test') {
+    if (m.parts && event.type === 'cat') {
+      m.parts.forEach((p, i) => { if (event.files.some((f) => f.path === p.path)) state.partsFound.add(i); });
+      card.parts(m, state.partsFound);
+    }
+    if (!state.solved && ok && m.done(event)) {
+      state.solved = true;
       world.finale();
-      card.practiceSuccess(practice.success, resetPractice);
-    } else if (!ok) state.mistakes++;
+      const next = nextOf(m.id);
+      card.testSuccess(m, next, { onReset: () => startMission(m.id), onNext: next ? () => startMission(next.id) : null, onMenu: showMenu });
+    } else if (!ok && ++state.mistakes === 4) card.nudge();
     return;
   }
-  if (state.mode !== 'lesson' || state.stepDone) return;
-  const s = steps[state.step];
+  if (state.phase !== 'steps' || state.stepDone) return;
+  const s = m.steps[state.step];
   if (ok && s.done(event, state.view)) {
     state.stepDone = true;
-    const last = state.step === steps.length - 1;
+    const last = state.step === m.steps.length - 1;
     card.success(s.success(event), s.remember, { last });
     $('lessonBody').querySelector('[data-next]')?.addEventListener('click', () => { nextStep(); term.focus(); });
     if (last) world.finale();
     return;
   }
-  if (!ok) {
-    state.mistakes++;
-    if (state.mistakes === 3) card.nudge();
-  }
+  if (!ok && ++state.mistakes === 3) card.nudge();
   updateWander();
 }
 
 function nextStep() {
   if (!state.stepDone) return;
-  if (state.step >= steps.length - 1) { showFinale(); return; }
+  const m = state.mission;
+  if (state.step >= m.steps.length - 1) {
+    state.phase = 'finale';
+    const next = nextOf(m.id);
+    card.finale(m, next, { onNext: next ? () => startMission(next.id) : null, onMenu: showMenu, onRestart: () => startMission(m.id) });
+    return;
+  }
   state.step++;
   showStep();
 }
 
-function showFinale() {
-  state.mode = 'finale';
-  card.finale(finale, startPractice, restartLesson);
-  $('practiceBtn').hidden = false;
+// ------------------------------------------------------------------- menu
+function renderMenu() {
+  $('missionList').innerHTML = missions.map((m, i) => `
+    <li><button class="mission kind-${m.kind}${m.ultimate ? ' ultimate' : ''}" type="button" data-mission="${m.id}">
+      <span class="mission-num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="mission-body">
+        <span class="mission-label">${esc(m.label)}${i === 0 ? ' · start here' : ''}</span>
+        <span class="mission-title">${esc(m.title)}</span>
+        <span class="mission-sub">${esc(m.subtitle)}</span>
+        <span class="mission-teaches">${m.teaches.map((t) => `<code>${esc(t)}</code>`).join(' ')}</span>
+      </span>
+      <span class="mission-go" aria-hidden="true">→</span>
+    </button></li>`).join('');
+  $('missionList').querySelectorAll('[data-mission]').forEach((b) => { b.onclick = () => startMission(b.dataset.mission); });
 }
 
-function startLesson() {
-  state.mode = 'lesson';
-  state.step = 0;
-  loadMachine(lessonMachine());
-  showStep();
-  $('restartBtn').hidden = false;
+function showMenu() {
+  state.phase = 'menu';
+  $('intro').hidden = false;
+  lessonEl.hidden = true;
+  $('terminal').hidden = true;
+  updateInsets();
+  $('missionList').querySelector(`[data-mission="${state.mission?.id || missions[0].id}"]`)?.focus();
 }
 
-function restartLesson() {
-  startLesson();
-  term.focus();
+function hideMenu() {
+  $('intro').hidden = true;
+  lessonEl.hidden = false;
+  $('terminal').hidden = false;
 }
-
-function startPractice() {
-  state.mode = 'practice';
-  state.practiceSolved = false;
-  state.mistakes = 0;
-  loadMachine(practiceMachine());
-  card.practice(practice, resetPractice);
-  $('practiceBtn').hidden = true;
-  $('restartBtn').hidden = false;
-  term.focus();
-}
-
-function resetPractice() { startPractice(); }
 
 // Tell the 3D view which parts of the screen the panels cover.
 function updateInsets() {
@@ -249,8 +320,8 @@ function updateInsets() {
   const termEl = $('terminal');
   const term = termEl.hidden ? null : termEl.getBoundingClientRect();
   if (wide) {
-    // desktop: lesson card and terminal share the left column; the world gets the rest
-    world.setInsets({ left: Math.max(lesson ? lesson.right : 0, term ? term.right : 0) + 60, top: 56, bottom: 0 });
+    // desktop: lesson card on the left, terminal along the bottom-left; centre the world in what's left
+    world.setInsets({ left: (lesson ? lesson.right : 0) + 60, top: 56, bottom: term ? term.height * 0.25 : 0 });
   } else {
     world.setInsets({ left: 0, top: lesson ? lesson.bottom : 56, bottom: term ? term.height + 16 : 0 });
   }
@@ -269,29 +340,15 @@ function describeWorld() {
 
 // ------------------------------------------------------------------- boot
 async function boot() {
-  $('introStory').innerHTML = topic.story.map((p) => `<p>${esc(p)}</p>`).join('');
   world = await createWorld();
-  // load the lesson machine behind the intro so the mysterious world is visible
-  state.mode = 'lesson';
-  loadMachine(lessonMachine());
+  renderMenu();
+  // the Lesson 1 machine sits mysteriously behind the menu
+  loadMachine(missions[0].machine());
 
-  const begin = (practiceFirst) => {
-    $('intro').hidden = true;
-    lessonEl.hidden = false;
-    $('terminal').hidden = false;
-    if (practiceFirst) startPractice();
-    else { state.step = 0; showStep(); $('restartBtn').hidden = false; }
-    updateInsets();
-    term.focus();
-  };
   window.addEventListener('resize', updateInsets);
   new ResizeObserver(updateInsets).observe(lessonEl);
-  $('enterBtn').addEventListener('click', () => begin(false));
-  $('skipBtn').addEventListener('click', () => begin(true));
-  $('enterBtn').focus();
-
-  $('restartBtn').addEventListener('click', restartLesson);
-  $('practiceBtn').addEventListener('click', startPractice);
+  $('restartBtn').addEventListener('click', () => startMission(state.mission.id));
+  $('missionsBtn').addEventListener('click', showMenu);
   $('lessonToggle').addEventListener('click', () => {
     const collapsed = lessonEl.classList.toggle('collapsed');
     $('lessonToggle').setAttribute('aria-expanded', String(!collapsed));
@@ -302,7 +359,7 @@ async function boot() {
   // Typing anywhere goes to the terminal; clicking the world closes a hologram.
   document.addEventListener('keydown', (e) => {
     if (!$('intro').hidden) return;
-    if (e.key === 'Escape') { world.closeHologram(); return; }
+    if (e.key === 'Escape' && !term.passwordMode) { world.closeHologram(); return; }
     const t = e.target;
     if (t.closest?.('input, textarea, button, a, [contenteditable]')) return;
     if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) term.focus();
@@ -311,6 +368,11 @@ async function boot() {
   $('terminal').addEventListener('mouseup', () => {
     if (!window.getSelection()?.toString()) term.focus();
   });
+
+  // deep links (#vault etc.) open a mission directly
+  const fromHash = byId(location.hash.slice(1));
+  if (fromHash) startMission(fromHash.id);
+  else { setTopic(null); showMenu(); }
 }
 
 boot().catch((err) => {

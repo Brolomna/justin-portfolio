@@ -95,18 +95,38 @@ export class CanvasWorld {
     this.view = view;
     this.layout = computeLayout(machine);
     this.objects.clear();
-    for (const node of machine.fs.all()) {
-      const info = this.layout.get(node.path);
-      this.objects.set(node.path, {
-        node, pos: info.pos, heading: info.heading, color: rgb(colorFor(node)), level: 0, target: 0, state: 'none',
-        scale: node.type === 'dir' && isHomeAncestor(machine, node.path) ? 0.62 : 1, grow: 1, yOff: 0, shakeX: 0,
-        flash: null, archVisible: true, phase: Math.random() * 6.28, spin: 0,
-      });
-    }
+    for (const node of machine.fs.all()) this.addRec(node);
     this.applyVisibility(view, { animate: false });
     this.trail = pathChain(view.cwd);
     this.placeCamera(view.cwd);
     this.fog = 0.02; this.glow = 0;
+  }
+
+  addRec(node) {
+    const info = this.layout.get(node.path);
+    this.objects.set(node.path, {
+      node, pos: info.pos, heading: info.heading, color: rgb(colorFor(node)), level: 0, target: 0, state: 'none',
+      scale: node.type === 'dir' && isHomeAncestor(this.machine, node.path) ? 0.62 : 1, grow: 1, yOff: 0, shakeX: 0,
+      flash: null, archVisible: true, phase: Math.random() * 6.28, spin: 0,
+    });
+  }
+
+  /** unzip added nodes: re-run the layout, glide moved objects, add the new ones. */
+  grow(view) {
+    this.layout = computeLayout(this.machine);
+    for (const node of this.machine.fs.all()) {
+      const rec = this.objects.get(node.path);
+      if (!rec) { this.addRec(node); continue; }
+      const info = this.layout.get(node.path);
+      const from = copy(rec.pos);
+      rec.heading = info.heading;
+      if (Math.hypot(from.x - info.pos.x, from.z - info.pos.z) > 0.01) this.tween(900, (k) => { rec.pos = lerp3(from, info.pos, ease(k)); }, 0, () => { rec.pos = info.pos; });
+    }
+    this.trail = pathChain(view.cwd);
+  }
+
+  banner(text, at, color = [186, 255, 230], ms = 3400) {
+    this.addFx({ type: 'banner', text, at, color }, ms);
   }
 
   placeCamera(path) {
@@ -267,6 +287,36 @@ export class CanvasWorld {
         await this.travel(event.from, event.to, event.direction);
         if (dest) { dest.spin = 0; dest.archVisible = false; }
         this.ring(this.layout.get(view.cwd).pos, '#00f5a0', { radius: 7, dur: 900 });
+        break;
+      }
+      case 'unzip-list': {
+        const z = this.objects.get(event.path);
+        if (!z) break;
+        this.flash(z, '#00cfff', 900);
+        this.ring(z.pos, '#00cfff', { radius: 5, dur: 900 });
+        const files = event.entries.filter((e) => !e.endsWith('/')).length;
+        this.banner(`📦 ${files} file${files === 1 ? '' : 's'} inside`, { ...z.pos, y: z.pos.y + 2.2 }, [191, 239, 255], 3200);
+        break;
+      }
+      case 'unzip-prompt': {
+        const z = this.objects.get(event.path);
+        if (!z) break;
+        this.flash(z, '#ffc45c', 1400);
+        this.ring(z.pos, '#ffc45c', { radius: 4, dur: 1000, width: 2.5 });
+        this.banner('🔒 password required', { ...z.pos, y: z.pos.y + 2.2 }, [255, 217, 138], 3600);
+        break;
+      }
+      case 'unzip': {
+        const z = this.objects.get(event.path);
+        this.grow(view);
+        const at = z ? z.pos : here.pos;
+        if (z) this.flash(z, 'white', 900);
+        this.ring(at, '#ffb547', { radius: 14, dur: 1300, width: 2.5 });
+        if (event.protected) {
+          this.cssPulse('glitch', 420);
+          this.ring(at, '#ffc45c', { radius: 30, dur: 1900, width: 1.5, sides: 6 });
+        }
+        this.applyVisibility(view);
         break;
       }
       case 'cat': {
@@ -607,7 +657,7 @@ export class CanvasWorld {
         const pr = this.project(fx.at);
         if (!pr) continue;
         const a = k < 0.12 ? k / 0.12 : k > 0.85 ? (1 - k) / 0.15 : 1;
-        this.label(fx.text, pr.x, pr.y, Math.max(16, pr.s * 0.62), [186, 255, 230], a);
+        this.label(fx.text, pr.x, pr.y, Math.max(16, pr.s * 0.62), fx.color || [186, 255, 230], a);
       } else if (fx.type === 'ghost') {
         const glitch = Math.sin(k * 90) > 0.3 ? 1 : 0.3;
         const a = 0.85 * (1 - k) * glitch;

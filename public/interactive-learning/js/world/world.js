@@ -250,6 +250,21 @@ export class World {
     for (const [path, info] of computeLayout(this.machine)) this.layoutInfo.set(path, { ...info, pos: v3(info.pos) });
   }
 
+  /** unzip added nodes: re-run the layout, glide moved objects, build the new ones. */
+  grow(view) {
+    this.layout();
+    for (const node of this.machine.fs.all()) {
+      const info = this.layoutInfo.get(node.path);
+      const rec = this.objects.get(node.path);
+      if (!rec) { this.buildObject(node); continue; }
+      const from = rec.group.position.clone();
+      rec.pos = info.pos; rec.heading = info.heading;
+      rec.group.rotation.y = -info.heading;
+      if (from.distanceTo(info.pos) > 0.01) this.tween(900, (k) => rec.group.position.lerpVectors(from, info.pos, ease(k)), 0, () => rec.group.position.copy(info.pos));
+    }
+    this.rebuildTrail(view.cwd);
+  }
+
   buildObject(node) {
     const info = this.layoutInfo.get(node.path);
     const color = colorFor(node);
@@ -690,6 +705,36 @@ export class World {
         await this.travel(event.from, event.to, event.direction);
         if (dest) { dest.spin = 0; if (dest.arch) this.fadeArch(dest); }
         this.ringPulse(this.layoutInfo.get(view.cwd).pos, '#00f5a0', { radius: 7, dur: 900 });
+        break;
+      }
+      case 'unzip-list': {
+        const z = this.objects.get(event.path);
+        if (!z) break;
+        this.flashRecord(z, '#00cfff', 900);
+        this.ringPulse(z.pos, '#00cfff', { radius: 5, dur: 900, width: 0.2 });
+        const files = event.entries.filter((e) => !e.endsWith('/')).length;
+        this.floatBanner(`📦 ${files} file${files === 1 ? '' : 's'} inside`, z.group.position.clone().add(new THREE.Vector3(0, 2.2, 0)), '#bfefff', 3200);
+        break;
+      }
+      case 'unzip-prompt': {
+        const z = this.objects.get(event.path);
+        if (!z) break;
+        this.flashRecord(z, '#ffc45c', 1400);
+        this.ringPulse(z.pos, '#ffc45c', { radius: 4, dur: 1000, width: 0.25 });
+        this.floatBanner('🔒 password required', z.group.position.clone().add(new THREE.Vector3(0, 2.2, 0)), '#ffd98a', 3600);
+        break;
+      }
+      case 'unzip': {
+        const z = this.objects.get(event.path);
+        this.grow(view);
+        const at = z ? z.pos : here;
+        this.flashRecord(z, '#ffffff', 900);
+        this.ringPulse(at, '#ffb547', { radius: 14, dur: 1300, width: 0.3 });
+        if (event.protected) {
+          this.cssPulse('glitch', 420);
+          this.ringPulse(at, '#ffc45c', { radius: 30, dur: 1900, width: 0.15, segments: 6 });
+        }
+        this.applyVisibility(view, { animate: true });
         break;
       }
       case 'cat': {
