@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terminal Academy · 01 Exploring Linux | Anmol (Justin) Siwa</title>
+<meta name="description" content="Learn Linux terminal navigation by exploring a living 3D computer. Type pwd, ls, cd and cat and watch the machine respond. Runs entirely in your browser.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#03070c">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./interactive-learning/css/academy.css?v=1">
+</head>
+<body>
+<a class="skip-link" href="#termInput">Skip to the terminal</a>
+
+<div class="stage" id="stage"></div>
+<div class="sr-only" id="worldStatus" aria-live="polite"></div>
+
+<header class="topbar">
+  <a class="back" href="./#learning">← Portfolio</a>
+  <div class="topic"><span class="topic-num">01</span><span class="topic-title">Exploring Linux</span><span class="topic-sub">Learn to navigate a computer without a mouse.</span></div>
+  <div class="topbar-actions">
+    <button class="ghost-btn" id="restartBtn" type="button" hidden>Restart<span class="wide-only"> lesson</span></button>
+    <button class="ghost-btn" id="practiceBtn" type="button" hidden>Practice<span class="wide-only"> machine</span></button>
+  </div>
+</header>
+
+<aside class="lesson" id="lesson" aria-label="Lesson" hidden>
+  <button class="lesson-toggle" id="lessonToggle" type="button" aria-expanded="true" aria-controls="lessonBody">Hide</button>
+  <div class="lesson-inner" id="lessonBody"></div>
+</aside>
+
+<section class="terminal" id="terminal" aria-label="Terminal" hidden>
+  <div class="term-head">
+    <span class="term-dot" aria-hidden="true"></span>
+    <span class="term-id" id="termId">rookie@machine</span>
+    <span class="term-meta">simulated shell · nothing runs on a real server</span>
+  </div>
+  <div class="term-log" id="termLog" role="log" aria-live="polite" aria-label="Terminal output"></div>
+  <form class="term-line" id="termForm" autocomplete="off">
+    <label class="prompt" id="termPrompt" for="termInput"></label>
+    <input id="termInput" class="term-input" type="text" inputmode="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="200" aria-describedby="termHelp">
+    <button class="term-enter" type="submit" aria-label="Run command">↵</button>
+  </form>
+  <p class="sr-only" id="termHelp">Type a command and press Enter. Up and Down arrows recall previous commands. Escape closes an open file.</p>
+</section>
+
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+  <div class="intro-card">
+    <p class="intro-kicker">TERMINAL ACADEMY · TOPIC 01</p>
+    <h1 id="introTitle">The Forgotten Machine</h1>
+    <div class="intro-story" id="introStory"></div>
+    <div class="intro-actions">
+      <button class="primary-btn" id="enterBtn" type="button">Enter the machine</button>
+      <button class="link-btn" id="skipBtn" type="button">I know the basics: go to the practice machine</button>
+    </div>
+    <p class="intro-foot">Best on a computer with a keyboard. Everything is simulated in your browser.</p>
+  </div>
+</div>
+
+<noscript><p class="noscript">This lesson needs JavaScript to run the simulated terminal.</p></noscript>
+<script type="module" src="./interactive-learning/js/main.js?v=1"></script>
+</body>
+</html>

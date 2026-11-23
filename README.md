@@ -33,6 +33,21 @@ To plug the skill tree into any page: one `<link>` to `toolkit/toolkit.css`, a
 After deploying, submit `https://anmolsiwa.com.np/sitemap.xml` in Google Search Console
 (Sitemaps) and use URL Inspection -> Request indexing on the home page.
 
+## Terminal Academy (interactive-learning.html)
+
+`public/interactive-learning.html` - Topic 01 "Exploring Linux": a 3D filesystem you explore by typing
+`pwd`, `ls`, `ls -a`, `cd`, `cd ..` and `cat`. Standalone page (not linked from the home page yet, `noindex`
+while in testing). Everything is simulated in the browser; no real shell is involved.
+
+- `public/interactive-learning/js/fs/` - simulated filesystem, path resolver and allowlisted command
+  interpreter (pure JS, the single source of truth). Tests: `node tests/terminal-academy.mjs`.
+- `js/lessons/exploring-linux.js` - the nine guided steps, hints and the practice objective (edit text here).
+- `js/world/world.js` - Three.js scene that reacts to command events; `fallback.js` is the no-WebGL map;
+  `visibility.js` is the shared "what has been discovered" rule.
+- `js/ui/` - terminal console and lesson card; `js/main.js` wires state -> shell -> world + lesson.
+- `js/vendor/three.module.min.js` - Three.js r170 (MIT, see THREE-LICENSE.txt), loaded only on this page.
+- Test URLs: `?reduced` forces reduced motion, `?no3d` forces the map fallback.
+
 ## Client-side mini projects
 
 - `public/password-checker.html` - heuristic strength demo and Web Crypto password generator. No network calls or saved password history.
