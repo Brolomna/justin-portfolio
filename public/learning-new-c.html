@@ -281,7 +281,7 @@ function renderWorld(){if(!THREE||!contentGroup){if(fallbackCtx)renderFallbackWo
     stem.position.y=-.98;group.add(stem);
     const label=labelSprite(i===1?"CURRENT NODE":"UNMAPPED NODE",i===1?"#91ffc0":"#6d9d89",2.05);
     label.position.set(0,-1.62,.08);group.add(label);
-    group.userData.phase=i*1.7;contentGroup.add(group);animated.push(group);
+    group.userData.baseY=-.08;group.userData.phase=i*1.7;group.userData.speed=.65;group.userData.amount=.12;contentGroup.add(group);animated.push(group);
   }
   const msg=labelSprite("DIRECTORY NOT YET MAPPED","#9ce9bd",4.5);msg.position.set(0,1.65,.2);contentGroup.add(msg);
   const sub=labelSprite("TYPE  ls  TO REVEAL FILES AND DIRECTORIES","#76dff2",4.3);sub.position.set(0,-2.15,.2);contentGroup.add(sub);
