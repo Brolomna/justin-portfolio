@@ -5,11 +5,19 @@ import { sortNames, isHidden } from '../fs/filesystem.js';
 import { visibilityOf } from './visibility.js';
 
 export class FallbackWorld {
-  constructor(container) {
+  constructor(container, reason = 'no-webgl') {
     this.container = container;
     this.el = document.createElement('div');
     this.el.className = 'fallback-map';
-    this.el.innerHTML = '<p class="fallback-note">3D isn\'t available in this browser, so the machine is shown as a map. Every command still works.</p><pre class="fallback-tree"></pre><div class="fallback-file" hidden></div>';
+    const why = {
+      'no-webgl': "This browser isn't offering WebGL, the graphics feature the 3D world needs.",
+      failed: "This browser has WebGL, but it couldn't start the 3D view.",
+      forced: '3D is switched off for this visit.',
+    }[reason] || '';
+    const tip = reason === 'forced'
+      ? '<a href="?">Turn 3D back on</a>.'
+      : 'Try turning on hardware acceleration (graphics acceleration) in your browser settings, or lowering privacy shields for this site, then <a href="">reload</a>.';
+    this.el.innerHTML = `<p class="fallback-note"><strong>Showing the machine as a map.</strong> ${why} Every command still works. ${tip}</p><pre class="fallback-tree"></pre><div class="fallback-file" hidden></div>`;
     container.appendChild(this.el);
     this.tree = this.el.querySelector('.fallback-tree');
     this.file = this.el.querySelector('.fallback-file');

@@ -2,7 +2,7 @@
 // simulated filesystem + view state (cwd, visited, listed) and reacts to command
 // events emitted by the shell. Each command type has its own visual response.
 
-import * as THREE from '../vendor/three.module.min.js';
+import * as THREE from '../vendor/three-r162.module.min.js';
 import { isHidden, fileKind, sortNames } from '../fs/filesystem.js';
 import { pathChain, parentOf } from '../fs/path.js';
 import { visibilityOf } from './visibility.js';
@@ -26,6 +26,16 @@ function local(p, heading, x, y, z) {
   return new THREE.Vector3(p.x + x * c - z * s, p.y + y, p.z + x * s + z * c);
 }
 
+// Text canvases are not power-of-two sized; skipping mipmaps keeps them sharp
+// and stops WebGL 1 devices from shrinking them.
+function crispText(tex) {
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.generateMipmaps = false;
+  tex.minFilter = THREE.LinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  return tex;
+}
+
 function makeLabel(text, color, { size = 46, weight = 600, bg = 'rgba(3,10,16,0.72)' } = {}) {
   const pad = 22;
   const c = document.createElement('canvas');
@@ -42,7 +52,7 @@ function makeLabel(text, color, { size = 46, weight = 600, bg = 'rgba(3,10,16,0.
   ctx.fillStyle = color; ctx.textBaseline = 'middle';
   ctx.fillText(text, pad, h / 2 + 2);
   const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
+  crispText(tex);
   tex.anisotropy = 4;
   const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, fog: false });
   const sprite = new THREE.Sprite(mat);
@@ -653,8 +663,7 @@ export class World {
     ctx.fillStyle = '#eafff8';
     lines.forEach((l, i) => ctx.fillText(l, pad, head + pad + i * lh));
     const tex = new THREE.CanvasTexture(c);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = 8;
+    crispText(tex);
     const width = 5.4;
     const height = width * (H / W);
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0, depthTest: false, fog: false }));

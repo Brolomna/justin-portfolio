@@ -40,17 +40,22 @@ const term = createTerminal({
 // ------------------------------------------------------------------ world
 async function createWorld() {
   const stage = $('stage');
-  if (!params.has('no3d') && supportsWebGL()) {
-    try {
-      const { World } = await import('./world/world.js');
-      return new World(stage, { reducedMotion });
-    } catch (err) {
-      console.warn('3D unavailable, using the map view instead:', err);
+  let reason = 'forced';
+  if (!params.has('no3d')) {
+    if (!supportsWebGL()) reason = 'no-webgl';
+    else {
+      try {
+        const { World } = await import('./world/world.js');
+        return new World(stage, { reducedMotion });
+      } catch (err) {
+        console.warn('3D unavailable, using the map view instead:', err);
+        reason = 'failed';
+      }
     }
   }
   const { FallbackWorld } = await import('./world/fallback.js');
   stage.classList.add('is-fallback');
-  return new FallbackWorld(stage);
+  return new FallbackWorld(stage, reason);
 }
 
 function supportsWebGL() {
