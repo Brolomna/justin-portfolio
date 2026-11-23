@@ -31,29 +31,23 @@ export function colorFor(node) {
   return PALETTE[h % PALETTE.length];
 }
 
-// The directory "folder": a back panel with a tab, papers inside and a front
-// flap hinged at the bottom. Local units, standing at the back edge of the
-// platform (z = FOLDER.z) and facing the parent directory (+z).
-export const FOLDER = {
-  w: 4.8, h: 3.2, tabW: 1.9, tabH: 0.5, frontH: 2.75,
-  y: 0.25, z: 2.5, flapGap: 0.34, closed: 0.12, open: 1.15,
-};
+// A small folder icon floating on top of each portal, so the portal reads as a
+// folder. Local units: it sits just above the portal's top bar (y 4.6), facing
+// the parent like the portal does. LABEL_Y is where the name tag goes above it.
+export const ICON = { y: 4.9, z: 2.5, frontZ: 0.08 };
+export const LABEL_Y = 7.35;
 
-/** Back panel outline (x, y) including the tab, counter-clockwise. */
-export function folderBackOutline() {
-  const { w, h, tabW, tabH } = FOLDER;
+/** The icon's back sheet with its tab (x, y), bottom edge at y = 0. */
+export function iconBackOutline() {
+  const w = 2.2, h = 1.4, tabW = 0.88, tabH = 0.3;
   const l = -w / 2, r = w / 2;
-  return [[l, 0], [r, 0], [r, h], [l + tabW + 0.45, h], [l + tabW, h + tabH], [l + 0.18, h + tabH], [l, h + tabH - 0.18]];
+  return [[l, 0], [r, 0], [r, h], [l + tabW + 0.2, h], [l + tabW, h + tabH], [l + 0.1, h + tabH], [l, h + tabH - 0.1]];
 }
 
-/** Front flap outline (x, y), hinged along y = 0. */
-export function folderFrontOutline() {
-  const { w, frontH } = FOLDER;
-  return [[-w / 2, 0], [w / 2, 0], [w / 2, frontH], [-w / 2, frontH]];
+/** The icon's front pocket (x, y): a little shorter, so the tab shows above it. */
+export function iconFrontOutline() {
+  return [[-1.1, 0], [1.1, 0], [1.1, 1.12], [-1.1, 1.12]];
 }
-
-/** Paper sheets peeking out of the folder: [x0, x1, y1, z]. */
-export const FOLDER_PAPERS = [[-1.95, 1.75, 3.0, 0.14], [-1.7, 2.0, 2.85, 0.22]];
 
 /** Directories on the road down to the home directory are drawn smaller. */
 export function isHomeAncestor(machine, path) {
@@ -129,11 +123,10 @@ export function travelPoints(layout, from, to, direction, start, end) {
   const pts = [start];
   if (direction === 'into') {
     const d = layout.get(to);
-    // glide in just over the folder's top edge (the folder dissolves as you arrive)
-    pts.push(local(d.pos, d.heading, 0, 5.4, 9.5), local(d.pos, d.heading, 0, 4.9, 3.6));
+    pts.push(local(d.pos, d.heading, 0, 2.9, 8.5), local(d.pos, d.heading, 0, 2.8, 2.6));
   } else if (direction === 'up') {
     const d = layout.get(from);
-    pts.push(local(d.pos, d.heading, 0, 5.4, 3.6), local(d.pos, d.heading, 0, 9.5, 12.5));
+    pts.push(local(d.pos, d.heading, 0, 2.8, 2.6), local(d.pos, d.heading, 0, 3.6, 9));
   } else {
     pts.push({ x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 + 10, z: (start.z + end.z) / 2 });
   }

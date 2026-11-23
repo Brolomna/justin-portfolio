@@ -7,11 +7,11 @@ import { pathChain, parentOf } from '../fs/path.js';
 import { visibilityOf } from './visibility.js';
 import {
   HIDDEN_COLOR, ERROR_COLOR, BG, ease, easeOut, local, colorFor, inFocus, isHomeAncestor,
-  computeLayout, cameraView, travelPoints, FOLDER, FOLDER_PAPERS, folderBackOutline, folderFrontOutline,
+  computeLayout, cameraView, travelPoints, ICON, LABEL_Y, iconBackOutline, iconFrontOutline,
 } from './layout.js';
 
-const BACK = folderBackOutline();
-const FRONT = folderFrontOutline();
+const ICON_BACK = iconBackOutline();
+const ICON_FRONT = iconFrontOutline();
 
 // ---------------------------------------------------------------- vectors
 const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y, z: a.z - b.z });
@@ -100,7 +100,7 @@ export class CanvasWorld {
       this.objects.set(node.path, {
         node, pos: info.pos, heading: info.heading, color: rgb(colorFor(node)), level: 0, target: 0, state: 'none',
         scale: node.type === 'dir' && isHomeAncestor(machine, node.path) ? 0.62 : 1, grow: 1, yOff: 0, shakeX: 0,
-        flash: null, archVisible: true, phase: Math.random() * 6.28, openAmt: 0,
+        flash: null, archVisible: true, phase: Math.random() * 6.28, spin: 0,
       });
     }
     this.applyVisibility(view, { animate: false });
@@ -260,20 +260,12 @@ export class CanvasWorld {
       case 'cd': {
         if (event.direction === 'stay') { this.ring(here.pos, '#00f5a0', { radius: 6, dur: 600 }); break; }
         const dest = this.objects.get(event.to);
-        if (dest && event.direction !== 'up') { this.tween(750, (k) => { dest.openAmt = easeOut(k); }); this.flash(dest, 'white', 900); }
-        const left = this.objects.get(event.from);
-        if (event.direction === 'up' && left) {
-          // the folder you step out of reappears once you're clear of it, closing behind you
-          left.openAmt = 1; left.archAlpha = 0;
-          this.tween(1700, (k) => { left.openAmt = 1 - ease(k); });
-          this.tween(900, (k) => { left.archAlpha = k; }, 800);
-        }
+        if (dest) { dest.spin = 1; this.flash(dest, 'white', 900); }
         if (event.direction === 'up') this.trailPulse('#00f5a0', 900);
         this.applyVisibility(view, { keepArch: event.direction === 'into' ? event.to : null });
         this.trail = pathChain(view.cwd);
-        if (event.direction === 'into' && dest) this.tween(450, (k) => { dest.archAlpha = 1 - k; }, 700);
         await this.travel(event.from, event.to, event.direction);
-        if (dest) { dest.archVisible = false; dest.openAmt = 0; dest.archAlpha = 1; }
+        if (dest) { dest.spin = 0; dest.archVisible = false; }
         this.ring(this.layout.get(view.cwd).pos, '#00f5a0', { radius: 7, dur: 900 });
         break;
       }
@@ -488,43 +480,41 @@ export class CanvasWorld {
       ctx.lineWidth = Math.max(1, center.s * 0.05); ctx.strokeStyle = rgba(col, 0.9 * a); ctx.stroke();
     }
     if (this.poly(hex(2.85, 0.18))) { ctx.lineWidth = Math.max(1, center.s * 0.08); ctx.strokeStyle = rgba(col, 0.3 * a); ctx.stroke(); }
-    // the holographic folder, facing the parent directory
-    if (rec.archVisible) this.drawFolder(L, center, col, a * (rec.archAlpha ?? 1), rec.openAmt, t);
-    if (rec.labelVisible) {
-      const lp = this.project(L(0, FOLDER.y + FOLDER.h + FOLDER.tabH + 0.95, FOLDER.z));
-      if (lp) this.label(rec.node.path === '/' ? '/' : rec.node.name + '/', lp.x, lp.y, lp.s * (isHomeAncestor(this.machine, rec.node.path) ? 0.36 : 0.44), col, a * (rec.archAlpha ?? 1));
-    }
-  }
-
-  drawFolder(L, center, col, a, openAmt, t) {
-    const ctx = this.ctx;
-    const { y: fy, z: fz } = FOLDER;
-    const P = ([x, y], dz = 0) => L(x, fy + y, fz + dz);
-    const edge = Math.max(1, center.s * 0.05);
-    // back panel with its tab
-    if (this.poly(BACK.map((pt) => P(pt)))) {
-      ctx.fillStyle = `rgba(11,29,40,${(0.86 * a).toFixed(3)})`; ctx.fill();
-      ctx.lineWidth = edge; ctx.strokeStyle = rgba(col, 0.95 * a); ctx.stroke();
-    }
-    // soft glow inside the folder, stronger while it opens
-    const gc = this.project(L(0, fy + FOLDER.h * 0.6, fz + 0.12));
-    if (gc) this.glowDot(gc.x, gc.y, FOLDER.w * 0.55 * gc.s, col, (0.16 + 0.4 * openAmt) * a);
-    // papers peeking out
-    FOLDER_PAPERS.forEach(([x0, x1, y1, z], i) => {
-      if (this.poly([P([x0, 0], z), P([x1, 0], z), P([x1, y1], z), P([x0, y1], z)])) {
-        ctx.fillStyle = i ? `rgba(233,255,247,${(0.14 * a).toFixed(3)})` : rgba(col, 0.1 * a); ctx.fill();
-        ctx.lineWidth = 1; ctx.strokeStyle = rgba(i ? [233, 255, 247] : col, 0.35 * a); ctx.stroke();
+    // portal arch, facing the parent
+    if (rec.archVisible) {
+      const spin = rec.spin ? t * 6 : t * 0.25;
+      const circle = Array.from({ length: 36 }, (_, i) => { const ang = (i / 36) * Math.PI * 2; return L(Math.cos(ang) * 2.1, 2.75 + Math.sin(ang) * 2.1, 2.5); });
+      const pc = this.project(L(0, 2.75, 2.5));
+      if (pc && this.poly(circle)) {
+        const g = ctx.createRadialGradient(pc.x, pc.y, 0, pc.x, pc.y, 2.1 * pc.s);
+        g.addColorStop(0, rgba(col, (rec.spin ? 0.55 : 0.18) * a));
+        g.addColorStop(1, rgba(col, 0.02 * a));
+        ctx.fillStyle = g; ctx.fill();
+        ctx.lineWidth = Math.max(1.2, pc.s * 0.14); ctx.strokeStyle = rgba(col, 0.95 * a); ctx.stroke();
+        // a travelling spark shows the portal is "live"
+        const sp = this.project(L(Math.cos(spin) * 2.1, 2.75 + Math.sin(spin) * 2.1, 2.5));
+        if (sp) this.glowDot(sp.x, sp.y, Math.max(3, sp.s * 0.35), col, 0.9 * a);
       }
-    });
-    // front flap, hinged at the bottom; it swings toward you when the folder opens
-    const th = FOLDER.closed + (FOLDER.open - FOLDER.closed) * openAmt + (this.reduced ? 0 : Math.sin(t * 0.8) * 0.015);
-    const flap = FRONT.map(([x, y]) => L(x, fy + y * Math.cos(th), fz + FOLDER.flapGap + y * Math.sin(th)));
-    if (this.poly(flap)) {
-      ctx.fillStyle = `rgba(13,36,48,${(0.9 * a).toFixed(3)})`; ctx.fill();
-      ctx.lineWidth = edge * 1.2; ctx.strokeStyle = rgba(col, a); ctx.stroke();
+      ctx.lineWidth = Math.max(1, center.s * 0.1);
+      ctx.strokeStyle = rgba(col, 0.75 * a);
+      for (const x of [-2.6, 2.6]) if (this.poly([L(x, 0, 2.5), L(x, 4.6, 2.5)], false)) ctx.stroke();
+      if (this.poly([L(-2.6, 4.6, 2.5), L(2.6, 4.6, 2.5)], false)) ctx.stroke();
+      // folder icon on top of the portal, so it reads as a folder
+      const bob = this.reduced ? 0 : Math.sin(t * 1.2 + rec.node.path.length) * 0.06;
+      const iy = ICON.y + bob;
+      if (this.poly(ICON_BACK.map(([x, y]) => L(x, iy + y, ICON.z)))) {
+        ctx.fillStyle = `rgba(12,34,48,${(0.9 * a).toFixed(3)})`; ctx.fill();
+        ctx.lineWidth = Math.max(1, center.s * 0.045); ctx.strokeStyle = rgba(col, 0.95 * a); ctx.stroke();
+      }
+      if (this.poly(ICON_FRONT.map(([x, y]) => L(x, iy + y, ICON.z + ICON.frontZ)))) {
+        ctx.fillStyle = rgba(col, 0.38 * a); ctx.fill();
+        ctx.lineWidth = Math.max(1, center.s * 0.04); ctx.strokeStyle = rgba([234, 255, 248], 0.7 * a); ctx.stroke();
+      }
     }
-    // a bright top edge on the flap reads as the lip of the folder
-    if (this.poly([flap[3], flap[2]], false)) { ctx.lineWidth = edge * 2; ctx.strokeStyle = rgba(col, 0.55 * a); ctx.stroke(); }
+    if (rec.labelVisible) {
+      const lp = this.project(L(0, LABEL_Y, 2.5));
+      if (lp) this.label(rec.node.path === '/' ? '/' : rec.node.name + '/', lp.x, lp.y, lp.s * (isHomeAncestor(this.machine, rec.node.path) ? 0.36 : 0.44), col, a);
+    }
   }
 
   drawFile(rec, t) {
@@ -629,7 +619,8 @@ export class CanvasWorld {
         if (fx.kind === 'dir') {
           const hex = Array.from({ length: 6 }, (_, i) => { const ang = (i / 6) * Math.PI * 2 + Math.PI / 6; return L(Math.cos(ang) * 3.5, 0.16, Math.sin(ang) * 3.5); });
           if (this.poly(hex)) ctx.stroke();
-          if (this.poly(BACK.map(([x, y]) => L(x, FOLDER.y + y, FOLDER.z)))) ctx.stroke();
+          const circle = Array.from({ length: 30 }, (_, i) => { const ang = (i / 30) * Math.PI * 2; return L(Math.cos(ang) * 2.1, 2.75 + Math.sin(ang) * 2.1, 2.5); });
+          if (this.poly(circle)) ctx.stroke();
         } else if (this.poly([L(-0.6, -0.75, 0), L(0.6, -0.75, 0), L(0.6, 0.75, 0), L(-0.6, 0.75, 0)])) ctx.stroke();
         ctx.setLineDash([]);
       }
