@@ -8,23 +8,30 @@ export function createTerminal({ log, form, input, promptEl, idEl, onSubmit, onE
   let hIndex = 0;
   let draft = '';
   let prompt = { user: 'user', host: 'host', dir: '~' };
-  let secret = null; // the password prompt's label while a program waits for a password
+  let secret = null;   // label while a program waits for a hidden answer (a password)
+  let asking = null;   // label while a program waits for a visible answer (e.g. unzip's "replace?")
 
   const promptHtml = (p) => `<span class="p-user">${esc(p.user)}@${esc(p.host)}</span><span class="p-sep">:</span><span class="p-dir">${esc(p.dir)}</span><span class="p-sep">$</span>`;
 
   function setPrompt(p) {
     prompt = p;
-    if (!secret) promptEl.innerHTML = promptHtml(p);
+    if (!secret && !asking) promptEl.innerHTML = promptHtml(p);
     idEl.textContent = `${p.user}@${p.host}`;
   }
 
-  /** Password mode: show `label` as the prompt and hide what is typed. null ends it. */
-  function setPasswordMode(label) {
-    secret = label;
-    input.type = label ? 'password' : 'text';
-    input.setAttribute('aria-label', label ? 'Password (hidden while you type)' : 'Terminal command');
-    if (label) promptEl.innerHTML = `<span class="p-secret">${esc(label)}</span>`;
-    else promptEl.innerHTML = promptHtml(prompt);
+  /** A program is asking something: show its `label` as the prompt. With `hidden`,
+   *  what is typed is masked and never echoed (passwords). null ends it. */
+  function setQuestion(label, { hidden = false } = {}) {
+    secret = label && hidden ? label : null;
+    asking = label && !hidden ? label : null;
+    input.type = secret ? 'password' : 'text';
+    input.setAttribute('aria-label', secret ? 'Password (hidden while you type)' : asking ? 'Answer the question' : 'Terminal command');
+    promptEl.innerHTML = label ? `<span class="p-secret">${esc(label)}</span>` : promptHtml(prompt);
+  }
+
+  /** Echo the answer to a visible question: label then what was typed. */
+  function echoAnswer(label, typed, out, ok) {
+    echo(null, typed, out, ok, label, true);
   }
 
   /** Echo a password answer: the label is shown, the password never is. */
@@ -34,12 +41,14 @@ export function createTerminal({ log, form, input, promptEl, idEl, onSubmit, onE
 
   function trim() { while (log.children.length > MAX_ENTRIES) log.firstElementChild.remove(); }
 
-  function echo(p, command, out, ok = true, secretLabel = null) {
+  function echo(p, command, out, ok = true, secretLabel = null, showTyped = false) {
     const entry = document.createElement('div');
     entry.className = 'entry' + (ok ? '' : ' failed');
     const cmd = document.createElement('div');
     cmd.className = 'cmd';
-    cmd.innerHTML = secretLabel ? `<span class="p-secret">${esc(secretLabel)}</span>` : `${promptHtml(p)} <span class="typed">${esc(command)}</span>`;
+    cmd.innerHTML = secretLabel
+      ? `<span class="p-secret">${esc(secretLabel)}</span>${showTyped ? `<span class="typed">${esc(command)}</span>` : ''}`
+      : `${promptHtml(p)} <span class="typed">${esc(command)}</span>`;
     entry.appendChild(cmd);
     for (const segs of out) {
       const line = document.createElement('div');
@@ -73,7 +82,7 @@ export function createTerminal({ log, form, input, promptEl, idEl, onSubmit, onE
     e.preventDefault();
     const value = input.value;
     input.value = '';
-    if (!secret && value.trim() && history[history.length - 1] !== value) history.push(value);
+    if (!secret && !asking && value.trim() && history[history.length - 1] !== value) history.push(value);
     hIndex = history.length;
     draft = '';
     onSubmit(value);
@@ -88,7 +97,7 @@ export function createTerminal({ log, form, input, promptEl, idEl, onSubmit, onE
       onInterrupt?.();
       return;
     }
-    if (secret && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) { e.preventDefault(); return; }
+    if ((secret || asking) && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) { e.preventDefault(); return; }
     if (e.key === 'ArrowUp') {
       if (!history.length) return;
       e.preventDefault();
@@ -102,7 +111,7 @@ export function createTerminal({ log, form, input, promptEl, idEl, onSubmit, onE
       hIndex += 1;
       input.value = hIndex === history.length ? draft : history[hIndex];
     } else if (e.key === 'Escape') {
-      if (secret) onInterrupt?.(); else onEscape?.();
+      if (secret || asking) onInterrupt?.(); else onEscape?.();
     } else if (e.key === 'l' && e.ctrlKey) {
       e.preventDefault();
       clear();
@@ -111,11 +120,12 @@ export function createTerminal({ log, form, input, promptEl, idEl, onSubmit, onE
 
   return {
     setPrompt,
-    setPasswordMode,
-    get passwordMode() { return !!secret; },
+    setQuestion,
+    get passwordMode() { return !!(secret || asking); },
     get prompt() { return prompt; },
     echo,
     echoSecret,
+    echoAnswer,
     note,
     clear,
     focus: () => input.focus({ preventScroll: true }),

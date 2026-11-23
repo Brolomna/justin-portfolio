@@ -37,6 +37,10 @@ export function createFilesystem(spec) {
     added?.push(path);
     if (node.type === 'dir') for (const [n, v] of Object.entries(value)) add(node, n, v, added);
   };
+  const remove = (node) => {
+    node.parent.children.delete(node.name);
+    for (const p of [...index.keys()]) if (p === node.path || p.startsWith(node.path + '/')) index.delete(p);
+  };
   for (const [n, v] of Object.entries(spec)) add(root, n, v);
 
   return {
@@ -50,6 +54,25 @@ export function createFilesystem(spec) {
       if (!dir || dir.type !== 'dir') throw new Error(`not a directory: ${dirPath}`);
       const added = [];
       for (const [n, v] of Object.entries(entries)) add(dir, n, v, added);
+      return added;
+    },
+    /** Like addTree, but existing files are replaced and existing directories merged
+     *  (unzip answering "yes" to "replace?"). Returns only the paths that are new. */
+    mergeTree(dirPath, entries) {
+      const dir = index.get(dirPath);
+      if (!dir || dir.type !== 'dir') throw new Error(`not a directory: ${dirPath}`);
+      const added = [];
+      const isDirSpec = (v) => v && typeof v === 'object' && !v[ZIP];
+      const merge = (into, spec) => {
+        for (const [n, v] of Object.entries(spec)) {
+          const old = into.children.get(n);
+          if (old && old.type === 'dir' && isDirSpec(v)) { merge(old, v); continue; }
+          if (old && old.type === 'file' && typeof v === 'string') { old.content = v; delete old.archive; continue; }
+          if (old) remove(old);
+          add(into, n, v, added);
+        }
+      };
+      merge(dir, entries);
       return added;
     },
   };

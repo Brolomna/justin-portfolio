@@ -301,9 +301,10 @@ export class CanvasWorld {
       case 'unzip-prompt': {
         const z = this.objects.get(event.path);
         if (!z) break;
-        this.flash(z, '#ffc45c', 1400);
-        this.ring(z.pos, '#ffc45c', { radius: 4, dur: 1000, width: 2.5 });
-        this.banner('🔒 password required', { ...z.pos, y: z.pos.y + 2.2 }, [255, 217, 138], 3600);
+        const replace = event.kind === 'replace';
+        this.flash(z, replace ? '#7fd6ff' : '#ffc45c', 1400);
+        this.ring(z.pos, replace ? '#7fd6ff' : '#ffc45c', { radius: 4, dur: 1000, width: 2.5 });
+        this.banner(replace ? '↻ replace existing files?' : '🔒 password required', { ...z.pos, y: z.pos.y + 2.2 }, replace ? [191, 239, 255] : [255, 217, 138], 3600);
         break;
       }
       case 'unzip': {

@@ -100,7 +100,7 @@ function loadMachine(spec) {
     visited: new Set(pathChain(state.machine.start)),
     listed: new Map(),
   };
-  term.setPasswordMode(null);
+  term.setQuestion(null);
   term.clear();
   term.resetHistory();
   term.setPrompt(state.shell.prompt());
@@ -126,7 +126,7 @@ function interrupt() {
   const res = state.shell?.cancel();
   if (res) {
     term.echoSecret(state.lastSecretLabel || '', res.out, false);
-    term.setPasswordMode(null);
+    term.setQuestion(null);
   } else {
     term.echo(term.prompt, '^C', []);
   }
@@ -142,9 +142,9 @@ function knownCommands() {
 
 async function run(line) {
   const shownPrompt = term.prompt;
-  const secretLabel = state.shell.awaiting?.label;
+  const asked = state.shell.awaiting;   // unzip is waiting for an answer to this question
 
-  if (!secretLabel && line.trim() === 'help') {
+  if (!asked && line.trim() === 'help') {
     const known = knownCommands();
     term.echo(shownPrompt, line, [[{ t: known.length ? `Commands you have learned: ${known.join(', ')}` : "You haven't learned any commands yet. Follow the lesson card.", c: 'content' }]]);
     return;
@@ -153,13 +153,14 @@ async function run(line) {
   const res = state.shell.run(line);
   const { event } = res;
   if (event.type === 'clear') term.clear();
-  else if (secretLabel) term.echoSecret(secretLabel, res.out, res.ok);
+  else if (asked?.secret) term.echoSecret(asked.label, res.out, res.ok);
+  else if (asked) term.echoAnswer(asked.label, line, res.out, res.ok);
   else term.echo(shownPrompt, line, res.out, res.ok);
 
-  // a program (unzip) is now waiting for a password, or has stopped waiting
+  // a program (unzip) is now asking something (a password is hidden), or has stopped asking
   const awaiting = state.shell.awaiting;
   state.lastSecretLabel = awaiting?.label || null;
-  term.setPasswordMode(awaiting ? awaiting.label : null);
+  term.setQuestion(awaiting ? awaiting.label : null, { hidden: !!awaiting?.secret });
 
   // update the single source of truth
   const v = state.view;

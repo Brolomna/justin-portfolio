@@ -111,7 +111,20 @@ const arc = () => { const s = createShell(buildMachine(archivesMachine())); s.ru
 check('unzip -l lists without extracting', () => { const s = arc(); const r = s.run('unzip -l supplies.zip'); assert.match(text(r), /supplies\/manifest\.txt/); assert.equal(r.event.type, 'unzip-list'); assert.equal(text(s.run('ls')), 'locked.zip  supplies.zip'); });
 check('unzip extracts into the current directory', () => { const s = arc(); const r = s.run('unzip supplies.zip'); assert.deepEqual(r.event.top, ['/home/rookie/Downloads/supplies']); assert.equal(text(s.run('ls supplies')), 'manifest.txt  map.txt'); });
 check('unzip extracts where you are, not where the zip is', () => { const s = createShell(buildMachine(archivesMachine())); s.run('unzip Downloads/supplies.zip'); assert.equal(text(s.run('ls')), 'Desktop  Downloads  supplies  welcome.txt'); });
-check('unzip does not overwrite', () => { const s = arc(); s.run('unzip supplies.zip'); assert.equal(s.run('unzip supplies.zip').event.reason, 'exists'); });
+check('unzip twice asks to replace', () => {
+  const s = arc(); s.run('unzip supplies.zip');
+  const r = s.run('unzip supplies.zip'); assert.equal(r.event.kind, 'replace'); assert.match(s.awaiting.label, /^replace supplies\/manifest\.txt\? \[y\]es, \[n\]o/); assert.equal(s.awaiting.secret, false);
+  const y = s.run('y'); assert.equal(y.event.type, 'unzip'); assert.ok(y.event.replaced); assert.equal(s.awaiting, null);
+  assert.equal(text(s.run('ls supplies')), 'manifest.txt  map.txt');
+});
+check('replace: no keeps files and still counts as an unzip', () => { const s = arc(); s.run('unzip supplies.zip'); s.run('unzip supplies.zip'); const r = s.run('n'); assert.equal(r.event.type, 'unzip'); assert.ok(r.event.skipped); assert.match(text(r), /kept the existing file/); });
+check('replace: invalid answer asks again', () => { const s = arc(); s.run('unzip supplies.zip'); s.run('unzip supplies.zip'); const r = s.run('maybe'); assert.equal(r.ok, false); assert.ok(s.awaiting); assert.equal(s.run('A').event.type, 'unzip'); });
+check('replace keeps files added since', () => { const m = buildMachine(archivesMachine()); const s = createShell(m); s.run('cd Downloads'); s.run('unzip supplies.zip'); m.fs.addTree('/home/rookie/Downloads/supplies', { 'mine.txt': 'x' }); s.run('unzip supplies.zip'); s.run('y'); assert.equal(text(s.run('ls supplies')), 'manifest.txt  map.txt  mine.txt'); });
+check('locked + existing: replace first, then password', () => {
+  const s = arc(); s.run('unzip locked.zip'); s.run('lantern');
+  s.run('unzip locked.zip'); assert.equal(s.awaiting.secret, false); s.run('y');
+  assert.equal(s.awaiting.secret, true); assert.equal(s.run('lantern').event.type, 'unzip');
+});
 check('password prompt then correct password', () => {
   const s = arc(); const r = s.run('unzip locked.zip');
   assert.equal(r.event.type, 'unzip-prompt'); assert.equal(s.awaiting.label, '[locked.zip] secret/note.txt password: ');

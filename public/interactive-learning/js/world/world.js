@@ -719,9 +719,11 @@ export class World {
       case 'unzip-prompt': {
         const z = this.objects.get(event.path);
         if (!z) break;
-        this.flashRecord(z, '#ffc45c', 1400);
-        this.ringPulse(z.pos, '#ffc45c', { radius: 4, dur: 1000, width: 0.25 });
-        this.floatBanner('🔒 password required', z.group.position.clone().add(new THREE.Vector3(0, 2.2, 0)), '#ffd98a', 3600);
+        const replace = event.kind === 'replace';
+        const c = replace ? '#7fd6ff' : '#ffc45c';
+        this.flashRecord(z, c, 1400);
+        this.ringPulse(z.pos, c, { radius: 4, dur: 1000, width: 0.25 });
+        this.floatBanner(replace ? '↻ replace existing files?' : '🔒 password required', z.group.position.clone().add(new THREE.Vector3(0, 2.2, 0)), replace ? '#bfefff' : '#ffd98a', 3600);
         break;
       }
       case 'unzip': {

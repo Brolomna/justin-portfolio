@@ -151,13 +151,7 @@ export function createShell(machine) {
       }
       const listing = archiveListing(node.archive.entries);
       if (list) return listArchive(file, path, listing);
-      if (node.archive.password && password === null) {
-        // Real unzip asks for the password interactively and does not echo it.
-        const first = listing.find((e) => !e.dir)?.name ?? '';
-        pending = { file, path, node, listing, cwdAtStart: cwd, label: `[${file}] ${first} password: ` };
-        return { out: [line(`Archive:  ${file}`)], event: { type: 'unzip-prompt', path } };
-      }
-      return extract(file, path, node, listing, password);
+      return proceed({ file, path, node, listing, password, overwrite: null, cwdAtStart: cwd }, true);
     },
   };
 
@@ -175,32 +169,69 @@ export function createShell(machine) {
     return { out, event: { type: 'unzip-list', path, entries: listing.map((e) => e.name) } };
   }
 
-  function extract(file, path, node, listing, password) {
+  // unzip's questions come in the same order as the real tool:
+  // "replace X?" for files that already exist, then the password.
+  function proceed(ctx, first) {
+    const head = first ? [line(`Archive:  ${ctx.file}`)] : [];
+    const firstFile = ctx.listing.find((e) => !e.dir)?.name ?? '';
+    if (ctx.overwrite === null) {
+      const clash = ctx.listing.find((e) => !e.dir && fs.get(joinPath(cwd, e.name)));
+      if (clash) {
+        pending = { ...ctx, kind: 'replace', label: `replace ${clash.name}? [y]es, [n]o, [A]ll, [N]one, [r]ename: ` };
+        return { out: head, event: { type: 'unzip-prompt', path: ctx.path, kind: 'replace' } };
+      }
+      ctx.overwrite = false;
+    }
+    if (ctx.overwrite !== 'skip' && ctx.node.archive.password && ctx.password === null) {
+      // Real unzip asks for the password interactively and does not echo it.
+      pending = { ...ctx, kind: 'password', label: `[${ctx.file}] ${firstFile} password: ` };
+      return { out: head, event: { type: 'unzip-prompt', path: ctx.path, kind: 'password' } };
+    }
+    const res = extract(ctx);
+    if (!first && res.out[0]?.[0]?.t?.startsWith('Archive:')) res.out.shift();
+    return res;
+  }
+
+  function joinPath(dir, rel) { return (dir === '/' ? '' : dir) + '/' + rel.replace(/\/$/, ''); }
+
+  function extract({ file, path, node, listing, password, overwrite }) {
+    const tops = Object.keys(node.archive.entries).map((n) => joinPath(cwd, n));
+    if (overwrite === 'skip') {
+      // "no" to replacing: everything that was already there stays as it was
+      const out = [line(`Archive:  ${file}`)];
+      for (const e of listing) if (!e.dir && fs.get(joinPath(cwd, e.name))) out.push([{ t: '   skipping: ' }, { t: e.name, c: 'file' }, { t: '  (kept the existing file)' }]);
+      const added = [];
+      return { out, event: { type: 'unzip', path, dir: cwd, added, top: tops, skipped: true, protected: !!node.archive.password } };
+    }
     if (node.archive.password && password !== node.archive.password) {
       const first = listing.find((e) => !e.dir)?.name ?? '';
       return { out: [line(`Archive:  ${file}`), err(`   skipping: ${first}  incorrect password`)], ok: false, event: { type: 'error', cmd: 'unzip', reason: 'bad-password', target: path } };
     }
-    const here = fs.get(cwd);
-    const clash = Object.keys(node.archive.entries).find((n) => here.children.has(n));
-    if (clash) {
-      return fail('unzip', 'exists', `${cwd === '/' ? '' : cwd}/${clash}`, `unzip: ${clash} is already here (this training machine doesn't overwrite files)`);
-    }
-    const added = fs.addTree(cwd, node.archive.entries);
+    const existed = new Set(listing.filter((e) => fs.get(joinPath(cwd, e.name))).map((e) => e.name));
+    const added = fs.mergeTree(cwd, node.archive.entries);
     const out = [line(`Archive:  ${file}`)];
-    for (const e of listing) out.push([{ t: e.dir ? '   creating: ' : '  inflating: ' }, { t: e.name, c: e.dir ? 'dir' : 'file' }]);
-    const top = added.filter((p) => parentOf(p) === cwd);
-    return { out, event: { type: 'unzip', path, dir: cwd, added, top, protected: !!node.archive.password } };
+    for (const e of listing) {
+      if (e.dir) { if (!existed.has(e.name)) out.push([{ t: '   creating: ' }, { t: e.name, c: 'dir' }]); }
+      else out.push([{ t: '  inflating: ' }, { t: e.name, c: 'file' }]);
+    }
+    return { out, event: { type: 'unzip', path, dir: cwd, added, top: tops, replaced: existed.size > 0, protected: !!node.archive.password } };
   }
 
-  /** Answer an interactive password prompt. */
+  /** Answer whatever unzip is asking: "replace?" or the password. */
   function answer(text) {
     const p = pending;
     pending = null;
     cwd = p.cwdAtStart;
-    const res = extract(p.file, p.path, p.node, p.listing, text);
-    // the "Archive:" line was already printed when the prompt appeared
-    if (res.out[0]?.[0]?.t?.startsWith('Archive:')) res.out.shift();
-    return res;
+    if (p.kind === 'replace') {
+      const t = text.trim();
+      if (/^(y|yes|A)$/.test(t)) return proceed({ ...p, overwrite: true }, false);
+      if (/^(n|no|N)$/.test(t)) return proceed({ ...p, overwrite: 'skip' }, false);
+      // anything else: real unzip complains and asks again
+      pending = p;
+      const msg = /^r(ename)?$/i.test(t) ? "rename isn't available on this training machine. Answer y (replace) or n (keep)." : `error:  invalid response [${t.slice(0, 20)}]`;
+      return { out: [err(msg)], ok: false, event: { type: 'unzip-prompt', path: p.path, kind: 'replace', again: true } };
+    }
+    return proceed({ ...p, password: text }, false);
   }
 
   function fail(cmd, reason, target, message) {
@@ -229,8 +260,8 @@ export function createShell(machine) {
 
   return {
     run,
-    /** While unzip waits for a password: { label } (the prompt to show), else null. */
-    get awaiting() { return pending ? { label: pending.label } : null; },
+    /** While unzip waits for an answer: { label, secret } (secret = a password, don't echo it), else null. */
+    get awaiting() { return pending ? { label: pending.label, secret: pending.kind === 'password' } : null; },
     /** Ctrl+C / Escape during a password prompt. */
     cancel() {
       if (!pending) return null;
