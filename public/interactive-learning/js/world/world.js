@@ -876,3 +876,5 @@ export class World {
     this.renderer.domElement.remove();
   }
 }
+
+export { THREE, makeLabel, radialTexture, shapeOf, crispText, v3, local3 };

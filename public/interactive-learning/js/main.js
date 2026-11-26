@@ -70,16 +70,26 @@ const term = createTerminal({
 //   'map' a text map of discovered directories (last resort, also handy for screen readers)
 // The browser's best option is picked automatically; the View switch in the top bar
 // (or ?view=3d|2d|map) lets you compare them live.
-const views = { auto: null, current: null, webgl: false };
+const views = { auto: null, current: null, webgl: false, theme: 'classic' };
+// Art direction: the beta page tries the illustrated "Archive Islands" look on Lesson 1.
+const themeFor = (m) => (BETA && m?.id === 'exploring' ? 'islands' : 'classic');
 
 async function buildWorld(mode, reason = 'forced') {
   const stage = $('stage');
   stage.classList.remove('is-fallback');
   if (mode === '3d') {
+    if (views.theme === 'islands') {
+      const { IslandWorld } = await import('./world/island-world.js');
+      return new IslandWorld(stage, { reducedMotion });
+    }
     const { World } = await import('./world/world.js');
     return new World(stage, { reducedMotion });
   }
   if (mode === '2d') {
+    if (views.theme === 'islands') {
+      const { IslandCanvasWorld } = await import('./world/island-canvas.js');
+      return new IslandCanvasWorld(stage, { reducedMotion });
+    }
     const { CanvasWorld } = await import('./world/canvas-world.js');
     return new CanvasWorld(stage, { reducedMotion });
   }
@@ -261,8 +271,20 @@ function setTopic(m) {
   $('missionsBtn').hidden = !m;
 }
 
-function startMission(id) {
+/** Rebuild the renderer when a mission uses a different art style. */
+async function useTheme(theme) {
+  if (theme === views.theme) return;
+  views.theme = theme;
+  world.dispose();
+  const next = await startWorld([views.current, '2d', 'map'], 'forced');
+  world = next.world;
+  views.current = next.mode;
+  renderViewSwitch();
+}
+
+async function startMission(id) {
   const m = byId(id) || missions[0];
+  await useTheme(themeFor(m));
   state.mission = m;
   state.step = 0;
   state.stepDone = false;
@@ -423,6 +445,7 @@ function describeWorld() {
 
 // ------------------------------------------------------------------- boot
 async function boot() {
+  views.theme = themeFor(missions[0]);
   world = await createWorld();
   renderMenu();
   // the Lesson 1 machine sits mysteriously behind the menu

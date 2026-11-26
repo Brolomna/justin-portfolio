@@ -60,6 +60,12 @@ browser; no real shell is involved.
 8. Lesson 6, Codes & Ciphers (`#ciphers`) - `base64` / `-d`, `sha256sum` / `-c`, `gpg -c` / `-d`.
 9. Test 3, The Mole (final exam) - grep the logs, decode, decrypt, then write the answer into `~/case/mole.txt`.
 
+The beta page also tries an illustrated art style, "The Archive Islands", on Lesson 1: floating islands
+with folder-shaped houses (`js/world/island-world.js` for 3D). The 2D view draws pictures baked from those
+same 3D models (`js/world/island-canvas.js`, images in `img/islands/`). After changing the island models,
+rebake them with `npm run build`, `npx vite preview --port 4173`, then `node scripts/bake-islands.cjs`.
+`themeFor()` in `js/main.js` picks which missions use it.
+
 To try a new mission before release, add `beta: true` to it; delete that to release it. The shell also knows `hostname`, `date`, `echo`,
 `sort`, `>>`, `grep -r/-n/-v/-c`, `find -type`, `mkdir -p`, `rm -f`, globs `*`/`?` and up to 4-stage pipes.
 

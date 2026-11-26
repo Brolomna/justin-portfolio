@@ -523,7 +523,7 @@ export class CanvasWorld {
     const ctx = this.ctx;
     const pts = this.trail.map((p) => ({ ...this.layout.get(p).pos, y: 0.26 }));
     const boost = this.trailBoost || 0;
-    const green = [0, 245, 160];
+    const green = this.trailColor || [0, 245, 160];
     for (const [w, a] of [[9, 0.08], [3.5, 0.5]]) {
       ctx.lineWidth = w;
       ctx.lineCap = 'round';
@@ -543,7 +543,7 @@ export class CanvasWorld {
       const pr = this.project({ ...p, y: 0.5 });
       if (!pr) return;
       const last = i === pts.length - 1;
-      this.glowDot(pr.x, pr.y, Math.max(4, pr.s * (last ? 0.9 : 0.6)), last ? [186, 255, 230] : green, (last ? 0.75 : 0.55) * this.fogAt(pr.z));
+      this.glowDot(pr.x, pr.y, Math.max(4, pr.s * (last ? 0.9 : 0.6)), last ? (this.hereColor || [186, 255, 230]) : green, (last ? 0.75 : 0.55) * this.fogAt(pr.z));
     });
     // "you are here" ring
     const here = this.layout.get(this.view.cwd).pos;
@@ -787,3 +787,5 @@ function wrap(content, width) {
   }
   return out;
 }
+
+export { rgb, rgba, mix, lerp3, roundRect };

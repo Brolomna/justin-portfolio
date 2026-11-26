@@ -1,0 +1,114 @@
+{
+ "island-a": {
+  "file": "island-a.webp",
+  "w": 932,
+  "h": 1076,
+  "ax": 0.5,
+  "ay": 0.3877,
+  "upp": 0.0119
+ },
+ "house-a": {
+  "file": "house-a.webp",
+  "w": 720,
+  "h": 702,
+  "ax": 0.5,
+  "ay": 0.9211,
+  "upp": 0.01042
+ },
+ "island-b": {
+  "file": "island-b.webp",
+  "w": 893,
+  "h": 922,
+  "ax": 0.4994,
+  "ay": 0.3331,
+  "upp": 0.0119
+ },
+ "house-b": {
+  "file": "house-b.webp",
+  "w": 720,
+  "h": 702,
+  "ax": 0.5,
+  "ay": 0.9211,
+  "upp": 0.01042
+ },
+ "island-c": {
+  "file": "island-c.webp",
+  "w": 880,
+  "h": 966,
+  "ax": 0.5057,
+  "ay": 0.3614,
+  "upp": 0.0119
+ },
+ "house-c": {
+  "file": "house-c.webp",
+  "w": 720,
+  "h": 702,
+  "ax": 0.5,
+  "ay": 0.9211,
+  "upp": 0.01042
+ },
+ "island-hidden": {
+  "file": "island-hidden.webp",
+  "w": 930,
+  "h": 968,
+  "ax": 0.5022,
+  "ay": 0.3876,
+  "upp": 0.0119
+ },
+ "house-hidden": {
+  "file": "house-hidden.webp",
+  "w": 720,
+  "h": 702,
+  "ax": 0.5,
+  "ay": 0.9211,
+  "upp": 0.01042
+ },
+ "house-stone": {
+  "file": "house-stone.webp",
+  "w": 720,
+  "h": 702,
+  "ax": 0.5,
+  "ay": 0.9211,
+  "upp": 0.01042
+ },
+ "island-stone": {
+  "file": "island-stone.webp",
+  "w": 908,
+  "h": 947,
+  "ax": 0.5022,
+  "ay": 0.3571,
+  "upp": 0.0119
+ },
+ "paper": {
+  "file": "paper.webp",
+  "w": 166,
+  "h": 187,
+  "ax": 0.4789,
+  "ay": 0.5107,
+  "upp": 0.00781
+ },
+ "paper-hidden": {
+  "file": "paper-hidden.webp",
+  "w": 166,
+  "h": 187,
+  "ax": 0.4789,
+  "ay": 0.5107,
+  "upp": 0.00781
+ },
+ "paper-log": {
+  "file": "paper-log.webp",
+  "w": 166,
+  "h": 187,
+  "ax": 0.4789,
+  "ay": 0.5107,
+  "upp": 0.00781
+ },
+ "crate": {
+  "file": "crate.webp",
+  "w": 193,
+  "h": 193,
+  "ax": 0.5,
+  "ay": 0.5,
+  "upp": 0.00781
+ }
+}
